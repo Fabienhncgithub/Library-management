@@ -33,14 +33,16 @@ class ControllerBook extends Controller {
 
     public function details() {
         $books = "";
-
         $user = Controller::get_user_or_redirect();
         if (isset($_POST["details"])) {
-            echo $_POST["details"];
+//            echo $_POST["details"];
             $books = Book::get_book_by_id($_POST["details"]);
            // var_dump($books);
         }
         (new View("details"))->show(array("books" => $books, "user" => $user));
     }
-
+    
+    public function isSelected(){
+        return true;
+    }
 }
