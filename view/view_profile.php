@@ -17,10 +17,25 @@
                 <?= $user->username; ?>
             <?php endif; ?>
             <br><br>
-            
-            <br>
-            <br>
-            
+            <table>
+                <tr>There are your currently rented books. Don't forget to return them in time!</tr>
+                
+                <tr>
+                    <td>Rental Date/Time</td>
+                    <td>Book</td>
+                    <td>To be returned on</td>
+                </tr>
+                <tr>
+                    <?php foreach ($rentals as $rental) {?>
+                    
+                    <td><?php $rental -> rentaldate ?></td>
+                    <td><?php $rental -> book ?></td>
+                    <td><?php $rental -> returndate ?></td>
+
+                    <?php } ?>
+                    
+                </tr>
+            </table>
         </div>
     </body>
 </html>

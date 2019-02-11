@@ -23,53 +23,52 @@
                         </tr>
                 </table>
             </form>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ISBN</th>
-                            <th>Title</th>
-                            <th>Author</th>
-                            <th>Editor</th>
-                            <th>picture</th>
-                            <th>action</th>
-                        </tr>
-                    </thead><br>
-                    <?php foreach ($books as $book) : ?>
-                        <tr>
-                            <td><?= $book->isbn ?></td>
-                            <td><?= $book->title ?></td>
-                            <td><?= $book->author ?></td>
-                            <td><?= $book->editor ?></td>
-                            <td><?= $book->picture ?></td>
-                            <td>
-                                <form  action='book/details' method='post'>
-                                    <input type='hidden' name='details' value='<?= $book->id ?>'>
-                                    <input type='submit' value='details'>
-                                </form>
-                            </td>
-                            <td>
-                                <form   action='book/selection' method='post'>
-                                    <input type='hidden' name='selection' value='<?= $book->id ?>' >
-                                    <input type='submit' value='selection'>
-                                </form>
-                            </td>
-                        </tr>       
-                        </tr>       
-                    <?php endforeach; ?>
-                </table><br><br>
-            <td>Basket of books to rent</td><br><br>
             <table>
                 <thead>
-                <tr>
-                    <th>ISBN</th>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Editor</th>
-                    <th>picture</th>
-                    <th>action</th>
-                </tr>
-                </thead>
-                <?php foreach ($rentals as $rental) : ?>
+                    <tr>
+                        <th>ISBN</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Editor</th>
+                        <th>picture</th>
+                        <th>action</th>
+                    </tr>
+                </thead><br>
+                <?php foreach($books as $book): ?>
+                    <tr>
+                        <td><?= $book->isbn ?></td>
+                        <td><?= $book->title ?></td>
+                        <td><?= $book->author ?></td>
+                        <td><?= $book->editor ?></td>
+                        <td><?= $book->picture ?></td>
+                        <td>
+                            <form  action='book/details' method='post'>
+                                <input type='hidden' name='details' value='<?= $book->id ?>'>
+                                <input type='submit' value='details'>
+                            </form>
+                        </td>
+                        <td>
+                            <form action='book/selection' method='post'>
+                                <input type='hidden' name='selection' value='<?= $book->id ?>' >
+                                <input type='submit' value='selection'>
+                            </form>
+                        </td>
+                    </tr>       
+                    </tr>       
+                <?php endforeach; ?>
+            </table><br>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ISBN</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Editor</th>
+                        <th>picture</th>
+                        <th>action</th>
+                    </tr>
+                </thead><br>
+                <?php foreach($rentals as $rental): ?>
                     <tr>
                         <td><?= $rental->isbn ?></td>
                         <td><?= $rental->title ?></td>
@@ -78,13 +77,13 @@
                         <td><?= $rental->picture ?></td>
                         <td>
                             <form  action='book/details' method='post'>
-                                <input type='hidden' name='details' value='<?= $book->id ?>'>
+                                <input type='hidden' name='details' value='<?= $rental->id ?>'>
                                 <input type='submit' value='details'>
                             </form>
                         </td>
                         <td>
-                            <form   action='book/selection' method='post'>
-                                <input type='hidden' name='selection' value='<?= $book->id ?>' >
+                            <form action='book/selection' method='post'>
+                                <input type='hidden' name='selection' value='<?= $rental->id ?>' >
                                 <input type='submit' value='selection'>
                             </form>
                         </td>

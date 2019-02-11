@@ -19,7 +19,7 @@
             <form id="signupForm" action="main/signup" method="post">
                 <table>
                     <tr>
-                 <td>Username:</td>
+                    <td>Username:</td>
                         <td><input id="username" name="username" type="text" size="16" value="<?= $username ?>"></td>
                         <td class="errors" id="errPseudo"></td>
                     </tr>

@@ -1,7 +1,7 @@
 <?php
 
 require_once 'model/User.php';
-require_once 'model/Book.php';
+require_once 'model/Rental.php';
 require_once 'framework/View.php';
 require_once 'framework/Controller.php';
 
@@ -21,7 +21,9 @@ class ControllerUser extends Controller {
         if (isset($_GET["param1"]) && $_GET["param1"] !== "") {
             $user = User::get_member_by_pseudo($_GET["param1"]);
         }
-        (new View("profile"))->show(array("user" => $user));
+        $rentals = Rental::get_rental_by_user($user);
+        
+        (new View("profile"))->show(array("user" => $user, "rentals" => $rentals));
     }
     
     

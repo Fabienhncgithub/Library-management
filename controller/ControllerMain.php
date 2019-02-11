@@ -61,6 +61,8 @@ class ControllerMain extends Controller {
 
             if (count($errors) == 0) {
                 $user->update(); //sauve l'utilisateur
+                $user = User::get_member_by_pseudo($username);
+                var_dump($user);
                 $this->log_user($user);
             }
         }
