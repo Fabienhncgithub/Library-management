@@ -5,7 +5,7 @@
         <base href="<?= $web_root ?>"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="css/styles.css" rel="stylesheet" type="text/css"/>
-        <title>filter</title>
+        <title>Books</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="styles.css" rel="stylesheet" type="text/css"/>
     </head>
@@ -68,28 +68,41 @@
                         <th>action</th>
                     </tr>
                 </thead><br>
-                <?php foreach($rentals as $rental): ?>
+                <?php foreach($selections as $selection): ?>
                     <tr>
-                        <td><?= $rental->isbn ?></td>
-                        <td><?= $rental->title ?></td>
-                        <td><?= $rental->author ?></td>
-                        <td><?= $rental->editor ?></td>
-                        <td><?= $rental->picture ?></td>
+                        <td><?= $selection->isbn ?></td>
+                        <td><?= $selection->title ?></td>
+                        <td><?= $selection->author ?></td>
+                        <td><?= $selection->editor ?></td>
+                        <td><?= $selection->picture ?></td>
                         <td>
                             <form  action='book/details' method='post'>
-                                <input type='hidden' name='details' value='<?= $rental->id ?>'>
+                                <input type='hidden' name='details' value='<?= $selection->id ?>'>
                                 <input type='submit' value='details'>
                             </form>
                         </td>
                         <td>
-                            <form action='book/selection' method='post'>
-                                <input type='hidden' name='selection' value='<?= $rental->id ?>' >
+                            <form action='book/book_selection' method='post'>
+                                <input type='hidden' name='selection' value='<?= $selection->id ?>' >
                                 <input type='submit' value='selection'>
                             </form>
                         </td>
                     </tr>       
                 <?php endforeach; ?>
             </table>
+            <table>
+                <td>
+                    <form action="rental/rent" method="post">
+                        <input type="submit" name="Valider" value="rent">
+                    </form>
+                </td>
+                <td>
+                    <form action="rental/cancel" method="post">
+                        <input type="submit" name="Annuler" value="cancel">
+                    </form>
+                </td>
+            </table>
+            
         </div>
     </body>
 </html>

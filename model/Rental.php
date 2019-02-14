@@ -64,6 +64,21 @@ class Rental extends Model {
         }
     }
     
-    
+    public static function get_title_by_id($id){
+        $result = [];
+        try{
+            $query = self::execute("SELECT title FROM book, rental WHERE book.id = rental.id AND rental.user = 1", array("id" => $id));
+            $datas = $query = fetchAll();
+            foreach ($datas as $$data) {
+                $result[] = new Book($data["id"], $data["isbn"], $title, $author, $editor, $picture);
+            }return $result;
+        } catch (Exception $ex) {
+            $ex->getMessage();
+        }
+    }
+//
+//        public function rent_book(){
+//        
+//    }
 
 }

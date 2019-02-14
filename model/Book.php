@@ -99,5 +99,5 @@ class Book extends Model {
             $ex->getMessage();
         }
     }
-
+    
 }

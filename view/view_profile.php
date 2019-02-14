@@ -8,7 +8,7 @@
         <link href="css/styles.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-        <div class="title"><?= $user->username ?>'s Profile!</div>
+        <div class="title">Welcome <?= $user->username ?></div>
         <?php include('menu.html'); ?>
         <div class="main">
             <?php if (strlen($user->username) == 0): ?>
@@ -19,22 +19,21 @@
             <br><br>
             <table>
                 <tr>There are your currently rented books. Don't forget to return them in time!</tr>
-                
+                <br>
                 <tr>
                     <td>Rental Date/Time</td>
                     <td>Book</td>
                     <td>To be returned on</td>
                 </tr>
+                <br>
+                <?php foreach ($rentals as $rental):?>
                 <tr>
-                    <?php foreach ($rentals as $rental) {?>
-                    
                     <td><?php $rental -> rentaldate ?></td>
                     <td><?php $rental -> book ?></td>
                     <td><?php $rental -> returndate ?></td>
-
-                    <?php } ?>
-                    
                 </tr>
+                <?php var_dump($rentals) ?>
+                <?php endforeach; ?>
             </table>
         </div>
     </body>

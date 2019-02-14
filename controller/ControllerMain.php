@@ -77,5 +77,13 @@ class ControllerMain extends Controller {
         }
         (new View("username"))->show(array("user" => $user));
     }
+    
+    public function profile(){
+        $user = $this->get_user_or_redirect();
+        $rentals = Rental::get_rental_by_user($user);
+        if(isset($rentals)){
+            (new View("profile"))->show(array("rentals" => $rentals, "user" => $user));
+        }
+    }
 
 }

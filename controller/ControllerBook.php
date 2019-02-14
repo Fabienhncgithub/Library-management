@@ -12,9 +12,8 @@ class ControllerBook extends Controller {
     public function index() {
         $user = Controller::get_user_or_redirect();
         $books = Book::get_book_by_all();
-        $rentals = Rental::get_rental_by_user($user);
-        var_dump($rentals);
-        (new View("reservation"))->show(array("books" => $books, "rentals" => $rentals, "user" => $user));
+        $selections = [];
+        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
     }
 
     public function search() {
@@ -25,15 +24,29 @@ class ControllerBook extends Controller {
         }
         (new View("reservation"))->show(array("books" => $books, "user" => $user));
     }
-
+    
     public function selection() {
         $user = Controller::get_user_or_redirect();
         $books = Book::get_book_by_all();
-        
-        
-        //var_dump($books);
+        $selections = [];
+        if(isset($_POST["selection"])){
+            $selections = Book::get_book_by_id($_POST["selection"]);
+//                    foreach ($selections as $selection){
+//                        $selections = $selection;
+//                        var_dump($selections);
+//                    }
+        }
 
-        (new View("reservation"))->show(array("books" => $books, "user" => $user));
+        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
+    }
+    
+    public function removeSelection(){
+        $user = Controller::get_user_or_redirect();
+        $books = Book::get_book_by_all();
+        $selections = [];
+        if(isset($_POST["selection"])){
+            $selections = array_shift(Book::get_book_by_id($_POST["selection"]));
+        }
     }
 
     public function details() {
