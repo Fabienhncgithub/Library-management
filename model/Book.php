@@ -99,5 +99,56 @@ class Book extends Model {
             $ex->getMessage();
         }
     }
+    //       public static function get_book_id_title($) {
+//        $result = [];
+//        try {
+//            $query = self::execute("SELECT * FROM book where id =:id", array("id" => $id));
+//            $datas = $query->fetch();
+//            foreach ($datas as $data) {
+//                $result[] = new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
+//            }return $result;
+//        } catch (Exception $ex) {
+//            $ex->getMessage();
+//        }
+//    }
+//    
+
+    
+        public function deleteBoook() {
+        self::execute("delete from book where book=:book", array('book' => $this->id));
+     
+    }
+    
+        //renvoie un tableau d'erreur(s) 
+    //le tableau est vide s'il n'y a pas d'erreur.
+    public static function validate_photo($file) {
+        $errors = [];
+        if (isset($file['name']) && $file['name'] != '') {
+            if ($file['error'] == 0) {
+                $valid_types = array("image/gif", "image/jpeg", "image/png");
+                if (!in_array($_FILES['image']['type'], $valid_types)) {
+                    $errors[] = "Unsupported image format : gif, jpg/jpeg or png.";
+                }
+            } else {
+                $errors[] = "Error while uploading file.";
+            }
+        }
+        return $errors;
+    }
+    
+    
+        public function updateBook() {
+        if(self::get_book_by_title($this->title))
+            self::execute("UPDATE book SET isbn=:isbn, title=:title, author=:author , editor=:editor, picture=:picture WHERE title=:title ", 
+                          array("isbn"=>$this->isbn, "title"=>$this->title, "author"=>$this->author, "editor"=>$this->editor, "picture"=>$this->picture));
+        else
+            self::execute("INSERT INTO book(isbn,title,author,editor,picture) VALUES(:isbn,:title,:author,:editor,:picture)", 
+                          array("isbn"=>$this->isbn, "title"=>$this->title, "author"=>$this->author, "editor"=>$this->editor, "picture"=>$this->picture));
+        return $this;
+    }
+      public function update($isbn,$title, $author, $editor){
+        self::execute("update book set isbn=:isbn, author=:author, editor=:editor where id=:id", array(':id'=>$id,':title' => $title, ':author' => $author, ':editor' => $editor));
+        
+    }
     
 }
