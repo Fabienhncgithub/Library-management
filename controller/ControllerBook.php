@@ -19,10 +19,19 @@ class ControllerBook extends Controller {
     public function search() {
         $books = Book::get_book_by_all();
         $user = Controller::get_user_or_redirect();
-        if (isset($_POST["critere"])) {
+        if (isset($_POST["member"])) {
             $books = Book::get_book_by_filter($_POST["critere"]);
         }
         (new View("reservation"))->show(array("books" => $books, "user" => $user));
+    }
+    
+    public function search_rental() {
+        $books = Book::get_book_by_all();
+        $user = Controller::get_user_or_redirect();
+        if (isset($_POST["member"]) && isset($_POST["book"]) && isset($_POST["rental_date"]) && isset($_POST["state"])) {
+            $books = Book::get_book_by_filter($_POST["critere"]);
+        }
+        (new View("return_book"))->show(array("books" => $books, "user" => $user));
     }
     
     public function selection() {
