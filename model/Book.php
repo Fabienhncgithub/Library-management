@@ -16,7 +16,7 @@ class Book extends Model {
     public $editor;
     public $picture;
 
-    public function __construct($id, $isbn, $title, $author, $editor, $picture) {
+    public function __construct($id=0, $isbn=0, $title=0, $author=0, $editor=0, $picture=0) {
         $this->id = $id;
         $this->isbn = $isbn;
         $this->title = $title;
