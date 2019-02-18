@@ -98,37 +98,38 @@
                     <th>action</th>
 
                 </tr>
-                </thead>
-  -                <?php foreach($rentals as $rental): ?>
+
 +                <?php foreach($selections as $selection): ?>
                      <tr>
--                        <td><?= $rental->isbn ?></td>
--                        <td><?= $rental->title ?></td>
--                        <td><?= $rental->author ?></td>
--                        <td><?= $rental->editor ?></td>
--                        <td><?= $rental->picture ?></td>
+
 +                        <td><?= $selection->isbn ?></td>
 +                        <td><?= $selection->title ?></td>
 +                        <td><?= $selection->author ?></td>
 +                        <td><?= $selection->editor ?></td>
 +                        <td><?= $selection->picture ?></td>
-                         <td>
-                             <form  action='book/details' method='post'>
--                                <input type='hidden' name='details' value='<?= $rental->id ?>'>
-+                                <input type='hidden' name='details' value='<?= $selection->id ?>'>
-                                 <input type='submit' value='details'>
-                             </form>
-                         </td>
-                         <td>
--                            <form action='book/selection' method='post'>
--                                <input type='hidden' name='selection' value='<?= $rental->id ?>' >
-+                            <form action='book/book_selection' method='post'>
-+                                <input type='hidden' name='selection' value='<?= $selection->id ?>' >
-                                 <input type='submit' value='selection'>
-                             </form>
-                         </td>
-                     </tr>       
-                 <?php endforeach; ?>
+                        <td>
+                            <?php if ($user->isAdmin($user->username)): ?>
+                                <form  action='book/edit' method='post'>
+                                    <input type='hidden' name='edit' value='<?= $selection->id ?>'>
+                                    <input type='submit' value='edit'>
+                                </form>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <?php if ($user->isAdmin($user->username)): ?>
+                                <form  action='book/delete' method='post'>
+                                    <input type='hidden' name='id_book' value='<?= $selection->id ?>'>
+                                    <input type='submit' value='delete'>
+                                </form>
+                            <?php endif; ?>
+
+                        </td>
+                          <?php if ($user->isManager($user->username)): ?>
+                    <form  action='book/details' method='post'>
+                        <input type='hidden' name='details' value='<?= $selection->id ?>'>
+                        <input type='submit' value='details'>
+                    </form>
+                          <?php endif; ?>
 
                         </td>
                           <?php if ($user->isManager($user->username)): ?>
