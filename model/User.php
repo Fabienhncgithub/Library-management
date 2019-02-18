@@ -132,7 +132,45 @@ class User extends Model {
         }
     }
     
+        
+            public function isMember() {
+        $query = self::execute("select * from user where username=:username and role='member'", array(":username" => $this->username));
+        if ($query->rowCount() == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
+    
+            public function isManager() {
+        $query = self::execute("select * from user where username=:username and role='manager'", array(":username" => $this->username));
+        if ($query->rowCount() == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+        public static function validate_admin($username) {
+        $errors = [];
+        $user = User::get_member_by_role($username);
+        if (!$user) {
 
+            $errors[] = "You are not allowed to do this kind of operéation.";
+        }
+        return $errors;
+    }
+    
+     public static function get_member_by_role($username) {
+        $query = self::execute("SELECT * FROM user where username = :username and role='admin'", array("username" => $username));
+        $data = $query->fetch(); // un seul résultat au maximum
+        if ($query->rowCount() == 0) {
+            return false;
+        } else {
+            return new User($data["id"],$data["username"], $data["password"],$data["fullname"], $data["email"],$data["birthdate"], $data["role"]);
+        }
+    }
+    
 }
 
 
