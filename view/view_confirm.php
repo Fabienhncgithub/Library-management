@@ -10,7 +10,7 @@
     <body>
         <div class="title">Confirm</div>
         <?php echo $user->username; ?>
-        <div>
+        <div class="confirm">
             <form action="book/confirm" method="post">
              <input type="hidden" name="book" value="<?php $books->id ?>">
             
@@ -21,7 +21,7 @@
                 <br>
                 <input type='submit' value="Send">
             </form>
-        </div>  
+        </div>
     </body>
 </html>
 
