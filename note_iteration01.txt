@@ -1,0 +1,13 @@
+Utilisateurs:
+
+Admin:
+User:Fabien4
+mdp:Fabien4.
+
+Manager:
+user:Fabien2
+mdp: Fabien2.
+
+Member:
+user: Fabien3
+mdp: Fabien3.
