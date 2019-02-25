@@ -87,18 +87,18 @@ class Book extends Model {
         }
     }
 
-    public static function get_book_by_selection() {
-        $result = [];
-        try {
-            $query = self::execute("SELECT * FROM book where title = :title", array("title" => $title));
-            $datas = $query->fetch();
-            foreach ($datas as $data) {
-                $result[] = new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
-            }return $result;
-        } catch (Exception $ex) {
-            $ex->getMessage();
-        }
-    }
+//    public static function get_book_by_selection() {
+//        $result = [];
+//        try {
+//            $query = self::execute("SELECT * FROM book where title = :title", array("title" => $title));
+//            $datas = $query->fetch();
+//            foreach ($datas as $data) {
+//                $result[] = new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
+//            }return $result;
+//        } catch (Exception $ex) {
+//            $ex->getMessage();
+//        }
+//    }
     //       public static function get_book_id_title($) {
 //        $result = [];
 //        try {

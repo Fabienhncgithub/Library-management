@@ -34,30 +34,6 @@ class ControllerBook extends Controller {
         (new View("return_book"))->show(array("books" => $books, "user" => $user));
     }
     
-    public function selection() {
-        $user = Controller::get_user_or_redirect();
-        $books = Book::get_book_by_all();
-        $selections = [];
-        if(isset($_POST["selection"])){
-            $selections = Book::get_book_by_id($_POST["selection"]);
-//                    foreach ($selections as $selection){
-//                        $selections = $selection;
-//                        var_dump($selections);
-//                    }
-        }
-
-        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
-    }
-    
-    public function removeSelection(){
-        $user = Controller::get_user_or_redirect();
-        $books = Book::get_book_by_all();
-        $selections = [];
-        if(isset($_POST["selection"])){
-            $selections = array_shift(Book::get_book_by_id($_POST["selection"]));
-        }
-    }
-
     public function details() {
         $books = "";
         $user = Controller::get_user_or_redirect();
@@ -69,9 +45,9 @@ class ControllerBook extends Controller {
         (new View("details"))->show(array("books" => $books, "user" => $user));
     }
     
-    public function isSelected(){
-        return true;
-    }
+//    public function isSelected(){
+//        return true;
+//    }
     
     public function edit() {
         $user = $this->get_user_or_redirect();

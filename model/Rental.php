@@ -44,7 +44,7 @@ class Rental extends Model {
             $query = self::execute("SELECT * FROM rental where id =:id", array("id" => $id));
             $datas = $query->fetchAll();
             foreach ($datas as $data) {
-                $result[] = new Rental($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
+                $result[] = new Rental($data["id"], $data["book"], $data["user"], $data["rentaldate"], $data["returndate"]);
             }return $result;
         } catch (Exception $ex) {
             $ex->getMessage();
@@ -76,9 +76,15 @@ class Rental extends Model {
             $ex->getMessage();
         }
     }
-//
-//        public function rent_book(){
-//        
-//    }
+
+        public function rent(){
+        $book = "";
+        $user = "";
+        $rentaldate = NULL;
+        $returndate = $rentaldate + 7;
+        
+        self::execute("INSERT INTO Members(pseudo,password,profile,picture_path) VALUES(:book,:user,:rentaldate,:returndate)", 
+                          array("pseudo"=>$this->pseudo, "password"=>$this->hashed_password, "picture_path"=>$this->picture_path, "profile"=>$this->profile));
+    }
 
 }
