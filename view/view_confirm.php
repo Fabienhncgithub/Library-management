@@ -12,9 +12,8 @@
         <?php echo $user->username; ?>
         <div class="confirm">
             <form action="book/confirm" method="post">
-             <input type="hidden" name="book" value="<?php $books->id ?>">
-            
-                <input type="radio"  name="confirm" value="1">
+             <input type="hidden" name="test" value="<?php $books->id ?>">
+s                <input type="radio"  name="confirm" value="1">
                 <label>Confirm</label>
                 <input type="radio"  name="confirm" value="0">
                 <label>Cancel</label>

@@ -25,13 +25,36 @@ class User extends Model {
         $this->role = $role;
     }
 
+    public static function get_member_by_all() {
+        $result = [];
+        try {
+            $query = self::execute("SELECT * FROM user", array());
+            $datas = $query->fetchAll();
+            foreach ($datas as $data) {
+                $result[] = new User($data["id"], $data["username"], $data["password"], $data["fullname"], $data["email"], $data["birthdate"], $data["role"]);
+            }return $result;
+        } catch (Exception $ex) {
+            $ex->getUsers();
+        }
+    }
+
     public static function get_member_by_pseudo($username) {
         $query = self::execute("SELECT * FROM user where username = :username", array("username" => $username));
         $data = $query->fetch(); // un seul résultat au maximum
         if ($query->rowCount() == 0) {
             return false;
         } else {
-            return new User($data["id"],$data["username"], $data["password"],$data["fullname"], $data["email"],$data["birthdate"], $data["role"]);
+            return new User($data["id"], $data["username"], $data["password"], $data["fullname"], $data["email"], $data["birthdate"], $data["role"]);
+        }
+    }
+    
+    public static function get_member_by_id($id) {
+        $query = self::execute("SELECT * FROM user where id = :id", array("id" => $id));
+        $data = $query->fetch(); // un seul résultat au maximum
+        if ($query->rowCount() == 0) {
+            return false;
+        } else {
+            return new User($data["id"], $data["username"], $data["password"], $data["fullname"], $data["email"], $data["birthdate"], $data["role"]);
         }
     }
 
@@ -53,8 +76,8 @@ class User extends Model {
     public function validate() {
         $errors = array();
         if (!(isset($this->username) && is_string($this->username) && strlen($this->username) > 0)) {
-            $errors[] = "Username is required.";        
-        } 
+            $errors[] = "Username is required.";
+        }
 //        if (!(isset($this->username) && is_string($this->username) && strlen($this->username) >= 1 && strlen($this->username) <= 16)) {
 //            $errors[] = "Pseudo length must be between 3 and 16.";
 //        }
@@ -117,13 +140,11 @@ class User extends Model {
         if (self::get_member_by_pseudo($this->username))
             self::execute("UPDATE user SET password=:password, profile=:profile WHERE username=:username ", array("username" => $this->username, "password" => $this->hashed_password));
         else
-            self::execute("INSERT INTO user (username,password, fullname, email, birthdate, role) VALUES(:username,:password,:fullname,:email,:birthdate, :role)", array("username" => $this->username, "password" => $this->hashed_password,"fullname" => $this->fullname, "email" => $this->email, "birthdate" => $this->birthdate, "role" => $this->role));
+            self::execute("INSERT INTO user (username,password, fullname, email, birthdate, role) VALUES(:username,:password,:fullname,:email,:birthdate, :role)", array("username" => $this->username, "password" => $this->hashed_password, "fullname" => $this->fullname, "email" => $this->email, "birthdate" => $this->birthdate, "role" => $this->role));
         return $this;
     }
-    
-    
-    
-        public function isAdmin() {
+
+    public function isAdmin() {
         $query = self::execute("select * from user where username=:username and role='admin'", array(":username" => $this->username));
         if ($query->rowCount() == 0) {
             return false;
@@ -131,9 +152,8 @@ class User extends Model {
             return true;
         }
     }
-    
-        
-            public function isMember() {
+
+    public function isMember() {
         $query = self::execute("select * from user where username=:username and role='member'", array(":username" => $this->username));
         if ($query->rowCount() == 0) {
             return false;
@@ -141,9 +161,8 @@ class User extends Model {
             return true;
         }
     }
-    
-    
-            public function isManager() {
+
+    public function isManager() {
         $query = self::execute("select * from user where username=:username and role='manager'", array(":username" => $this->username));
         if ($query->rowCount() == 0) {
             return false;
@@ -151,7 +170,8 @@ class User extends Model {
             return true;
         }
     }
-        public static function validate_admin($username) {
+
+    public static function validate_admin($username) {
         $errors = [];
         $user = User::get_member_by_role($username);
         if (!$user) {
@@ -160,17 +180,38 @@ class User extends Model {
         }
         return $errors;
     }
-    
-     public static function get_member_by_role($username) {
+
+    public static function get_member_by_role($username) {
         $query = self::execute("SELECT * FROM user where username = :username and role='admin'", array("username" => $username));
         $data = $query->fetch(); // un seul résultat au maximum
         if ($query->rowCount() == 0) {
             return false;
         } else {
-            return new User($data["id"],$data["username"], $data["password"],$data["fullname"], $data["email"],$data["birthdate"], $data["role"]);
+            return new User($data["id"], $data["username"], $data["password"], $data["fullname"], $data["email"], $data["birthdate"], $data["role"]);
         }
     }
+
+    public static function get_users() {
+        $query = self::execute("SELECT * FROM user", array());
+        $data = $query->fetchAll();
+        $results = [];
+        foreach ($data as $row) {
+            $results[] = new User($data["username"], $data["fullname"], $data["email"], $data["birthdate"], $data["role"]);
+        }
+        return $results;
+    }
+
+    // Formatte une date, donnée dans le format YYYY-MM-DD, au format d'affichage DD/MM/YYYY
+    function format_date($date) {
+        return $date === null ? '' : (new DateTime($date))->format('d/m/Y');
+    }
     
+    
+    
+    
+    
+    
+    
+    
+
 }
-
-

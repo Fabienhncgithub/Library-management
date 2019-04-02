@@ -84,10 +84,12 @@ class ControllerBook extends Controller {
 
     public function confirm() {
         $user = $this->get_user_or_redirect();
-        if ($user->isAdmin()) {
+       
             if (isset($_POST['book']) && isset($_POST['confirm'])) {
-                $books = $_POST['book'];
-                var_dump($books);
+                
+                $books = $_POST['book']; 
+                echo $book;
+                var_dump($ook);
                 $confirm = $_POST['confirm'];
                 if ($confirm != 0) {
                     $books = Book::get_book_by_id($_POST["book"]);
@@ -95,7 +97,6 @@ class ControllerBook extends Controller {
                     $books->deleteBook();
                 }
             }
-        }
         $this->redirect("user", "book");
     }
 
