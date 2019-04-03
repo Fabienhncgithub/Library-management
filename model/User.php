@@ -15,7 +15,7 @@ class User extends Model {
     public $birthdate;
     public $role;
 
-    public function __construct($id, $username, $hashed_password, $fullname, $email, $birthdate , $role) {
+    public function __construct($id, $username, $hashed_password, $fullname, $email, $birthdate, $role) {
         $this->id = $id;
         $this->username = $username;
         $this->hashed_password = $hashed_password;
@@ -48,6 +48,31 @@ class User extends Model {
         }
     }
     
+    
+        public static function get_member_by_email($email) {
+        $query = self::execute("SELECT * FROM user where email = :email", array("email" => $email));
+        $data = $query->fetch(); // un seul résultat au maximum
+        if ($query->rowCount() == 0) {
+            return false;
+        } else {
+            return new User($data["id"], $data["username"], $data["password"], $data["fullname"], $data["email"], $data["birthdate"], $data["role"]);
+        }
+    }
+    
+    
+    
+
+    public function delete() {
+        try {
+
+            $query = self::execute("DELETE FROM user where id=:id", array("id" => $this->id));
+            return true;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            echo $exc->getMessage();
+        }
+    }
+
     public static function get_member_by_id($id) {
         $query = self::execute("SELECT * FROM user where id = :id", array("id" => $id));
         $data = $query->fetch(); // un seul résultat au maximum
@@ -113,10 +138,8 @@ class User extends Model {
         }
         return $errors;
     }
-    
-    
-    
-        public static function validate_email($email) {
+
+    public static function validate_email($email) {
         $errors = [];
         $user = self::get_member_by_pseudo($email);
         if ($user) {
@@ -124,7 +147,6 @@ class User extends Model {
         }
         return $errors;
     }
-    
 
     //indique si un mot de passe correspond à son hash
     private static function check_password($clear_password, $hash) {
@@ -149,12 +171,10 @@ class User extends Model {
     }
 
     public function update() {
-        if(empty($this->birthdate))
+        if (empty($this->birthdate))
             $this->birthdate = null;
-            
-            
         if (self::get_member_by_pseudo($this->id))
-            self::execute("UPDATE user SET username=:username, password=:password,fullname=:fullname, email=:email, birthdate=:birthdate,role=:role  WHERE id=:id ", array("id"=>$this->id,"username" => $this->username, "password" => $this->hashed_password, "fullname"=> $this->fullname,"email"=> $this->email, "birthdate"=> $this->birthdate, "role" => $this->role));
+            self::execute("UPDATE user SET username=:username, password=:password,fullname=:fullname, email=:email, birthdate=:birthdate,role=:role  WHERE id=:id ", array("id" => $this->id, "username" => $this->username, "password" => $this->hashed_password, "fullname" => $this->fullname, "email" => $this->email, "birthdate" => $this->birthdate, "role" => $this->role));
         else
             self::execute("INSERT INTO user (username,password, fullname, email, birthdate, role) VALUES(:username,:password,:fullname,:email,:birthdate, :role)", array("username" => $this->username, "password" => $this->hashed_password, "fullname" => $this->fullname, "email" => $this->email, "birthdate" => $this->birthdate, "role" => $this->role));
         return $this;
@@ -221,13 +241,5 @@ class User extends Model {
     function format_date($date) {
         return $date === null ? '' : (new DateTime($date))->format('d/m/Y');
     }
-    
-    
-    
-    
-    
-    
-    
-    
 
 }

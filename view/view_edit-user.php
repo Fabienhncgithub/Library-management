@@ -13,7 +13,7 @@
         <div class="main">
             Please enter the user details :
             <br><br>
-            <form action="" method="post">
+            <form id="adduser" action="user/save_user" method="post">
                 <table>
                     <tr>
                         <td>User Name:</td>
@@ -42,22 +42,19 @@
                         </td>
                     </tr>
                 </table>
-                <input type="submit" name="user/save_user" value="Save">
-                
-                
-                
+                <input type="submit" name="save" value="Save">
                 <input type="submit" name="cancel" value="Cancel">
             </form>
-            <?php 
-                if(isset($errors) && count($errors) > 0){
-                    echo "<div class='errors'>
+            <?php
+            if (isset($errors) && count($errors) > 0) {
+                echo "<div class='errors'>
                           <p>Please correct the following error(s) :</p>
                           <ul>";
-                    foreach($errors as $error){
-                        echo "<li>".$error."</li>";
-                    }
-                    echo '</ul></div>';
-                } 
+                foreach ($errors as $error) {
+                    echo "<li>" . $error . "</li>";
+                }
+                echo '</ul></div>';
+            }
             ?>
         </div>
     </body>

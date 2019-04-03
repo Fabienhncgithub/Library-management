@@ -31,11 +31,13 @@
                         <td><?= $usr->birthdate?></td>
                         <td><?= $usr->role ?></td>
                         <td>
-                            <form class="button" action="user/edit_user" method="POST">
+                   <?php if ($user->isAdmin()): ?>
+                            <form  class="button" action="user/edit_user" method="POST">
                                 <input type="hidden" name="id" value="<?= $usr->id ?>">
                                 <input type="submit" value="Edit">
                             </form>
-                            <?php if ($usr->id != $user->id): ?>
+                             <?php endif; ?>
+                            <?php if ($usr->id != $user->id && $user->isAdmin()): ?>
                                 <form class="button" action="user/delete_user" method="POST">
                                     <input type="hidden" name="id" value="<?= $usr->id ?>">
                                     <input type="submit" value="Delete">
