@@ -15,7 +15,7 @@ class User extends Model {
     public $birthdate;
     public $role;
 
-    public function __construct($id, $username, $hashed_password, $fullname, $email, $birthdate = null, $role) {
+    public function __construct($id, $username, $hashed_password, $fullname, $email, $birthdate , $role) {
         $this->id = $id;
         $this->username = $username;
         $this->hashed_password = $hashed_password;
@@ -113,6 +113,18 @@ class User extends Model {
         }
         return $errors;
     }
+    
+    
+    
+        public static function validate_email($email) {
+        $errors = [];
+        $user = self::get_member_by_pseudo($email);
+        if ($user) {
+            $errors[] = "This email already exists.";
+        }
+        return $errors;
+    }
+    
 
     //indique si un mot de passe correspond à son hash
     private static function check_password($clear_password, $hash) {
@@ -137,8 +149,12 @@ class User extends Model {
     }
 
     public function update() {
-        if (self::get_member_by_pseudo($this->username))
-            self::execute("UPDATE user SET password=:password, profile=:profile WHERE username=:username ", array("username" => $this->username, "password" => $this->hashed_password));
+        if(empty($this->birthdate))
+            $this->birthdate = null;
+            
+            
+        if (self::get_member_by_pseudo($this->id))
+            self::execute("UPDATE user SET username=:username, password=:password,fullname=:fullname, email=:email, birthdate=:birthdate,role=:role  WHERE id=:id ", array("id"=>$this->id,"username" => $this->username, "password" => $this->hashed_password, "fullname"=> $this->fullname,"email"=> $this->email, "birthdate"=> $this->birthdate, "role" => $this->role));
         else
             self::execute("INSERT INTO user (username,password, fullname, email, birthdate, role) VALUES(:username,:password,:fullname,:email,:birthdate, :role)", array("username" => $this->username, "password" => $this->hashed_password, "fullname" => $this->fullname, "email" => $this->email, "birthdate" => $this->birthdate, "role" => $this->role));
         return $this;

@@ -27,7 +27,6 @@ class ControllerUser extends Controller {
 
     public function users() {
         $user = Controller::get_user_or_redirect();
-
         $users = User::get_member_by_all();
 
         (new View("users"))->show(array("user" => $user, "users" => $users));
@@ -39,38 +38,100 @@ class ControllerUser extends Controller {
         (new View("users"))->show(array("user" => $user, "member" => $member, "users" => $users));
     }
 
-    public function add_user() {
-         $id = null;
+    public function edit_user() {
+        $id = null;
         $user = $this->get_user_or_redirect();
-        
+        $username = '';
+        $fullname = '';
+        $email = '';
+        $birthdate = null;
+        $role = '';
+
+        if (isset($_POST["id"]) && $_POST["id"] !== "") {
+            $edit = User::get_member_by_id($_POST["id"]);
+
+
+            $username = $edit->username;
+            $fullname = $edit->fullname;
+            $email = $edit->email;
+            $birthdate = $edit->birthdate;
+            $role = $edit->role;
+        }
+        (new View("edit-user"))->show(array("users" => $user, "username" => $username, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "role" => $role));
+    }
+
+    public function delete_user() {
+        echo 'test2';
+    }
+
+    public function add_user() {
+        $id = null;
+        $user = $this->get_user_or_redirect();
         $username = '';
         $fullname = '';
         $email = '';
         $birthdate = null;
         $role = 'member';
-        
+
         if (isset($_POST["id"]) && $_POST["id"] !== "") {
-          $edit = User::get_member_by_id($_POST["id"]);
-   
-          
-          $username=$edit->username;
-          $fullname=$edit->fullname;
-          $email=$edit->email;
-                 var_dump($email);
-          $birthdate=$edit->birthdate;
-                  var_dump($birthdate);
-          $role=$role->role;
-          var_dump($role);
-          
-          
-            
+            $edit = User::get_member_by_id($_POST["id"]);
+            $username = $edit->username;
+            $fullname = $edit->fullname;
+            $email = $edit->email;
+            $birthdate = $edit->birthdate;
         }
         (new View("add-user"))->show(array("users" => $user, "username" => $username, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "role" => $role));
-
     }
 
-    public function delete_user() {
-        echo 'test2';
+    public function adduser() {
+
+        $user = Controller::get_user_or_redirect();
+//        if($user->isAdmin()){
+        $id = '';
+        $username = '';
+        $password = '';
+        $password_confirm = '';
+        $fullname = '';
+        $email = '';
+        $birthdate = NULL;
+        $errors = [];
+
+
+        if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['password_confirm']) && isset($_POST['fullname']) && isset($_POST['email']) && isset($_POST['birthdate'])) {
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+            $password_confirm = $_POST['password_confirm'];
+            $fullname = $_POST['fullname'];
+            $email = $_POST['email'];
+            $birthdate = $_POST['birthdate'];
+            $role = 'member';
+   
+            
+           if(trim($username)=='')
+               $errors[] = "rentrez votre pseudo";
+            if(($fullname)=='')
+               $errors[] = "rentrez votre nom";
+             if(($password)=='')
+               $errors[] = "rentrez votre password";
+             
+               if(($email)=='')
+               $errors[] = "rentrez votre email";
+        
+           
+
+           // $user = new User('', $username, Tools::my_hash($password), $fullname, $email, $birthdate, $role);
+//            $errors[] = User::validate_unicity($username);
+//            $errors[] = array_merge($errors, $user->validate());
+//            $errors[] = array_merge($errors, USer::validate_passwords($password, $password_confirm));
+//            $errors[] = User::validate_email($email);
+         
+            if (count($errors) == 0) {
+                $user->update(); //sauve l'utilisateur
+//                $this->redirect("user", "users");
+                echo 'sauvé';
+            }
+        }
+        (new View("add-user"))->show(array("username" => $username, "password" => $password, "password_confirm " => $password_confirm, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "errors" => $errors));
     }
 
 }

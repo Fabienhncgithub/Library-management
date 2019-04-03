@@ -55,6 +55,7 @@ class ControllerMain extends Controller {
 
 
             $user = new User('',$username, Tools::my_hash($password),$fullname,$email,$birthdate,$role);
+            var_dump($user);
             $errors = User::validate_unicity($username);
             $errors = array_merge($errors, $user->validate());
             $errors = array_merge($errors, USer::validate_passwords($password, $password_confirm));
