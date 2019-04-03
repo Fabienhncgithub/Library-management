@@ -33,7 +33,6 @@
                         <td><input id="passwordConfirm" name="password_confirm" size="16" type="password" value="<?php $password_confirm ?>"></td>
                         <td class="errors" id="errPasswordConfirm"></td>
                     </tr>
-                    
                     <tr>
                         <td>Email:</td>
                         <td><input id="email" name="email" type="email" value="<?php echo $email; ?>"></td>

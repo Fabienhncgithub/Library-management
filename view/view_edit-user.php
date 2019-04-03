@@ -23,6 +23,7 @@
                         <td>Full Name:</td>
                         <td><input id="fullname" name="fullname" type="text" value="<?php echo $fullname; ?>"></td>
                     </tr>
+                            <tr>
                     <tr>
                         <td>Email:</td>
                         <td><input id="email" name="email" type="email" value="<?php echo $email; ?>"></td>
@@ -33,16 +34,17 @@
                     </tr>
                     <tr>
                         <td>Role:</td>
-                        <td>
-                            <select id="role" name="role" <?= $users->isAdmin() ? '' : 'disabled' ?>>                  
+                        <td>                      
+                            <select id="role" name="role" >                  
                                 <option value="admin" <?= $role === 'admin' ? 'selected' : '' ?>>admin</option>
                                 <option value="manager" <?= $role === 'manager' ? 'selected' : '' ?>>manager</option>
                                 <option value="member" <?= $role === 'member' ? 'selected' : '' ?>>member</option>
-                            </select>
                         </td>
                     </tr>
                 </table>
+                <input type="submit" name="save" value="<?php $id?>">
                 <input type="submit" name="save" value="Save">
+                
                 <input type="submit" name="cancel" value="Cancel">
             </form>
             <?php
