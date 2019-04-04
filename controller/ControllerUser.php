@@ -49,6 +49,11 @@ class ControllerUser extends Controller {
 
         if (isset($_POST["id"]) && $_POST["id"] !== "") {
             $edit = User::get_member_by_id($_POST["id"]);
+            
+            
+            var_dump($edit);
+            
+            
             $id=$edit->id;
             $username = $edit->username;
             $fullname = $edit->fullname;
@@ -104,7 +109,12 @@ class ControllerUser extends Controller {
         $birthdate = '';
         $errors = [];
 
+             if (isset($_POST['cancel'])) {
+                $this->redirect("user", "users");
+             }
         if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['password_confirm']) && isset($_POST['fullname']) && isset($_POST['email']) && isset($_POST['birthdate'])) {
+            
+            
             $username = $_POST['username'];
             $password = $_POST['password'];
             $password_confirm = $_POST['password_confirm'];
@@ -146,19 +156,34 @@ class ControllerUser extends Controller {
         $role = '';
         $errors = [];
         
-     
+
         
-        if ( isset($_POST['username']) && isset($_POST['fullname']) && isset($_POST['email']) && isset($_POST['birthdate']) && isset($_POST['role'])) {
+          if (isset($_POST['cancel'])) {
+                $this->redirect("user", "users");
+          }
+          
+          
+        if (isset($_POST['username']) && isset($_POST['fullname']) && isset($_POST['email']) && isset($_POST['birthdate']) && isset($_POST['role'])) {
             echo'2';
             
-          $edit = User::get_member_by_id($_POST["id"]);
-  
-            
+//          $edit = User::get_member_by_id($_POST["id"]);
+     
+       
+       
+          
+         
             $username = $_POST['username'];
             $fullname = $_POST['fullname'];
             $email = $_POST['email'];
             $birthdate = $_POST['birthdate'];
             $role = $_POST['role'];
+            
+            
+//              $edit = User::get_member_by_id($_POST["id"]);
+            
+            
+   
+            
             if (trim($username) == '')
                 $errors[] = "rentrez votre pseudo";
             if (($fullname) == '')
@@ -176,8 +201,11 @@ class ControllerUser extends Controller {
                 echo 'sauvé';
             }
         }
+        echo'4';
         (new View("edit-user"))->show(array("username" => $username, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "role" => $role, "errors" => $errors));
     }
+    
+    
     
     
     

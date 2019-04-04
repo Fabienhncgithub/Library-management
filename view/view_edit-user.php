@@ -45,8 +45,10 @@
                 <input type="submit" name="save" value="<?php $id?>">
                 <input type="submit" name="save" value="Save">
                 
-                <input type="submit" name="cancel" value="Cancel">
+                  <input type="submit" name="cancel" value="cancel">
             </form>
+            
+
             <?php
             if (isset($errors) && count($errors) > 0) {
                 echo "<div class='errors'>
