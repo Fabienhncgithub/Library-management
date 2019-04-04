@@ -74,6 +74,7 @@ class ControllerUser extends Controller {
                 $user->delete();
             }
               $users = User::get_member_by_all();
+                    $this->redirect("user", "users");
         }
         (new View("users"))->show(array("user" => $user, "users" => $users));
     }
@@ -138,16 +139,17 @@ class ControllerUser extends Controller {
 //       
             if (count($errors) == 0) {
                 $newuser->update(); //sauve l'utilisateur
-//                $this->redirect("user", "users");
+                $this->redirect("user", "users");
                 echo 'sauvé';
             }
         }
         (new View("add-user"))->show(array("username" => $username, "password" => $password, "password_confirm " => $password_confirm, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "errors" => $errors));
     }
     
+    
+    
     public function save_user(){
         $user = $this->get_user_or_redirect();
-//      if($user->isAdmin()){
         $id = '';
         $username = '';
         $fullname = '';
@@ -156,33 +158,21 @@ class ControllerUser extends Controller {
         $role = '';
         $errors = [];
         
-
-        
           if (isset($_POST['cancel'])) {
                 $this->redirect("user", "users");
           }
           
-          
-        if (isset($_POST['username']) && isset($_POST['fullname']) && isset($_POST['email']) && isset($_POST['birthdate']) && isset($_POST['role'])) {
+        if (isset($_POST['id']) &&  isset($_POST['username']) && isset($_POST['fullname']) && isset($_POST['email']) && isset($_POST['birthdate']) && isset($_POST['role'])) {
             echo'2';
             
-//          $edit = User::get_member_by_id($_POST["id"]);
-     
-       
-       
-          
-         
+//            $id = $_POST['id'];
+//            $edit = User::get_member_by_id($_POST["id"]);
+            
             $username = $_POST['username'];
             $fullname = $_POST['fullname'];
             $email = $_POST['email'];
             $birthdate = $_POST['birthdate'];
             $role = $_POST['role'];
-            
-            
-//              $edit = User::get_member_by_id($_POST["id"]);
-            
-            
-   
             
             if (trim($username) == '')
                 $errors[] = "rentrez votre pseudo";
@@ -202,7 +192,8 @@ class ControllerUser extends Controller {
             }
         }
         echo'4';
-        (new View("edit-user"))->show(array("username" => $username, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "role" => $role, "errors" => $errors));
+
+        (new View("edit-user"))->show(array( "username" => $username, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "role" => $role, "errors" => $errors));
     }
     
     

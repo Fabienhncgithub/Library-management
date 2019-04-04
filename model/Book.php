@@ -151,4 +151,11 @@ class Book extends Model {
         
     }
     
+    
+    
+        public function creatbook() {
+            self::execute("INSERT INTO book (isbn,title, author, editor, image) VALUES(:isbn,:title,:author,:editor,:image)", array("isbn" => $this->isbn, "title" => $this->title, "author" => $this->author, "editor" => $this->editor, "image" => $this->image));
+        return $this;
+        }
+    
 }

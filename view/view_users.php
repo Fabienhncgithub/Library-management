@@ -49,10 +49,12 @@
                 </tbody>
             </table>
             <br>
+            <?php if ($user->isAdmin()): ?>
             <form class="button" action="user/adduser" method="POST">
                   <input type="hidden" name="id" value="<?= $usr->id ?>">
                 <input type="submit" value="New User"  name="new">
             </form>
+                <?php endif; ?>
         </div>
     </body>
 </html>

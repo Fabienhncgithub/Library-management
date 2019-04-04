@@ -43,9 +43,12 @@
                     </tr>
                 </table>
                 <input type="submit" name="save" value="<?php $id?>">
-                <input type="submit" name="save" value="Save">
                 
-                  <input type="submit" name="cancel" value="cancel">
+                
+                
+                
+       
+                <input type="submit" name="cancel" value="cancel">
             </form>
             
 

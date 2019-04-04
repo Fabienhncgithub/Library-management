@@ -145,6 +145,13 @@
                     </tr>
                 <?php endforeach; ?>
             </table>
+            
+                           <?php if ($user->isAdmin($user->username)): ?>
+            <form class="button" action="book/add_book" method="POST">
+         
+                <input type="submit" value="Add Book"  name="new">
+            </form>
+                <?php endif; ?>
         </div>
     </body>
 </html>

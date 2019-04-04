@@ -24,7 +24,7 @@ class ControllerBook extends Controller {
         }
         (new View("reservation"))->show(array("books" => $books, "user" => $user));
     }
-    
+
     public function search_rental() {
         $books = Book::get_book_by_all();
         $user = Controller::get_user_or_redirect();
@@ -33,22 +33,22 @@ class ControllerBook extends Controller {
         }
         (new View("return_book"))->show(array("books" => $books, "user" => $user));
     }
-    
+
     public function details() {
         $books = "";
         $user = Controller::get_user_or_redirect();
         if (isset($_POST["details"])) {
 //            echo $_POST["details"];
             $books = Book::get_book_by_id($_POST["details"]);
-           // var_dump($books);
+            // var_dump($books);
         }
         (new View("details"))->show(array("books" => $books, "user" => $user));
     }
-    
+
 //    public function isSelected(){
 //        return true;
 //    }
-    
+
     public function edit() {
         $user = $this->get_user_or_redirect();
 //        if ($user->isAdmin()) {
@@ -84,19 +84,19 @@ class ControllerBook extends Controller {
 
     public function confirm() {
         $user = $this->get_user_or_redirect();
-       
-            if (isset($_POST['book']) && isset($_POST['confirm'])) {
-                
-                $books = $_POST['book']; 
-                echo $book;
-                var_dump($ook);
-                $confirm = $_POST['confirm'];
-                if ($confirm != 0) {
-                    $books = Book::get_book_by_id($_POST["book"]);
-                    var_dump($books);
-                    $books->deleteBook();
-                }
+
+        if (isset($_POST['book']) && isset($_POST['confirm'])) {
+
+            $books = $_POST['book'];
+            echo $book;
+            var_dump($ook);
+            $confirm = $_POST['confirm'];
+            if ($confirm != 0) {
+                $books = Book::get_book_by_id($_POST["book"]);
+                var_dump($books);
+                $books->deleteBook();
             }
+        }
         $this->redirect("user", "book");
     }
 
@@ -147,6 +147,45 @@ class ControllerBook extends Controller {
                 (new View("editbook"))->show(array("user" => $user, "books" => $books));
             }
         }
+    }
+
+    public function add_book() {
+        $user = $this->get_user_or_redirect();
+//        if($user->isAdmin()){
+        $id = '';
+        $isbn = '';
+        $title = '';
+        $author = '';
+        $editor = '';
+        $picture = '';
+
+        $errors = [];
+
+        if (isset($_POST['cancel'])) {
+            $this->redirect("book", "index");
+        }
+        if (isset($_POST['isbn']) && isset($_POST['title']) && isset($_POST['author']) && isset($_POST['editor']) && isset($_POST['picture'])) {
+
+            echo '1';
+
+            $isbn = $_POST['isbn'];
+            $title = $_POST['title'];
+            $author = $_POST['author'];
+            $editor = $_POST['editor'];
+            $picture = $_POST['picture'];
+
+
+            $newbook = new Book('', $isbn, $title, $author, $editor, $picture);
+
+//       
+            if (count($errors) == 0) {
+                $new_book->creatbook(); //sauve le livre
+                $this->redirect("user", "books");
+                echo 'sauvé';
+            }
+        }
+        (new View("add_book"))->show(array("isbn" => $isbn, "title" => $title, "author" => $author, "editor" => $editor, "picture" => $picture));
+        echo '2';
     }
 
 }
