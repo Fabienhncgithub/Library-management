@@ -81,6 +81,12 @@ class ControllerBook extends Controller {
         }
         (new View("confirm"))->show(array("user" => $user, "books" => $books));
     }
+    
+
+    
+    
+    
+    
 
     public function confirm() {
         $user = $this->get_user_or_redirect();
@@ -179,13 +185,23 @@ class ControllerBook extends Controller {
 
 //       
             if (count($errors) == 0) {
-                $new_book->creatbook(); //sauve le livre
-                $this->redirect("user", "books");
-                echo 'sauvé';
+
+
+                $saveTo = $book->generate_photo_name($_FILES['picture']);
+                $oldFileName = $book->picture_path;
+                if ($oldFileName && file_exists("upload/" . $oldFileName)) {
+                    unlink("upload/" . $oldFileName);
+                }
+
+
+
+                    $new_book->updateBook(); //sauve le livre
+                    $this->redirect("user", "books");
+                    echo 'sauvé';
+                }
             }
+            (new View("add_book"))->show(array("isbn" => $isbn, "title" => $title, "author" => $author, "editor" => $editor, "picture" => $picture));
         }
-        (new View("add_book"))->show(array("isbn" => $isbn, "title" => $title, "author" => $author, "editor" => $editor, "picture" => $picture));
-        echo '2';
     }
 
-}
+

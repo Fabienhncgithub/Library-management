@@ -241,5 +241,10 @@ class User extends Model {
     function format_date($date) {
         return $date === null ? '' : (new DateTime($date))->format('d/m/Y');
     }
+    
+    
+  
+    
+    
 
 }

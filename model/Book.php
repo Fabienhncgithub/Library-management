@@ -34,7 +34,7 @@ class Book extends Model {
             return new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
         }
     }
-
+    
     public static function get_book_by_all() {
         $result = [];
         try {
@@ -114,6 +114,22 @@ class Book extends Model {
 //    
 
     
+    
+    
+    
+        public function delete_Book() {
+        try {
+
+            $query = self::execute("DELETE FROM book where id=:id", array("id" => $this->id));
+            return true;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            echo $exc->getMessage();
+        }
+    }
+    
+    
+    
         public function deleteBoook() {
         self::execute("delete from book where book=:book", array('book' => $this->id));
      
@@ -138,24 +154,39 @@ class Book extends Model {
     
     
         public function updateBook() {
-        if(self::get_book_by_title($this->title))
+            if (empty($this->picture))
+            $this->picture = null;
+        if(self::get_book_by_id($this->id))
+                      
             self::execute("UPDATE book SET isbn=:isbn, title=:title, author=:author , editor=:editor, picture=:picture WHERE title=:title ", 
                           array("isbn"=>$this->isbn, "title"=>$this->title, "author"=>$this->author, "editor"=>$this->editor, "picture"=>$this->picture));
         else
-            self::execute("INSERT INTO book(isbn,title,author,editor,picture) VALUES(:isbn,:title,:author,:editor,:picture)", 
+            self::execute("INSERT INTO book (isbn,title,author,editor,picture) VALUES(:isbn,:title,:author,:editor,:picture)", 
                           array("isbn"=>$this->isbn, "title"=>$this->title, "author"=>$this->author, "editor"=>$this->editor, "picture"=>$this->picture));
         return $this;
     }
-      public function update($isbn,$title, $author, $editor){
-        self::execute("update book set isbn=:isbn, author=:author, editor=:editor where id=:id", array(':id'=>$id,':title' => $title, ':author' => $author, ':editor' => $editor));
-        
+    
+          //pre : validate_photo($file) returns true
+    public function generate_photo_name($file) {
+        //note : time() est utilisé pour que la nouvelle image n'aie pas
+        //       le meme nom afin d'éviter que le navigateur affiche
+        //       une ancienne image présente dans le cache
+        if ($_FILES['picture']['type'] == "picture/gif") {
+            $saveTo = $this->title . time() . ".gif";
+        } else if ($_FILES['picture']['type'] == "picture/jpeg") {
+            $saveTo = $this->title . time() . ".jpg";
+        } else if ($_FILES['picture']['type'] == "picture/png") {
+            $saveTo = $this->title . time() . ".png";
+        }
+        return $saveTo;
     }
     
+   
     
     
-        public function creatbook() {
-            self::execute("INSERT INTO book (isbn,title, author, editor, image) VALUES(:isbn,:title,:author,:editor,:image)", array("isbn" => $this->isbn, "title" => $this->title, "author" => $this->author, "editor" => $this->editor, "image" => $this->image));
-        return $this;
-        }
+//        public function createbook() {
+//            self::execute("INSERT INTO book (isbn,title, author, editor, picture) VALUES(:isbn,:title,:author,:editor,:picture)", array("isbn" => $this->isbn, "title" => $this->title, "author" => $this->author, "editor" => $this->editor, "picture" => $this->picture));
+//        return $this;
+//        }
     
 }

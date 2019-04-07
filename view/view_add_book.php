@@ -16,23 +16,23 @@
                 <table>
                     <tr>
                         <td>ISBN:</td>
-                        <td><input id="isbn" name="isbn" type="text" value="<?php echo $isbn; ?>"></td>
+                        <td><input id="isbn" name="isbn" type="text" value="<?php  $isbn; ?>"></td>
                     </tr>
                     <tr>
                         <td>Title:</td>
-                        <td><input id="title" name="title" type="text" value="<?php echo $title; ?>"></td>
+                        <td><input id="title" name="title" type="text" value="<?php  $title; ?>"></td>
                     </tr>
                     <tr>
                         <td>Author:</td>
-                        <td><input id="author" name="author" type="text" value="<?php echo $author; ?>"></td>
+                        <td><input id="author" name="author" type="text" value="<?php  $author; ?>"></td>
                     </tr>
                     <tr>
                         <td>Editor:</td>
-                        <td><input id="editor" name="editor" type="text" value="<?php echo $editor; ?>"></td>
+                        <td><input id="editor" name="editor" type="text" value="<?php  $editor; ?>"></td>
                     </tr>
                     <tr>
                         <td>Picture:</td>
-                      <td><input type='file' name='image' accept="image/x-png, image/gif, image/jpeg"></td>
+                      <td><input type='file' name='picture' accept="picture/x-png, picture/gif, picture/jpeg"></td>
                     </tr>
                 </table>
                 <input type="submit" name="save" value="Save">

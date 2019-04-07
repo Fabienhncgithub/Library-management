@@ -151,6 +151,13 @@
          
                 <input type="submit" value="Add Book"  name="new">
             </form>
+            
+            
+    
+            
+            
+            
+            
                 <?php endif; ?>
         </div>
     </body>
