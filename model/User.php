@@ -47,9 +47,8 @@ class User extends Model {
             return new User($data["id"], $data["username"], $data["password"], $data["fullname"], $data["email"], $data["birthdate"], $data["role"]);
         }
     }
-    
-    
-        public static function get_member_by_email($email) {
+
+    public static function get_member_by_email($email) {
         $query = self::execute("SELECT * FROM user where email = :email", array("email" => $email));
         $data = $query->fetch(); // un seul résultat au maximum
         if ($query->rowCount() == 0) {
@@ -58,13 +57,10 @@ class User extends Model {
             return new User($data["id"], $data["username"], $data["password"], $data["fullname"], $data["email"], $data["birthdate"], $data["role"]);
         }
     }
-    
-    
-    
 
+    
     public function delete() {
         try {
-
             $query = self::execute("DELETE FROM user where id=:id", array("id" => $this->id));
             return true;
         } catch (Exception $exc) {
@@ -241,10 +237,5 @@ class User extends Model {
     function format_date($date) {
         return $date === null ? '' : (new DateTime($date))->format('d/m/Y');
     }
-    
-    
-  
-    
-    
 
 }

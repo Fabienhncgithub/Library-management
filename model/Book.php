@@ -113,18 +113,16 @@ class Book extends Model {
 //    }
 //    
 
-    
-    
-    
-
-
-    
         public function delete_Book() {
-
-            self::execute("DELETE FROM book where id=:id", array('id' => $this->id));
-
+        try {
+            $query = self::execute("DELETE FROM book where id=:id", array('id' => $this->id));
+            return true;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            echo $exc->getMessage();
+        }
     }
-    
+
         //renvoie un tableau d'erreur(s) 
     //le tableau est vide s'il n'y a pas d'erreur.
     public static function validate_photo($file) {

@@ -82,29 +82,16 @@ class ControllerBook extends Controller {
         (new View("confirm"))->show(array("user" => $user, "books" => $books));
     }
     
-    
-    
-    
-    
-    
-
     public function confirm_delete() {
+        $books = new Book();
         $user = $this->get_user_or_redirect();
         if ($user->isAdmin()) {
             if (isset($_POST['idbook']) && isset($_POST['confirm'])) {
-                $postid = $_POST['idbook'];
+                $idbook = $_POST['idbook'];
                 $confirm = $_POST['confirm'];
-                
-                
-                var_dump($confirm);
-           
-                
                 if ($confirm != 0) {
-                          var_dump($postid);
-                    $book = Book::get_book_by_id($postid);
-                    var_dump($book);
-                    
-                    $book->delete_Book();
+                      $books->id = $_POST['idbook'];
+                   $books->delete_Book();
                 }
                  $this->redirect("book", "index");
             }
@@ -112,14 +99,6 @@ class ControllerBook extends Controller {
 
     }
     
-    
-    
-    
-    
-    
-    
-    
-
 //    public function confirm_delete() {
 //
 //        $user = $this->get_user_or_redirect();

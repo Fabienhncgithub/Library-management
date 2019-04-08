@@ -13,13 +13,9 @@
         
         <div class="confirm">
 
-<!--            <form class="button" action='book/confirm_delete' method="POST">
-             <input  type="hidden" name="idbook" value="<?php $books->id ?>">-->
+
                         <form action='book/confirm_delete' method="POST">
                 <input type="text" name="idbook" value="<?php echo $books->id ?>" hidden>
-             
-             
-             
                <input type="radio"  name="confirm" value="1">
                 <label>Confirm</label>
                 <input type="radio"  name="confirm" value="0">
