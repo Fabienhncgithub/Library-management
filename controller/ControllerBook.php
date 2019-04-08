@@ -146,11 +146,10 @@ class ControllerBook extends Controller {
 //        (new View("confirm"))->show(array("books" => $books, "user" => $user));
 //    }
 
-    public function deleteBook() {
-        self::execute("delete from book where id=:id", array('book' => $this->id));
-    }
+
 
     public function editbook() {
+         
         $user = $this->get_user_or_redirect();
         if ($user->isAdmin()) {
             if (isset($_POST['isbn']) && isset($_POST['title']) && isset($_POST['author']) && isset($_POST['editor']) && isset($_POST['picture'])) {
@@ -178,6 +177,7 @@ class ControllerBook extends Controller {
     }
 
     public function add_book() {
+        $book = new Book();
         $user = $this->get_user_or_redirect();
 //        if($user->isAdmin()){
         $id = '';
@@ -186,38 +186,25 @@ class ControllerBook extends Controller {
         $author = '';
         $editor = '';
         $picture = '';
-
         $errors = [];
-
         if (isset($_POST['cancel'])) {
             $this->redirect("book", "index");
         }
         if (isset($_POST['isbn']) && isset($_POST['title']) && isset($_POST['author']) && isset($_POST['editor']) && isset($_POST['picture'])) {
-
+            
             echo '1';
-
+            
             $isbn = $_POST['isbn'];
             $title = $_POST['title'];
             $author = $_POST['author'];
             $editor = $_POST['editor'];
             $picture = $_POST['picture'];
-
-
+            
             $newbook = new Book('', $isbn, $title, $author, $editor, $picture);
-
-//       
             if (count($errors) == 0) {
+                
 
-
-                $saveTo = $book->generate_photo_name($_FILES['picture']);
-                $oldFileName = $book->picture_path;
-                if ($oldFileName && file_exists("upload/" . $oldFileName)) {
-                    unlink("upload/" . $oldFileName);
-                }
-
-
-
-                $new_book->updateBook(); //sauve le livre
+                $newbook->updateBook(); //sauve le livre
                 $this->redirect("user", "books");
                 echo 'sauvé';
             }
