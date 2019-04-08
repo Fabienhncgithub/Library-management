@@ -71,6 +71,7 @@ class ControllerUser extends Controller {
             if (isset($_POST['id'])) {
                 $id = $_POST['id'];
                 $user = User::get_member_by_id($id);
+               
                 $user->delete();
             }
               $users = User::get_member_by_all();

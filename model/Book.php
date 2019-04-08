@@ -116,23 +116,13 @@ class Book extends Model {
     
     
     
+
+
     
         public function delete_Book() {
-        try {
 
-            $query = self::execute("DELETE FROM book where id=:id", array("id" => $this->id));
-            return true;
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-            echo $exc->getMessage();
-        }
-    }
-    
-    
-    
-        public function deleteBoook() {
-        self::execute("delete from book where book=:book", array('book' => $this->id));
-     
+            self::execute("DELETE FROM book where id=:id", array('id' => $this->id));
+
     }
     
         //renvoie un tableau d'erreur(s) 
