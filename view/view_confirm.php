@@ -10,11 +10,8 @@
     <body>
         <div class="title">Confirm</div>
         <?php echo $user->username; ?>
-        
         <div class="confirm">
-
-
-                        <form action='book/confirm_delete' method="POST">
+            <form action='book/confirm_delete' method="POST">
                 <input type="text" name="idbook" value="<?php echo $books->id ?>" hidden>
                <input type="radio"  name="confirm" value="1">
                 <label>Confirm</label>

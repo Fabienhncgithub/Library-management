@@ -38,23 +38,17 @@
                 <input type="submit" name="save" value="Save">
                 <input type="submit" name="cancel" value="Cancel">
             </form>
-
-
-            <?php
-            if (isset($errors) && count($errors) > 0) {
-                echo "<div class='errors'>
+            <?php 
+                if(isset($errors) && count($errors) > 0){
+                    echo "<div class='errors'>
                           <p>Please correct the following error(s) :</p>
                           <ul>";
-                foreach ($errors as $error) {
-                    echo "<li>" . $error . "</li>";
-                }
-                echo '</ul></div>';
-            }
+                    foreach($errors as $error){
+                        echo "<li>".$error."</li>";
+                    }
+                    echo '</ul></div>';
+                } 
             ?>
-
-
-
-
         </div>
     </body>
 </html>

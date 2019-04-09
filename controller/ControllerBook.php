@@ -99,55 +99,6 @@ class ControllerBook extends Controller {
 
     }
     
-//    public function confirm_delete() {
-//
-//        $user = $this->get_user_or_redirect();
-//
-//        if (isset($_POST['idbook']) && isset($_POST['confirm'])) {
-//            echo'1';
-//            $idbook = $_POST['idbook'];
-//            $books= Book::get_book_by_id($idbook);
-//            var_dump($books);
-//    }
-//    }
-//    public function confirm() {
-//        $user = $this->get_user_or_redirect();
-//
-//        if (isset($_POST['book']) && isset($_POST['confirm'])) {
-//
-//            $books = $_POST['book'];
-//            echo $book;
-//            var_dump($book);
-//            $confirm = $_POST['confirm'];
-//            if ($confirm != 0) {
-//                $books = Book::get_book_by_id($_POST["book"]);
-//                var_dump($books);
-//                $books->deleteBook();
-//            }
-//        }
-//        $this->redirect("user", "book");
-//    }
-
-//    
-//        public function confirm() {
-//        $books = "";
-//
-//        $user = Controller::get_user_or_redirect();
-//        if (isset($_POST["confirm"])) {
-//            echo $_POST["confirm"];
-//            $books = Book::get_book_by_id($_POST["confirm"]);
-//            $confirm = $_POST['confirm'];
-//            var_dump($books);
-//            if ($confirm != 0) {
-//                
-//                echo 'test';
-//            }
-//        }
-//        (new View("confirm"))->show(array("books" => $books, "user" => $user));
-//    }
-
-
-
     public function editbook() {
          
         $user = $this->get_user_or_redirect();
@@ -192,21 +143,27 @@ class ControllerBook extends Controller {
         }
         if (isset($_POST['isbn']) && isset($_POST['title']) && isset($_POST['author']) && isset($_POST['editor']) && isset($_POST['picture'])) {
             
-            echo '1';
-            
             $isbn = $_POST['isbn'];
             $title = $_POST['title'];
             $author = $_POST['author'];
             $editor = $_POST['editor'];
             $picture = $_POST['picture'];
+             if (($isbn) == '')
+                $errors[] = "rentrez l'ISBN";
+            if (($title) == '')
+                $errors[] = "rentrez un titre";
+            if (($author) == '')
+                $errors[] = "rentrez l'auteur du livre";
+            if (($editor) == '')
+                $errors[] = "rentrez l'édteur du livre";
             
             $newbook = new Book('', $isbn, $title, $author, $editor, $picture);
+            
             if (count($errors) == 0) {
                 
 
                 $newbook->updateBook(); //sauve le livre
-                $this->redirect("user", "books");
-                echo 'sauvé';
+                $this->redirect("book", "index");
             }
         }
         (new View("add_book"))->show(array("isbn" => $isbn, "title" => $title, "author" => $author, "editor" => $editor, "picture" => $picture));

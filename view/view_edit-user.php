@@ -14,6 +14,8 @@
             Please enter the user details :
             <br><br>
             <form id="adduser" action="user/save_user" method="post">
+<!--                 <input type="submit" value="save" value="<?php $id?>">-->
+                   <input type="text" name="iduser" value="<?php echo $users->id ?>" hidden>
                 <table>
                     <tr>
                         <td>User Name:</td>
@@ -42,12 +44,8 @@
                         </td>
                     </tr>
                 </table>
-                <input type="submit" name="save" value="<?php $id?>">
+                <input type="submit" value="save" value="<?php $id?>">
                 
-                
-                
-                
-       
                 <input type="submit" name="cancel" value="cancel">
             </form>
             
