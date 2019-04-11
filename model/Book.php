@@ -86,32 +86,23 @@ class Book extends Model {
             $ex->getMessage();
         }
     }
-
-//    public static function get_book_by_selection() {
-//        $result = [];
-//        try {
-//            $query = self::execute("SELECT * FROM book where title = :title", array("title" => $title));
-//            $datas = $query->fetch();
-//            foreach ($datas as $data) {
-//                $result[] = new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
-//            }return $result;
-//        } catch (Exception $ex) {
-//            $ex->getMessage();
-//        }
-//    }
-    //       public static function get_book_id_title($) {
-//        $result = [];
-//        try {
-//            $query = self::execute("SELECT * FROM book where id =:id", array("id" => $id));
-//            $datas = $query->fetch();
-//            foreach ($datas as $data) {
-//                $result[] = new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
-//            }return $result;
-//        } catch (Exception $ex) {
-//            $ex->getMessage();
-//        }
-//    }
-//    
+    
+    
+    
+        public static function get_book_by_ISBN($isbn) {
+        $result = [];
+        try {
+            $query = self::execute("SELECT * FROM book where isbn = :isbn", array("isbn" => $isbn));
+            $datas = $query->fetchAll();
+            foreach ($datas as $data) {
+                $result[] = new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
+            }return $result;
+        } catch (Exception $ex) {
+            $ex->getMessage();
+        }
+    }
+    
+   
 
         public function delete_Book() {
         try {
@@ -170,11 +161,31 @@ class Book extends Model {
     }
     
    
+       public static function validate_unicity_isbn($isbn) {
+        $errors = [];
+        $user = self::get_book_by_ISBN($isbn);
+        if ($user) {
+            $errors[] = "This ISBN already exists.";
+        }
+        return $errors;
+    }
     
+   
+    public static function validate_title($title) {
+         $errors = [];
+        if ($title == "") {
+            $errors[] = "Title is required.";
+        }
+        return $errors;
+    }
     
-//        public function createbook() {
-//            self::execute("INSERT INTO book (isbn,title, author, editor, picture) VALUES(:isbn,:title,:author,:editor,:picture)", array("isbn" => $this->isbn, "title" => $this->title, "author" => $this->author, "editor" => $this->editor, "picture" => $this->picture));
-//        return $this;
-//        }
+        public static function validate_author($author) {
+         $errors = [];
+        if ($author == "") {
+            $errors[] = "Author is required.";
+        }
+        return $errors;
+    }
+    
     
 }

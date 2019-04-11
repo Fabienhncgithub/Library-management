@@ -36,6 +36,8 @@
                     <tr>
                         <td>Full Name:</td>
                         <td><input id="fullname" name="fullname" type="text" value="<?php echo $fullname; ?>"></td>
+                        <td class="errors" id="errFullname"></td>
+
                     </tr>
                     <tr>
                         <td>Email:</td>

@@ -24,7 +24,7 @@
                         <td><input id="fullname" name="fullname" type="text" value="<?php echo $fullname; ?>"></td>
                     </tr>
                     <tr>
-                     <td>Password:</td>
+                        <td>Password:</td>
                         <td><input id="password" name="password" type="password" size="16" value="<?= $password ?>"></td>
                         <td class="errors" id="errPassword"></td>
                     </tr>
@@ -42,21 +42,28 @@
                         <td><input id="birthdate" name="birthdate" type="date" value="<?php echo $birthdate; ?>"></td>
                     </tr>
                     
-                    
+         
+                        
+                        
+                        
+                </table>                    
+
                 </table>
                 <input type="submit" name="save" value="Save">
                 <input type="submit" name="cancel" value="Cancel">
             </form>
-            <?php 
-                if(isset($errors) && count($errors) > 0){
-                    echo "<div class='errors'>
+            
+      
+            <?php
+            if (isset($errors) && count($errors) > 0) {
+                echo "<div class='errors'>
                           <p>Please correct the following error(s) :</p>
                           <ul>";
-                    foreach($errors as $error){
-                        echo "<li>".$error."</li>";
-                    }
-                    echo '</ul></div>';
-                } 
+                foreach ($errors as $error) {
+                    echo "<li>" . $error . "</li>";
+                }
+                echo '</ul></div>';
+            }
             ?>
         </div>
     </body>

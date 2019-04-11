@@ -17,10 +17,12 @@
                     <tr>
                         <td>ISBN:</td>
                         <td><input id="isbn" name="isbn" type="text" value="<?php  $isbn; ?>"></td>
+                          <td class="errors" id="errPseudo"></td>
                     </tr>
                     <tr>
                         <td>Title:</td>
                         <td><input id="title" name="title" type="text" value="<?php  $title; ?>"></td>
+                           <td class="errors" id="errPseudo"></td>
                     </tr>
                     <tr>
                         <td>Author:</td>
@@ -37,18 +39,22 @@
                 </table>
                 <input type="submit" name="save" value="Save">
                 <input type="submit" name="cancel" value="Cancel">
-            </form>
-            <?php 
-                if(isset($errors) && count($errors) > 0){
-                    echo "<div class='errors'>
-                          <p>Please correct the following error(s) :</p>
-                          <ul>";
-                    foreach($errors as $error){
-                        echo "<li>".$error."</li>";
-                    }
-                    echo '</ul></div>';
-                } 
-            ?>
+ 
+            
+               </form>
+            <?php if (count($errors) != 0): ?>
+                <div class='errors'>
+                    <br><br><p>Please correct the following error(s) :</p>
+                    <ul>
+                        <?php foreach ($errors as $error): ?>
+                            <li><?= $error ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
         </div>
     </body>
 </html>
+
+            
+          
