@@ -42,7 +42,15 @@
                         <td><input id="birthdate" name="birthdate" type="date" value="<?php echo $birthdate; ?>"></td>
                     </tr>
                     
-         
+                             <tr>
+                        <td>Role:</td>
+                        <td>                      
+                            <select id="role" name="role" >                  
+                                <option value="admin" >admin</option>
+                                <option value="manager" >manager</option>
+                                <option value="member" >member</option>
+                        </td>
+                    </tr>
                         
                         
                         

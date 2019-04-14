@@ -49,19 +49,19 @@ class ControllerUser extends Controller {
 
         if (isset($_POST["id"]) && $_POST["id"] !== "") {
             $edit = User::get_member_by_id($_POST["id"]);
-            
-            
-            var_dump($edit);
-            
-            
-            $id=$edit->id;
+            $id = $edit->id;
             $username = $edit->username;
             $fullname = $edit->fullname;
             $email = $edit->email;
             $birthdate = $edit->birthdate;
             $role = $edit->role;
+            
+            
+            var_dump($id);
+            
+            
         }
-        (new View("edit-user"))->show(array("id"=>$id,"users" => $user, "username" => $username, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "role" => $role));
+        (new View("edit-user"))->show(array("id" => $id, "users" => $user, "username" => $username, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "role" => $role));
     }
 
     public function delete_user() {
@@ -71,11 +71,11 @@ class ControllerUser extends Controller {
             if (isset($_POST['id'])) {
                 $id = $_POST['id'];
                 $user = User::get_member_by_id($id);
-               
+
                 $user->delete();
             }
-              $users = User::get_member_by_all();
-                    $this->redirect("user", "users");
+            $users = User::get_member_by_all();
+            $this->redirect("user", "users");
         }
         (new View("users"))->show(array("user" => $user, "users" => $users));
     }
@@ -101,7 +101,6 @@ class ControllerUser extends Controller {
 
     public function adduser() {
         $user = Controller::get_user_or_redirect();
-//        if($user->isAdmin()){
         $id = '';
         $username = '';
         $password = '';
@@ -111,11 +110,11 @@ class ControllerUser extends Controller {
         $birthdate = '';
         $errors = [];
 
-             if (isset($_POST['cancel'])) {
-                $this->redirect("user", "users");
-             }
+        if (isset($_POST['cancel'])) {
+            $this->redirect("user", "users");
+        }
         if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['password_confirm']) && isset($_POST['fullname']) && isset($_POST['email']) && isset($_POST['birthdate'])) {
-            
+
             $username = $_POST['username'];
             $password = $_POST['password'];
             $password_confirm = $_POST['password_confirm'];
@@ -123,11 +122,11 @@ class ControllerUser extends Controller {
             $email = $_POST['email'];
             $birthdate = $_POST['birthdate'];
             $role = 'member';
-            
-            if(empty($username)){
-        $errors[] = "User Name is required.";
-    } 
-            
+
+            if (empty($username)) {
+                $errors[] = "User Name is required.";
+            }
+
             if ($username == '')
                 $errors[] = "rentrez votre pseudo";
             if (($fullname) == '')
@@ -136,9 +135,9 @@ class ControllerUser extends Controller {
                 $errors[] = "rentrez votre password";
             if (($email) == '')
                 $errors[] = "rentrez votre email";
-            
+
             $newuser = new User('', $username, Tools::my_hash($password), $fullname, $email, $birthdate, $role);
-            
+
             $errors = User::validate_unicity($username);
             $errors = array_merge($errors, $user->validate());
             $errors = array_merge($errors, USer::validate_passwords($password, $password_confirm));
@@ -151,32 +150,28 @@ class ControllerUser extends Controller {
         }
         (new View("add-user"))->show(array("username" => $username, "password" => $password, "password_confirm " => $password_confirm, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "errors" => $errors));
     }
-    
-    public function save_user(){
+
+    public function save_user() {
         $user = $this->get_user_or_redirect();
-        $id = '';
-        $username = '';
-        $fullname = '';
-        $email = '';
-        $birthdate = '';
-        $role = '';
+ 
         $errors = [];
         
-          if (isset($_POST['cancel'])) {
-                $this->redirect("user", "users");
-          }
-          
-        if (isset($_POST['id']) &&  isset($_POST['username']) && isset($_POST['fullname']) && isset($_POST['email']) && isset($_POST['birthdate']) && isset($_POST['role'])) {
-            echo'2';
-            
-          $id = $_POST['id'];
-//            $edit = User::get_member_by_id($_POST["id"]);
-            
+        if (isset($_POST['cancel'])) {
+            $this->redirect("user", "users");
+        }
+
+        if (isset($_POST['id']) && isset($_POST['username']) && isset($_POST['fullname']) && isset($_POST['email']) && isset($_POST['birthdate']) && isset($_POST['role'])) {
+
+  
+            $id = $_POST['id']; 
             $username = $_POST['username'];
             $fullname = $_POST['fullname'];
             $email = $_POST['email'];
             $birthdate = $_POST['birthdate'];
             $role = $_POST['role'];
+
+      
+            
             
             if (trim($username) == '')
                 $errors[] = "rentrez votre pseudo";
@@ -185,27 +180,20 @@ class ControllerUser extends Controller {
             if (($email) == '')
                 $errors[] = "rentrez votre email";
             //$newuser = new User('', $username, Tools::my_hash($password), $fullname, $email, $birthdate, $role);
-           // $errors = User::validate_unicity($username);
+            // $errors = User::validate_unicity($username);
             $errors = array_merge($errors, $user->validate());
             
+            $edit = User::get_member_by_id($_POST["id"]);
+
+            var_dump($edit);
+            
             if (count($errors) == 0) {
-                
-                
-                
-                
-                $user->update(); //sauve l'utilisateur
-              
+                $edit->update_User(); //sauve l'utilisateur
                 $this->redirect("user", "users");
-                echo 'sauvé';
             }
         }
-        echo'4';
-
-        (new View("edit-user"))->show(array( "username" => $username, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "role" => $role, "errors" => $errors));
+       
+        (new View("edit-user"))->show(array("username" => $username, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "role" => $role, "errors" => $errors));
     }
-    
-    
-    
-    
-    
+
 }

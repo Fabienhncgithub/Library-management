@@ -175,6 +175,16 @@ class User extends Model {
             self::execute("INSERT INTO user (username,password, fullname, email, birthdate, role) VALUES(:username,:password,:fullname,:email,:birthdate, :role)", array("username" => $this->username, "password" => $this->hashed_password, "fullname" => $this->fullname, "email" => $this->email, "birthdate" => $this->birthdate, "role" => $this->role));
         return $this;
     }
+    
+    
+        public function update_User() {
+
+//        if (empty($this->birthdate))
+//            $this->birthdate = null;
+            self::execute("UPDATE user SET username=:username,fullname=:fullname, email=:email, birthdate=:birthdate,role=:role  WHERE id=:id ", array("id" => $this->id, "username" => $this->username, "fullname" => $this->fullname, "email" => $this->email, "birthdate" => $this->birthdate, "role" => $this->role));
+        return $this;
+    }
+    
 
     public function isAdmin() {
         $query = self::execute("select * from user where username=:username and role='admin'", array(":username" => $this->username));

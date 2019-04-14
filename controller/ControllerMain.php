@@ -53,7 +53,6 @@ class ControllerMain extends Controller {
             $birthdate = $_POST['birthdate'];
             $role = 'member';
 
-
             $user = new User('',$username, Tools::my_hash($password),$fullname,$email,$birthdate,$role);
             $errors = User::validate_unicity($username);
             $errors = array_merge($errors, $user->validate());
@@ -62,7 +61,6 @@ class ControllerMain extends Controller {
             if (count($errors) == 0) {
                 $user->update(); //sauve l'utilisateur
                 $user = User::get_member_by_pseudo($username);
-                var_dump($user);
                 $this->log_user($user);
             }
         }

@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Edit user</title>
+         <title><?= $users->username ?>'s Profile</title>
         <base href="<?= $web_root ?>"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="css/styles.css" rel="stylesheet" type="text/css"/>
@@ -13,9 +13,8 @@
         <div class="main">
             Please enter the user details :
             <br><br>
-            <form id="adduser" action="user/save_user" method="post">
-<!--                 <input type="submit" value="save" value="<?php $id?>">-->
-                   <input type="text" name="iduser" value="<?php echo $users->id ?>" hidden>
+                <form action='user/save_user' method="POST">
+                <input type="text" name="id" value="<?php echo $users->id ?>" hidden>
                 <table>
                     <tr>
                         <td>User Name:</td>
@@ -44,7 +43,9 @@
                         </td>
                     </tr>
                 </table>
-                <input type="submit" value="save" value="<?php $id?>">
+                <input type="submit" name="id" value="save">
+                
+<!--                    <input type="submit" name="save" value="<?php  echo $id ?>">            -->
                 
                 <input type="submit" name="cancel" value="cancel">
             </form>
