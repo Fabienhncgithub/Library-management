@@ -25,11 +25,14 @@ class ControllerRental extends Controller {
         $books = Book::get_book_by_all();
         $selections = [];
         $selections = Book::get_book_by_id($_POST["selection"]);
-        var_dump($selections);
-        foreach ($selections as $selection){
-            $selections = $selection;
+        
+        
+        
+//        var_dump($selections);
+//        foreach ($selections as $selection){
+//            $selections = $selection;
 //            var_dump($selection);
-        }
+//        }
 //            var_dump($selections);
 
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));

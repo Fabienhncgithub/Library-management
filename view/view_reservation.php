@@ -94,7 +94,7 @@
                                 une pré-réservation pour un livre dont la date de début est null-->
 
                 <?php foreach ($selections as $selection): ?>
-
+                
                     <tr>
                         <td><?= $selection->isbn ?></td>
                         <td><?= $selection->title ?></td>
