@@ -170,9 +170,6 @@ class ControllerUser extends Controller {
             $birthdate = $_POST['birthdate'];
             $role = $_POST['role'];
 
-      
-            
-            
             if (trim($username) == '')
                 $errors[] = "rentrez votre pseudo";
             if (($fullname) == '')

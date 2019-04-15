@@ -179,10 +179,10 @@ class User extends Model {
     
         public function update_User() {
 
-//        if (empty($this->birthdate))
-//            $this->birthdate = null;
-            self::execute("UPDATE user SET username=:username,fullname=:fullname, email=:email, birthdate=:birthdate,role=:role  WHERE id=:id ", array("id" => $this->id, "username" => $this->username, "fullname" => $this->fullname, "email" => $this->email, "birthdate" => $this->birthdate, "role" => $this->role));
-        return $this;
+        if (empty($this->birthdate))
+            $this->birthdate = null;
+        
+            self::execute("UPDATE user SET username=:username,fullname=:fullname, email=:email, birthdate=:birthdate,role=:role  WHERE id=:id ", array("username" => $this->username, "fullname" => $this->fullname, "email" => $this->email, "birthdate" => $this->birthdate, "role" => $this->role));
     }
     
 
