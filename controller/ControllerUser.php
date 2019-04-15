@@ -121,7 +121,7 @@ class ControllerUser extends Controller {
             $fullname = $_POST['fullname'];
             $email = $_POST['email'];
             $birthdate = $_POST['birthdate'];
-            $role = 'member';
+            $role = $_POST['role'];
 
             if (empty($username)) {
                 $errors[] = "User Name is required.";
