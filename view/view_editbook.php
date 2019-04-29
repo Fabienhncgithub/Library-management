@@ -30,8 +30,9 @@
                         <?php endif; ?>
                     <?php endforeach ?>   
                 Image: <input type='file' name='image' accept="image/x-png, image/gif, image/jpeg"><br><br>
-                <input type='submit' value='Save'>
-            </form>
+               
+            
+                     <input type='submit' value='Save'>
 <!--                <input type="submit" name="save" value="<?php $id?>">-->
                 <input type="submit" name="cancel" value="cancel">
             </form>

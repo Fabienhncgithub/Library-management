@@ -55,11 +55,9 @@ class ControllerUser extends Controller {
             $email = $edit->email;
             $birthdate = $edit->birthdate;
             $role = $edit->role;
-            
-            
+
+
             var_dump($id);
-            
-            
         }
         (new View("edit-user"))->show(array("id" => $id, "users" => $user, "username" => $username, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "role" => $role));
     }
@@ -153,17 +151,17 @@ class ControllerUser extends Controller {
 
     public function save_user() {
         $user = $this->get_user_or_redirect();
- 
+
         $errors = [];
-        
+
         if (isset($_POST['cancel'])) {
             $this->redirect("user", "users");
         }
 
         if (isset($_POST['id']) && isset($_POST['username']) && isset($_POST['fullname']) && isset($_POST['email']) && isset($_POST['birthdate']) && isset($_POST['role'])) {
 
-  
-            $id = $_POST['id']; 
+
+            $id = $_POST['id'];
             $username = $_POST['username'];
             $fullname = $_POST['fullname'];
             $email = $_POST['email'];
@@ -179,24 +177,19 @@ class ControllerUser extends Controller {
             //$newuser = new User('', $username, Tools::my_hash($password), $fullname, $email, $birthdate, $role);
             // $errors = User::validate_unicity($username);
             $errors = array_merge($errors, $user->validate());
-            
             $edit = User::get_member_by_id($_POST["id"]);
-            var_dump($_POST["id"]);
+            $edit->username = $username;
+            $edit->fullname = $fullname;
+            $edit->email = $email;
+            $edit->birthdate = $birthdate;
+            $edit->role = $role;
 
-           var_dump($edit);
-            
-           $edit->username = $username;
-           $edit->fullname = $fullname;
-           $edit->email = $email;
-           $edit->birthdate = $birthdate;
-           $edit->role = $role;
-           
             if (count($errors) == 0) {
-                $edit->update_User(); //sauve l'utilisateur
+                $edit->update_User(); //update l'utilisateur
                 $this->redirect("user", "users");
             }
         }
-       
+
         (new View("edit-user"))->show(array("username" => $username, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "role" => $role, "errors" => $errors));
     }
 

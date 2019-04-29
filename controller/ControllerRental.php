@@ -21,8 +21,14 @@ class ControllerRental extends Controller {
     public function selection() {
         $user = Controller::get_user_or_redirect();
         $books = Book::get_book_by_all();
-        $selections = [];
+        $selections = array();
+        
+        
         $selections = Book::get_book_by_id($_POST["selection"]);
+        $books = Book::get_book_by_all_not_selected($_POST["selection"]);
+        
+        
+        
         foreach($selections as $selection)
             $selection;
         

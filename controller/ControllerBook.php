@@ -99,16 +99,25 @@ class ControllerBook extends Controller {
         }
     }
 
-    public function editbook() {
-
+    public function edit_book() {
         $user = $this->get_user_or_redirect();
-        if ($user->isAdmin()) {
+
+        $errors = [];
+
+        if (isset($_POST['cancel'])) {
+            $this->redirect("book", "index");
+        }
             if (isset($_POST['isbn']) && isset($_POST['title']) && isset($_POST['author']) && isset($_POST['editor']) && isset($_POST['picture'])) {
+                
                 $isbn = $_POST['isbn'];
                 $title = $_POST['title'];
                 $author = $_POST['author'];
                 $editor = $_POST['editor'];
                 $picture = $_POST['picture'];
+                
+                
+                echo 'test';
+                
                 $errors = user::validate_photo($_FILES['image']);
                 if (empty($errors)) {
                     $saveTo = $book->generate_photo_name($_FILES['image']);
@@ -120,12 +129,13 @@ class ControllerBook extends Controller {
                         $book->picture = $saveTo;
                         $book->updateBook();
                         $success = "Your book has been successfully updated.";
+                        
                     }
                 }
                 (new View("editbook"))->show(array("user" => $user, "books" => $books));
             }
         }
-    }
+    
 
     public function add_book() {
         $book = new Book();
