@@ -15,8 +15,6 @@ class ControllerRental extends Controller {
     public function rent(){
         $user = Controller::get_user_or_redirect();
         $rentals = Rental::get_rental_by_user($user);
-        
-        
         (new View("profile"))->show(array("rentals" => $rentals, "user" => $user));
     }
     
@@ -25,6 +23,9 @@ class ControllerRental extends Controller {
         $books = Book::get_book_by_all();
         $selections = [];
         $selections = Book::get_book_by_id($_POST["selection"]);
+        foreach($selections as $selection)
+            $selection;
+        
         
         
         

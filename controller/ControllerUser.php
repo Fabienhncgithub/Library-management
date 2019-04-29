@@ -181,9 +181,16 @@ class ControllerUser extends Controller {
             $errors = array_merge($errors, $user->validate());
             
             $edit = User::get_member_by_id($_POST["id"]);
+            var_dump($_POST["id"]);
 
-            var_dump($edit);
+           var_dump($edit);
             
+           $edit->username = $username;
+           $edit->fullname = $fullname;
+           $edit->email = $email;
+           $edit->birthdate = $birthdate;
+           $edit->role = $role;
+           
             if (count($errors) == 0) {
                 $edit->update_User(); //sauve l'utilisateur
                 $this->redirect("user", "users");
