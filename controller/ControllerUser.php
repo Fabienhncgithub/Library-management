@@ -48,7 +48,10 @@ class ControllerUser extends Controller {
         $role = '';
 
         if (isset($_POST["id"]) && $_POST["id"] !== "") {
+            
             $edit = User::get_member_by_id($_POST["id"]);
+            var_dump($edit);
+            
             $id = $edit->id;
             $username = $edit->username;
             $fullname = $edit->fullname;
@@ -57,7 +60,6 @@ class ControllerUser extends Controller {
             $role = $edit->role;
 
 
-            var_dump($id);
         }
         (new View("edit-user"))->show(array("id" => $id, "users" => $user, "username" => $username, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "role" => $role));
     }

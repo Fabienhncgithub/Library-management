@@ -16,7 +16,7 @@ class Book extends Model {
     public $editor;
     public $picture;
 
-    public function __construct($id=0, $isbn=0, $title=0, $author=0, $editor=0, $picture=0) {
+    public function __construct($id = 0, $isbn = 0, $title = 0, $author = 0, $editor = 0, $picture = 0) {
         $this->id = $id;
         $this->isbn = $isbn;
         $this->title = $title;
@@ -34,7 +34,7 @@ class Book extends Model {
             return new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
         }
     }
-    
+
     public static function get_book_by_all() {
         $result = [];
         try {
@@ -86,9 +86,19 @@ class Book extends Model {
             $ex->getMessage();
         }
     }
-    
+
+    public static function get_member_by_object_id($id) {
+        $query = self::execute("SELECT * FROM book where id = :id", array("id" => $id));
+        $data = $query->fetch(); // un seul résultat au maximum
+        if ($query->rowCount() == 0) {
+            return false;
+        } else {
+            return new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
+        }
+    }
+
     public static function get_book_by_all_not_selected($id) {
-                  $result = [];
+        $result = [];
         try {
             $query = self::execute("SELECT * FROM book where id !=:id", array("id" => $id));
             $datas = $query->fetchAll();
@@ -97,14 +107,10 @@ class Book extends Model {
             }return $result;
         } catch (Exception $ex) {
             $ex->getMessage();
-        }  
+        }
     }
-    
-    
-    
-    
-    
-        public static function get_book_by_ISBN($isbn) {
+
+    public static function get_book_by_ISBN($isbn) {
         $result = [];
         try {
             $query = self::execute("SELECT * FROM book where isbn = :isbn", array("isbn" => $isbn));
@@ -116,10 +122,8 @@ class Book extends Model {
             $ex->getMessage();
         }
     }
-    
-   
 
-        public function delete_Book() {
+    public function delete_Book() {
         try {
             $query = self::execute("DELETE FROM book where id=:id", array('id' => $this->id));
             return true;
@@ -129,7 +133,7 @@ class Book extends Model {
         }
     }
 
-        //renvoie un tableau d'erreur(s) 
+    //renvoie un tableau d'erreur(s) 
     //le tableau est vide s'il n'y a pas d'erreur.
     public static function validate_photo($file) {
         $errors = [];
@@ -145,22 +149,18 @@ class Book extends Model {
         }
         return $errors;
     }
-    
-    
-        public function updateBook() {
-            if (empty($this->picture))
+
+    public function updateBook() {
+        if (empty($this->picture))
             $this->picture = null;
-        if(self::get_book_by_id($this->id))
-                      
-            self::execute("UPDATE book SET isbn=:isbn, title=:title, author=:author , editor=:editor, picture=:picture WHERE title=:title ", 
-                          array("isbn"=>$this->isbn, "title"=>$this->title, "author"=>$this->author, "editor"=>$this->editor, "picture"=>$this->picture));
+        if (self::get_book_by_id($this->id))
+            self::execute("UPDATE book SET isbn=:isbn, title=:title, author=:author , editor=:editor, picture=:picture WHERE title=:title ", array("isbn" => $this->isbn, "title" => $this->title, "author" => $this->author, "editor" => $this->editor, "picture" => $this->picture));
         else
-            self::execute("INSERT INTO book (isbn,title,author,editor,picture) VALUES(:isbn,:title,:author,:editor,:picture)", 
-                          array("isbn"=>$this->isbn, "title"=>$this->title, "author"=>$this->author, "editor"=>$this->editor, "picture"=>$this->picture));
+            self::execute("INSERT INTO book (isbn,title,author,editor,picture) VALUES(:isbn,:title,:author,:editor,:picture)", array("isbn" => $this->isbn, "title" => $this->title, "author" => $this->author, "editor" => $this->editor, "picture" => $this->picture));
         return $this;
     }
-    
-          //pre : validate_photo($file) returns true
+
+    //pre : validate_photo($file) returns true
     public function generate_photo_name($file) {
         //note : time() est utilisé pour que la nouvelle image n'aie pas
         //       le meme nom afin d'éviter que le navigateur affiche
@@ -174,9 +174,8 @@ class Book extends Model {
         }
         return $saveTo;
     }
-    
-   
-       public static function validate_unicity_isbn($isbn) {
+
+    public static function validate_unicity_isbn($isbn) {
         $errors = [];
         $user = self::get_book_by_ISBN($isbn);
         if ($user) {
@@ -184,23 +183,21 @@ class Book extends Model {
         }
         return $errors;
     }
-    
-   
+
     public static function validate_title($title) {
-         $errors = [];
+        $errors = [];
         if ($title == "") {
             $errors[] = "Title is required.";
         }
         return $errors;
     }
-    
-        public static function validate_author($author) {
-         $errors = [];
+
+    public static function validate_author($author) {
+        $errors = [];
         if ($author == "") {
             $errors[] = "Author is required.";
         }
         return $errors;
     }
-    
-    
+
 }

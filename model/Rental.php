@@ -86,5 +86,16 @@ class Rental extends Model {
         self::execute("INSERT INTO Members(pseudo,password,profile,picture_path) VALUES(:book,:user,:rentaldate,:returndate)", 
                           array("pseudo"=>$this->pseudo, "password"=>$this->hashed_password, "picture_path"=>$this->picture_path, "profile"=>$this->profile));
     }
+    
+    
+    
+    
+    public static function insert_Rental($id){
+        self::execute("INSERT INTO rental (user,book,rentaldate,returndate) VALUES(:id,:user,:book,:rentaldate,:returndate)", array("user" => $this->user, "book" => $this->book));
+
+    }
+    
+    
+    
 
 }

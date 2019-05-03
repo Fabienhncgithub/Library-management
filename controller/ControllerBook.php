@@ -51,13 +51,46 @@ class ControllerBook extends Controller {
 //    }
 
     public function edit() {
-        $user = $this->get_user_or_redirect();
-        if (isset($_POST['edit'])) {
-            $books = Book::get_book_by_id($_POST["edit"]);
-            var_dump($books);
-            (new View("editbook"))->show(array("user" => $user, "books" => $books));
+//        $user = $this->get_user_or_redirect();
+//        if (isset($_POST['edit'])) {
+//            $books = Book::get_book_by_id($_POST["edit"]);
+//            var_dump($books);
+//   
+//            (new View("editbook"))->show(array("user" => $user, "books" => $books));
+//        }
+        $id = null;
+        $user = $this->get_user_or_redirect();      
+        $isbn = '';
+        $title = '';
+        $author = '';
+        $editor = '';
+        $picture = '';
+        
+        
+        
+        if (isset($_POST["edit"]) && $_POST["edit"] !== "") {
+          $edit = Book::get_member_by_object_id($_POST["edit"]);
+            
+          
+            
+            var_dump($edit);
+            
+            $id = $edit->id;
+            $isbn= $edit->isbn;
+            $title = $edit->title;
+            $author = $edit->author;
+            $editor = $edit->editor;
+            $picture = $edit->picture;
+
+            var_dump($id);
+           
         }
+        (new View("editbook"))->show(array("id" => $id, "books" => $edit, "isbn" => $isbn, "title" => $title, "author" => $author, "editor" => $editor, "picture" => $picture));
     }
+        
+        
+        
+    
 
     public function delete() {
         echo '0';
@@ -107,7 +140,14 @@ class ControllerBook extends Controller {
         if (isset($_POST['cancel'])) {
             $this->redirect("book", "index");
         }
-            if (isset($_POST['isbn']) && isset($_POST['title']) && isset($_POST['author']) && isset($_POST['editor']) && isset($_POST['picture'])) {
+        
+        
+        echo 'test';
+        
+            if (isset($_POST['id']) && isset($_POST['isbn']) && isset($_POST['title']) && isset($_POST['author']) && isset($_POST['editor']) && isset($_POST['picture'])) {
+                
+                
+                echo 'test1';
                 
                 $isbn = $_POST['isbn'];
                 $title = $_POST['title'];
@@ -116,7 +156,7 @@ class ControllerBook extends Controller {
                 $picture = $_POST['picture'];
                 
                 
-                echo 'test';
+                
                 
                 $errors = user::validate_photo($_FILES['image']);
                 if (empty($errors)) {
@@ -129,10 +169,11 @@ class ControllerBook extends Controller {
                         $book->picture = $saveTo;
                         $book->updateBook();
                         $success = "Your book has been successfully updated.";
-                        
+                        $this->redirect("book", "index");
+  
                     }
                 }
-                (new View("editbook"))->show(array("user" => $user, "books" => $books));
+                (new View("reservation"))->show(array("user" => $user, "books" => $books));
             }
         }
     
