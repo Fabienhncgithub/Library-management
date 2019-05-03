@@ -135,12 +135,13 @@ class Book extends Model {
 
     //renvoie un tableau d'erreur(s) 
     //le tableau est vide s'il n'y a pas d'erreur.
+    
     public static function validate_photo($file) {
         $errors = [];
         if (isset($file['name']) && $file['name'] != '') {
             if ($file['error'] == 0) {
-                $valid_types = array("image/gif", "image/jpeg", "image/png");
-                if (!in_array($_FILES['image']['type'], $valid_types)) {
+                $valid_types = array("picture/gif", "picture/jpeg", "picture/png");
+                if (!in_array($_FILES['picture']['type'], $valid_types)) {
                     $errors[] = "Unsupported image format : gif, jpg/jpeg or png.";
                 }
             } else {

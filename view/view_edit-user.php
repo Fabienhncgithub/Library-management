@@ -44,7 +44,7 @@
                     </tr>
                 </table>
                 <input type="submit" name="id" value="<?php  echo $id ?>" >
-<!--                    <input type="submit" name="save" value="<?php  echo $id ?>">            -->
+                 <input type='submit' value='edit'>
                 <input type="submit" name="cancel" value="cancel">
             </form>
             

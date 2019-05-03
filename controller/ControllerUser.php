@@ -88,6 +88,7 @@ class ControllerUser extends Controller {
         $email = '';
         $birthdate = null;
         $role = 'member';
+        $errors = [];
 
         if (isset($_POST["id"]) && $_POST["id"] !== "") {
             $edit = User::get_member_by_id($_POST["id"]);

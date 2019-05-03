@@ -58,6 +58,10 @@ class ControllerBook extends Controller {
 //   
 //            (new View("editbook"))->show(array("user" => $user, "books" => $books));
 //        }
+        
+      
+        
+        
         $id = null;
         $user = $this->get_user_or_redirect();      
         $isbn = '';
@@ -66,12 +70,13 @@ class ControllerBook extends Controller {
         $editor = '';
         $picture = '';
         
+                if (isset($_POST['cancel'])) {
+            $this->redirect("book", "index");
+        }
         
         
         if (isset($_POST["edit"]) && $_POST["edit"] !== "") {
           $edit = Book::get_member_by_object_id($_POST["edit"]);
-            
-          
             
             var_dump($edit);
             
@@ -137,42 +142,44 @@ class ControllerBook extends Controller {
 
         $errors = [];
 
-        if (isset($_POST['cancel'])) {
+        
+                if (isset($_POST['cancel'])) {
             $this->redirect("book", "index");
         }
         
-        
-        echo 'test';
-        
-            if (isset($_POST['id']) && isset($_POST['isbn']) && isset($_POST['title']) && isset($_POST['author']) && isset($_POST['editor']) && isset($_POST['picture'])) {
-                
-                
-                echo 'test1';
-                
+        if (isset($_POST['id']) && isset($_POST['isbn']) && isset($_POST['title']) && isset($_POST['author']) && isset($_POST['editor']) && isset($_POST['picture'])) {
+   
+                $id = $_POST['id'];
                 $isbn = $_POST['isbn'];
                 $title = $_POST['title'];
                 $author = $_POST['author'];
                 $editor = $_POST['editor'];
                 $picture = $_POST['picture'];
                 
+//                $errors = Book::validate_photo($_FILES['image']);
+//                if (empty($errors)) {
+//                    $saveTo = $book->generate_photo_name($_FILES['image']);
+//                    $oldFileName = $book->picture;
+//                    if ($oldFileName && file_exists("upload/" . $oldFileName)) {
+//                        unlink("upload/" . $oldFileName);
+//
+//                        move_uploaded_file($_FILES['image']['tmp_name'], "upload/$saveTo");
+//                        $book->picture = $saveTo;
+//                        $book->updateBook();
+//                        $success = "Your book has been successfully updated.";
+//                        $this->redirect("book", "index");
                 
-                
-                
-                $errors = user::validate_photo($_FILES['image']);
-                if (empty($errors)) {
-                    $saveTo = $book->generate_photo_name($_FILES['image']);
-                    $oldFileName = $book->picture;
-                    if ($oldFileName && file_exists("upload/" . $oldFileName)) {
-                        unlink("upload/" . $oldFileName);
+            $edit = Book::get_member_by_object_id($_POST["id"]);
+            $edit->isbn = $isbn;
+            $edit->title = $title;
+            $edit->editor = $editor;
+            $edit->author = $author;
+            $edit->picture = $picture;
 
-                        move_uploaded_file($_FILES['image']['tmp_name'], "upload/$saveTo");
-                        $book->picture = $saveTo;
-                        $book->updateBook();
-                        $success = "Your book has been successfully updated.";
-                        $this->redirect("book", "index");
-  
-                    }
-                }
+            if (count($errors) == 0) {
+                $edit->updateBook(); 
+                $this->redirect("book", "index");
+            }
                 (new View("reservation"))->show(array("user" => $user, "books" => $books));
             }
         }
