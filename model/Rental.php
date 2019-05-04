@@ -4,20 +4,21 @@ require_once "framework/Model.php";
 require_once "Book.php";
 
 class Rental extends Model {
+
     public $id;
     public $user;
     public $book;
     public $rentaldate;
     public $returndate;
-    
+
     function __construct($id, $user, $book, $rentaldate = null, $returndate = null) {
         $this->id = $id;
         $this->user = $user;
         $this->book = $book;
-        $this->rentaldate = $rentaldate;//date de location
-        $this->returndate = $returndate;//date de retour
+        $this->rentaldate = $rentaldate; //date de location
+        $this->returndate = $returndate; //date de retour
     }
-    
+
 //    public function returndate($date){
 //        if($returndate > $rentaldate){
 //            $returndate = $date;
@@ -37,7 +38,7 @@ class Rental extends Model {
 //    public function deleterental(){
 //        
 //    }
-    
+
     public static function get_rental_by_id($id) {
         $result = [];
         try {
@@ -50,7 +51,7 @@ class Rental extends Model {
             $ex->getMessage();
         }
     }
-    
+
     public static function get_rental_by_user($user) {
         $result = [];
         try {
@@ -63,10 +64,10 @@ class Rental extends Model {
             $ex->getMessage();
         }
     }
-    
-    public static function get_title_by_id($id){
+
+    public static function get_title_by_id($id) {
         $result = [];
-        try{
+        try {
             $query = self::execute("SELECT title FROM book, rental WHERE book.id = rental.id AND rental.user = 1", array("id" => $id));
             $datas = $query = fetchAll();
             foreach ($datas as $$data) {
@@ -77,25 +78,23 @@ class Rental extends Model {
         }
     }
 
-        public function rent(){
+    public  function Rental() {
+          if (empty($this->rentaldate))
+            $this->rentaldate = null;
+          if (empty($this->returndate))
+            $this->returndate = null;
+        self::execute("INSERT INTO rental (user,book,rentaldate,returndate) VALUES(:user,:book,:rentaldate,:returndate)", array("user" => $this->user, "book" => $this->book,"rentaldate" => $this->rentaldate, "returndate" => $this->returndate));
+        return $this; 
+        
+    }
+
+    public function rent() {
         $book = "";
         $user = "";
         $rentaldate = NULL;
         $returndate = $rentaldate + 7;
-        
-        self::execute("INSERT INTO Members(pseudo,password,profile,picture_path) VALUES(:book,:user,:rentaldate,:returndate)", 
-                          array("pseudo"=>$this->pseudo, "password"=>$this->hashed_password, "picture_path"=>$this->picture_path, "profile"=>$this->profile));
-    }
-    
-    
-    
-    
-    public static function insert_Rental($id){
-        self::execute("INSERT INTO rental (user,book,rentaldate,returndate) VALUES(:id,:user,:book,:rentaldate,:returndate)", array("user" => $this->user, "book" => $this->book));
 
+        self::execute("INSERT INTO rental (user,book,rentaldate,returndate) VALUES(:id,:user,:book,:rentaldate,:returndate)", array("user" => $this->user, "book" => $this->book));
     }
-    
-    
-    
 
 }

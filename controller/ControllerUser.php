@@ -48,18 +48,13 @@ class ControllerUser extends Controller {
         $role = '';
 
         if (isset($_POST["id"]) && $_POST["id"] !== "") {
-            
             $edit = User::get_member_by_id($_POST["id"]);
-            var_dump($edit);
-            
             $id = $edit->id;
             $username = $edit->username;
             $fullname = $edit->fullname;
             $email = $edit->email;
             $birthdate = $edit->birthdate;
             $role = $edit->role;
-
-
         }
         (new View("edit-user"))->show(array("id" => $id, "users" => $user, "username" => $username, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "role" => $role));
     }
@@ -71,7 +66,6 @@ class ControllerUser extends Controller {
             if (isset($_POST['id'])) {
                 $id = $_POST['id'];
                 $user = User::get_member_by_id($id);
-
                 $user->delete();
             }
             $users = User::get_member_by_all();
@@ -162,15 +156,12 @@ class ControllerUser extends Controller {
         }
 
         if (isset($_POST['id']) && isset($_POST['username']) && isset($_POST['fullname']) && isset($_POST['email']) && isset($_POST['birthdate']) && isset($_POST['role'])) {
-
-
             $id = $_POST['id'];
             $username = $_POST['username'];
             $fullname = $_POST['fullname'];
             $email = $_POST['email'];
             $birthdate = $_POST['birthdate'];
             $role = $_POST['role'];
-
             if (trim($username) == '')
                 $errors[] = "rentrez votre pseudo";
             if (($fullname) == '')
@@ -192,7 +183,6 @@ class ControllerUser extends Controller {
                 $this->redirect("user", "users");
             }
         }
-
         (new View("edit-user"))->show(array("username" => $username, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "role" => $role, "errors" => $errors));
     }
 

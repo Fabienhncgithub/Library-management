@@ -96,6 +96,21 @@ class Book extends Model {
             return new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
         }
     }
+    
+    
+    
+        public static function get_book_by_only_id($id) {
+        $query = self::execute("SELECT * FROM book where id = :id", array("id" => $id));
+        $data = $query->fetch(); // un seul résultat au maximum
+        if ($query->rowCount() == 0) {
+            return false;
+        } else {
+            return new Book($data["id"]);
+        }
+    }
+    
+    
+    
 
     public static function get_book_by_all_not_selected($id) {
         $result = [];

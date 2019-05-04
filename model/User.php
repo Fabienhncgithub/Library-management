@@ -78,6 +78,23 @@ class User extends Model {
             return new User($data["id"], $data["username"], $data["password"], $data["fullname"], $data["email"], $data["birthdate"], $data["role"]);
         }
     }
+    
+    
+        public static function get_member_by_only_id($id) {
+        $query = self::execute("SELECT * FROM user where id = :id", array("id" => $id));
+        $data = $query->fetch(); // un seul résultat au maximum
+        if ($query->rowCount() == 0) {
+            return false;
+        } else {
+            return $data;
+        }
+    }
+    
+    
+    
+    
+    
+    
 
     public static function get_members() {
         $query = self::execute("SELECT * FROM user", array());
@@ -182,7 +199,6 @@ class User extends Model {
             $this->birthdate = null;
         self::execute("UPDATE user SET username=:username, fullname=:fullname, email=:email, birthdate=:birthdate, role=:role WHERE id=:id ", array("id" => $this->id, "username" => $this->username, "fullname" => $this->fullname, "email" => $this->email, "birthdate" => $this->birthdate, "role" => $this->role));
         // self::execute("UPDATE user SET username=:username, password=:password,fullname=:fullname, email=:email, birthdate=:birthdate,role=:role  WHERE id=:id ", array("id" => $this->id, "username" => $this->username, "password" => $this->hashed_password, "fullname" => $this->fullname, "email" => $this->email, "birthdate" => $this->birthdate, "role" => $this->role));
-        
         }
     
     

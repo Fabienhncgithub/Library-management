@@ -20,21 +20,25 @@ class ControllerRental extends Controller {
 
     public function selection() {
         $user = $this->get_user_or_redirect();
-        $books = Book::get_book_by_all_not_selected($_POST["selection"]);
-        $rental = new book;
-        $selections = book::get_book_by_id($_POST["selection"]);
+        $username = $user->username;
+        $user = User::get_member_by_pseudo($username);
+        $user = $user->id;
+        $rentaldate = '';
+        $returndate = '';
         
+
         if (isset($_POST['selection'])) {
+
+            $books = Book::get_book_by_all_not_selected($_POST["selection"]);
+            $book = $_POST["selection"];
+            $rental = new Rental('', $user, $book, $rentaldate, $returndate);
+            $rental->Rental();
             
             
-            $rental = new Rental('', $selections, $user,0,0);
-            var_dump($rental);
             
-           //$selections = Book::get_book_by_id($_POST["selection"]);
-           
-          // $rental->insert_Rental();
-            
-        } 
+            //$selections = Book::get_book_by_id($_POST["selection"]);
+            // $rental->insert_Rental();
+        }
 //        $user = Controller::get_user_or_redirect();
 //        $books = Book::get_book_by_all();
 //        $selections = [];
@@ -44,9 +48,6 @@ class ControllerRental extends Controller {
 //       //     new rental et add
 //       // recuperer rentals null  null
 //       // afficher
-//       
-//       
-//       
 //       
 //        if (isset($_POST['selection']) && isset($_POST['book'])){
 //        $selection = $_POST['selection'];

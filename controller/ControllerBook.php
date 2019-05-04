@@ -11,6 +11,7 @@ class ControllerBook extends Controller {
     //sinon, produit la vue d'accueil.
     public function index() {
         $user = Controller::get_user_or_redirect();
+        var_dump($user);
         $books = Book::get_book_by_all();
         $selections = [];
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
@@ -86,8 +87,6 @@ class ControllerBook extends Controller {
             $author = $edit->author;
             $editor = $edit->editor;
             $picture = $edit->picture;
-
-            var_dump($id);
            
         }
         (new View("editbook"))->show(array("id" => $id, "books" => $edit, "isbn" => $isbn, "title" => $title, "author" => $author, "editor" => $editor, "picture" => $picture));
