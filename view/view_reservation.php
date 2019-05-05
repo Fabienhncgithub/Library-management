@@ -150,6 +150,14 @@
                 </form>
             <?php endif; ?>
 
+            <form class="button" action="rental/clear_basket" method="POST">               
+                <input type="submit" value="clear"  name="new">
+            </form>
+            <form class="button" action="rental/confirm_basket" method="POST">
+                <input type="submit" name="confirm">
+            </form>
+
+
         </div>
     </body>
 </html>

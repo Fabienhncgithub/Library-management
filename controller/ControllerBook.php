@@ -11,21 +11,25 @@ class ControllerBook extends Controller {
     //sinon, produit la vue d'accueil.
     public function index() {
         $user = Controller::get_user_or_redirect();
-        var_dump($user);
+        $username = $user->username;
+        $user = User::get_member_by_pseudo($username);
+        $users = $user->id;
+
         $books = Book::get_book_by_all();
-        $selections = [];
+     
+        $selections = Rental::get_book_by_id($users);
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
     }
 
     public function search() {
         $books = Book::get_book_by_all();
         $user = Controller::get_user_or_redirect();
-            $selections = [];
+        $selections = [];
         if (isset($_POST["critere"])) {
             $books = Book::get_book_by_filter($_POST["critere"]);
         }
-   (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
-   }
+        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
+    }
 
     public function search_rental() {
         $books = Book::get_book_by_all();
@@ -59,42 +63,33 @@ class ControllerBook extends Controller {
 //   
 //            (new View("editbook"))->show(array("user" => $user, "books" => $books));
 //        }
-        
-      
-        
-        
         $id = null;
-        $user = $this->get_user_or_redirect();      
+        $user = $this->get_user_or_redirect();
         $isbn = '';
         $title = '';
         $author = '';
         $editor = '';
         $picture = '';
-        
-                if (isset($_POST['cancel'])) {
+
+        if (isset($_POST['cancel'])) {
             $this->redirect("book", "index");
         }
-        
-        
+
+
         if (isset($_POST["edit"]) && $_POST["edit"] !== "") {
-          $edit = Book::get_member_by_object_id($_POST["edit"]);
-            
+            $edit = Book::get_member_by_object_id($_POST["edit"]);
+
             var_dump($edit);
-            
+
             $id = $edit->id;
-            $isbn= $edit->isbn;
+            $isbn = $edit->isbn;
             $title = $edit->title;
             $author = $edit->author;
             $editor = $edit->editor;
             $picture = $edit->picture;
-           
         }
         (new View("editbook"))->show(array("id" => $id, "books" => $edit, "isbn" => $isbn, "title" => $title, "author" => $author, "editor" => $editor, "picture" => $picture));
     }
-        
-        
-        
-    
 
     public function delete() {
         echo '0';
@@ -120,19 +115,18 @@ class ControllerBook extends Controller {
     public function confirm_delete() {
         $books = new Book();
         $user = $this->get_user_or_redirect();
-     
-            if ($user->isAdmin()) {
-                if (isset($_POST['idbook']) && isset($_POST['confirm'])) {
-                    $idbook = $_POST['idbook'];
-                    $confirm = $_POST['confirm'];
-                    if ($confirm != 0) {
-                        $books->id = $_POST['idbook'];
-                        $books->delete_Book();
-                    }
-                    $this->redirect("book", "index");
+
+        if ($user->isAdmin()) {
+            if (isset($_POST['idbook']) && isset($_POST['confirm'])) {
+                $idbook = $_POST['idbook'];
+                $confirm = $_POST['confirm'];
+                if ($confirm != 0) {
+                    $books->id = $_POST['idbook'];
+                    $books->delete_Book();
+                }
+                $this->redirect("book", "index");
             }
-              $this->redirect("book", "delete");
-            
+            $this->redirect("book", "delete");
         }
     }
 
@@ -141,20 +135,20 @@ class ControllerBook extends Controller {
 
         $errors = [];
 
-        
-                if (isset($_POST['cancel'])) {
+
+        if (isset($_POST['cancel'])) {
             $this->redirect("book", "index");
         }
-        
+
         if (isset($_POST['id']) && isset($_POST['isbn']) && isset($_POST['title']) && isset($_POST['author']) && isset($_POST['editor']) && isset($_POST['picture'])) {
-   
-                $id = $_POST['id'];
-                $isbn = $_POST['isbn'];
-                $title = $_POST['title'];
-                $author = $_POST['author'];
-                $editor = $_POST['editor'];
-                $picture = $_POST['picture'];
-                
+
+            $id = $_POST['id'];
+            $isbn = $_POST['isbn'];
+            $title = $_POST['title'];
+            $author = $_POST['author'];
+            $editor = $_POST['editor'];
+            $picture = $_POST['picture'];
+
 //                $errors = Book::validate_photo($_FILES['image']);
 //                if (empty($errors)) {
 //                    $saveTo = $book->generate_photo_name($_FILES['image']);
@@ -167,7 +161,7 @@ class ControllerBook extends Controller {
 //                        $book->updateBook();
 //                        $success = "Your book has been successfully updated.";
 //                        $this->redirect("book", "index");
-                
+
             $edit = Book::get_member_by_object_id($_POST["id"]);
             $edit->isbn = $isbn;
             $edit->title = $title;
@@ -176,13 +170,12 @@ class ControllerBook extends Controller {
             $edit->picture = $picture;
 
             if (count($errors) == 0) {
-                $edit->updateBook(); 
+                $edit->updateBook();
                 $this->redirect("book", "index");
             }
-                (new View("reservation"))->show(array("user" => $user, "books" => $books));
-            }
+            (new View("reservation"))->show(array("user" => $user, "books" => $books));
         }
-    
+    }
 
     public function add_book() {
         $book = new Book();
@@ -209,7 +202,7 @@ class ControllerBook extends Controller {
             $errors = Book::validate_unicity_isbn($isbn);
             $errors = Book::validate_author($author);
             $errors = Book::validate_title($title);
-            
+
             if (count($errors) == 0) {
                 $newbook->updateBook(); //sauve le livre
                 $this->redirect("book", "index");
