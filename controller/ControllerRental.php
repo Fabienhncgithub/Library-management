@@ -20,55 +20,47 @@ class ControllerRental extends Controller {
 
     public function selection() {
         $user = $this->get_user_or_redirect();
-        $username = $user->username;
-        $user = User::get_member_by_pseudo($username);
-        $user = $user->id;
-        $rentaldate = '';
-        $returndate = '';
-        
 
         if (isset($_POST['selection'])) {
-
+            $username = $user->username;
+            $user = User::get_member_by_pseudo($username);
+            $user = $user->id;
+            $rentaldate = '';
+            $returndate = '';
             $books = Book::get_book_by_all_not_selected($_POST["selection"]);
             $book = $_POST["selection"];
             $rental = new Rental('', $user, $book, $rentaldate, $returndate);
-            $rental->Rental();
-            
-            
-            
-            //$selections = Book::get_book_by_id($_POST["selection"]);
-            // $rental->insert_Rental();
+            $rental->Select();
+
+            $rentalbooks = Rental::get_rental_by_user($user);
+            $id = $rental->book;
+            $selections = Rental::get_book_by_id($id);
+            $user = $this->get_user_or_redirect();
+
+
         }
-//        $user = Controller::get_user_or_redirect();
-//        $books = Book::get_book_by_all();
-//        $selections = [];
-//        $rental = [];
-//        
-//       // si post selection
-//       //     new rental et add
-//       // recuperer rentals null  null
-//       // afficher
-//       
-//        if (isset($_POST['selection']) && isset($_POST['book'])){
-//        $selection = $_POST['selection'];
-//        $book = $_POST['book']; 
-//        
-//        $newrental = new Rental('',$user, $book);
-//        
-//        $newrental->insert_Rental();
-        //$rental = Rental::rental($_POST["selection"]);
-        //$selections = Book::get_book_by_id($_POST["selection"]);
-        //$books = Book::get_book_by_all_not_selected($_POST["selection"]);
-//        foreach($selections as $selection)
-//            $selection;
-//        var_dump($selections);
-//        foreach ($selections as $selection){
-//            $selections = $selection;
-//            var_dump($selection);
-//        }
-//            var_dump($selections);
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
     }
+//
+//    public function deselection() {
+//        $user = $this->get_user_or_redirect();
+//            if (isset($_POST['deselection'])) {
+//                 $id = $_POST['deselection'];
+//               
+//                 $rental = Rental::get_rental_by_id($id);
+//                   var_dump($rental);
+//                 $rental->Deselect();
+//            }
+//            $this->redirect("rental", "deselection");
+//            }
+//        
+//    
+//            
+
+            
+            
+            
+            
 
     public function removeSelection() {
         $user = Controller::get_user_or_redirect();

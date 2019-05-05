@@ -68,7 +68,6 @@
                                 </form>
                             <?php endif; ?>
                         </td>
-
                         <td>
                             <form   action='rental/selection' method='post'>
                                 <input type='hidden' name='selection' value='<?= $book->id ?>' >
@@ -94,7 +93,7 @@
                                 une pré-réservation pour un livre dont la date de début est null-->
 
                 <?php foreach ($selections as $selection): ?>
-                
+
                     <tr>
                         <td><?= $selection->isbn ?></td>
                         <td><?= $selection->title ?></td>
@@ -135,6 +134,12 @@
                                 </form>
                             <?php endif; ?>
                         </td>
+                        <td>
+                            <form   action='rental/deselection' method='post'>
+                                <input type='hidden' name='deselection' value='<?= $book->id ?>' >
+                                <input type='submit' value='deselection'>
+                            </form>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </table>
@@ -144,7 +149,7 @@
                     <input type="submit" value="Add Book"  name="new">
                 </form>
             <?php endif; ?>
-            
+
         </div>
     </body>
 </html>

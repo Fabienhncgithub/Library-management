@@ -172,8 +172,7 @@ class User extends Model {
         $errors = [];
         $user = User::get_member_by_pseudo($username);
         if ($user) {
-            var_dump($password);
-            var_dump($user);
+
             if (!self::check_password($password, $user->hashed_password)) {
                 $errors[] = "Wrong password. Please try again!";
             }

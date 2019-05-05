@@ -20,7 +20,7 @@ class ControllerUser extends Controller {
         if (isset($_GET["param1"]) && $_GET["param1"] !== "") {
             $user = User::get_member_by_pseudo($_GET["param1"]);
         }
-        $rentals = Rental::get_rental_by_user($user);
+        $rentals = [];
 
         (new View("profile"))->show(array("user" => $user, "rentals" => $rentals));
     }

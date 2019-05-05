@@ -52,10 +52,10 @@ class Rental extends Model {
         }
     }
 
-    public static function get_rental_by_user($user) {
+    public static function get_rental_by_user($id) {
         $result = [];
         try {
-            $query = self::execute("SELECT * FROM rental where user =:user", array("user" => $user->id));
+            $query = self::execute("SELECT * FROM rental where user =:user", array("user" => $id));
             $datas = $query->fetchAll();
             foreach ($datas as $data) {
                 $result[] = new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
@@ -65,20 +65,20 @@ class Rental extends Model {
         }
     }
 
-    public static function get_title_by_id($id) {
+    public static function get_book_by_id($id) {
         $result = [];
         try {
-            $query = self::execute("SELECT title FROM book, rental WHERE book.id = rental.id AND rental.user = 1", array("id" => $id));
-            $datas = $query = fetchAll();
-            foreach ($datas as $$data) {
-                $result[] = new Book($data["id"], $data["isbn"], $title, $author, $editor, $picture);
+            $query = self::execute("SELECT * FROM book, rental WHERE book.id = rental.book", array("id" => $id));
+            $datas = $query->fetchAll();
+            foreach ($datas as $data) {
+                $result[] = new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
             }return $result;
         } catch (Exception $ex) {
             $ex->getMessage();
         }
     }
 
-    public  function Rental() {
+    public  function Select() {
           if (empty($this->rentaldate))
             $this->rentaldate = null;
           if (empty($this->returndate))
@@ -87,6 +87,22 @@ class Rental extends Model {
         return $this; 
         
     }
+    
+    
+        public  function Deselect() {
+           try {
+            $query = self::execute("DELETE FROM rental where id=:id", array('id' => $this->id));
+            return true;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            echo $exc->getMessage();
+        }
+    
+        
+    }
+    
+    
+    
 
     public function rent() {
         $book = "";
@@ -96,5 +112,20 @@ class Rental extends Model {
 
         self::execute("INSERT INTO rental (user,book,rentaldate,returndate) VALUES(:id,:user,:book,:rentaldate,:returndate)", array("user" => $this->user, "book" => $this->book));
     }
-
+    
+    
+    
+//    
+//      public static function get_book_by_id($id) {
+//        $result = [];
+//        try {
+//            $query = self::execute("SELECT * FROM book, rental WHERE book.id = rental.id AND rental.user = 1", array("id" => $id));
+//            $datas = $query = fetchAll();
+//            foreach ($datas as $$data) {
+//                $result[] = new Book($data["id"], $data["isbn"], $title, $author, $editor, $picture);
+//            }return $result;
+//        } catch (Exception $ex) {
+//            $ex->getMessage();
+//        }
+//    }
 }
