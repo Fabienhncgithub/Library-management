@@ -56,10 +56,8 @@ class ControllerRental extends Controller {
             $id = $_POST['deselection'];
             $idbooks = Rental::get_id_from_book_to_rental($id);
             $idbooks = Rental::get_rental_by_book($id);
-            var_dump($idbooks);
-            $idbooks = $idbooks->id;
-            var_dump($idbooks);
-            // $idbooks->Deselect();
+    
+            $idbooks->Deselect();
 
 
             $books = Book::get_book_by_all();

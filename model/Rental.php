@@ -123,14 +123,8 @@ class Rental extends Model {
         return $this;
     }
 
-    public function Deselect() {
-        try {
+    public function Deselect($id) {
             $query = self::execute("DELETE FROM rental where id=:id", array('id' => $this->id));
-            return true;
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-            echo $exc->getMessage();
-        }
     }
 
     public function rent() {
