@@ -75,6 +75,7 @@ class ControllerRental extends Controller {
 
             $books = Book::get_book_by_all();
             $selections = Rental::get_rental_by_user($user);
+            $user = $this->get_user_or_redirect();
 
             (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
         

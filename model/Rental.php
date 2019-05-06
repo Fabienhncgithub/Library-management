@@ -190,7 +190,7 @@ class Rental extends Model {
         
         //rentaldate="" car il s'agit de tout les livres pas encore loué.
         
-        $query = self::execute("DELETE FROM rental where user=:user", array('user' => $this->user));
+        $query = self::execute("DELETE FROM rental where user=:user and rentaldate='NULL'", array('user' => $this->user));
     }
 
 
