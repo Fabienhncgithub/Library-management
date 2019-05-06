@@ -41,7 +41,6 @@ class ControllerRental extends Controller {
             $book = $_POST["selection"];
             $rental = new Rental('', $user, $book, $rentaldate, $returndate);
             $rental->Select();
-
             $rentalbooks = Rental::get_rental_by_user($user);
             $id = $rental->book;
             $selections = Rental::get_book_by_id($id);
@@ -54,23 +53,8 @@ class ControllerRental extends Controller {
         $user = $this->get_user_or_redirect();
         if (isset($_POST['deselection'])) {
             $id = $_POST['deselection'];
-        //var_dump($id);
-            
             $idrental = Rental::get_rental_by_id_objet($id);
-       
-        
-        //  $idrental = $idrental->id;
-        
-        //var_dump($idrental);
             $idrental->Deselect();
-            
-            
-            
-            //id rental 
-            //deselect
-            
-            
-            
             $books = Book::get_book_by_all();
             $selections = Rental::get_book_by_id($id);
         }
@@ -79,19 +63,21 @@ class ControllerRental extends Controller {
 
     public function clear_basket() {
         $user = $this->get_user_or_redirect();
-        $username = $user->username;
-        $user = User::get_member_by_pseudo($username);
-        $id = $user->id;
-        $rental = Rental::get_rental_by_user($id);
-        var_dump($rental);
-        $rental->clear();
+            $username = $user->username;
+            $user = User::get_member_by_pseudo($username);
+            $user = $user->id;
+            var_dump($user);
+            $rental = Rental::get_user_by_id_rental_objet($user);
+            
+            var_dump($rental);
 
+          //$rental->clear();
 
+            $books = Book::get_book_by_all();
+            $selections = Rental::get_rental_by_user($user);
 
-        $books = Book::get_book_by_all();
-        $selections = Rental::get_book_by_id($id);
-
-        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
+            (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
+        
     }
 
     public function confirm_basket() {

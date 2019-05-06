@@ -52,6 +52,7 @@ class Rental extends Model {
         }
     }
     
+    
         public static function get_rental_by_id_objet($id) {
         $query = self::execute("SELECT * FROM rental where id = :id", array("id" => $id));
         $data = $query->fetch(); // un seul résultat au maximum
@@ -64,8 +65,20 @@ class Rental extends Model {
     
     
     
-    
-    
+//    public static function get_rental_by_user_objet($id) {
+//            $query = self::execute("SELECT * FROM rental where user =:user", array("user" => $id));
+//           $datas = $query->fetchall(); 
+//        if ($query->rowCount() == 0) {
+//            return false;
+//        } else {
+//            foreach ($datas as $data) {
+//           $result = new Rental($data["id"], $data["book"], $data["user"], $data["rentaldate"], $data["returndate"]);
+//            }
+//         
+//            return $result;
+//        }
+//      
+//    }
     
 
     public static function get_rental_by_user($id) {
@@ -120,15 +133,37 @@ class Rental extends Model {
         }
     }
 
-    public static function get_id_from_book_to_rental2($id) {
-        $query = self::execute("SELECT * FROM rental, book WHERE rental.book = book.id", array("id" => $id));
-        $data = $query->fetchAll(); // un seul résultat au maximum
+//    public static function get_id_from_book_to_rental2($id) {
+//        $query = self::execute("SELECT * FROM rental, book WHERE rental.book = book.id", array("id" => $id));
+//        $data = $query->fetchAll(); // un seul résultat au maximum
+//        if ($query->rowCount() == 0) {
+//            return false;
+//        } else {
+//            $result[] = new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
+//        }
+//    }
+//    
+    
+           public static function get_user_by_id_rental_objet($user) {
+        $query = self::execute("SELECT * FROM rental where user = :user", array("user" => $user));
+        $data = $query->fetch(); // un seul résultat au maximum
         if ($query->rowCount() == 0) {
             return false;
         } else {
-            $result[] = new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
+            return new Rental($data["id"], $data["user"],$data["book"], $data["rentaldate"], $data["returndate"]);
         }
     }
+    
+//             public static function get_rental_by_id_user_objet($user) {
+//        $query = self::execute("SELECT * FROM rental where user = :user", array("user" => $user));
+//        $data = $query->fetch(); // un seul résultat au maximum
+//        if ($query->rowCount() == 0) {
+//            return false;
+//        } else {
+//            return new Rental($data["id"], $data["user"],$data["book"], $data["rentaldate"], $data["returndate"]);
+//        }
+//    }
+    
 
     public function Select() {
         if (empty($this->rentaldate))
@@ -151,21 +186,12 @@ class Rental extends Model {
         self::execute("INSERT INTO rental (user,book,rentaldate,returndate) VALUES(:id,:user,:book,:rentaldate,:returndate)", array("user" => $this->user, "book" => $this->book));
     }
 
-    public  function clear($id) {
-        self::execute("DELETE FROM rental where id=:id", array('id' => $id));
+    public  function clear() {
+        
+        //rentaldate="" car il s'agit de tout les livres pas encore loué.
+        
+        $query = self::execute("DELETE FROM rental where user=:user", array('user' => $this->user));
     }
 
-//    
-//      public static function get_book_by_id($id) {
-//        $result = [];
-//        try {
-//            $query = self::execute("SELECT * FROM book, rental WHERE book.id = rental.id AND rental.user = 1", array("id" => $id));
-//            $datas = $query = fetchAll();
-//            foreach ($datas as $$data) {
-//                $result[] = new Book($data["id"], $data["isbn"], $title, $author, $editor, $picture);
-//            }return $result;
-//        } catch (Exception $ex) {
-//            $ex->getMessage();
-//        }
-//    }
+
 }

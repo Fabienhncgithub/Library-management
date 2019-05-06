@@ -90,11 +90,6 @@ class User extends Model {
         }
     }
     
-    
-    
-    
-    
-    
 
     public static function get_members() {
         $query = self::execute("SELECT * FROM user", array());
