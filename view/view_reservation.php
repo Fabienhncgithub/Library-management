@@ -136,7 +136,7 @@
                         </td>
                         <td>
                             <form   action='rental/deselection' method='post'>
-                                <input type='hidden' name='deselection' value='<?= $book->id ?>' >
+                                <input type='hidden' name='deselection' value='<?= $selection->id ?>' >
                                 <input type='submit' value='deselection'>
                             </form>
                         </td>

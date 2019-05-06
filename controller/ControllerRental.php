@@ -54,12 +54,23 @@ class ControllerRental extends Controller {
         $user = $this->get_user_or_redirect();
         if (isset($_POST['deselection'])) {
             $id = $_POST['deselection'];
-            $idbooks = Rental::get_id_from_book_to_rental($id);
-            $idbooks = Rental::get_rental_by_book($id);
-    
-            $idbooks->Deselect();
-
-
+        //var_dump($id);
+            
+            $idrental = Rental::get_rental_by_id_objet($id);
+       
+        
+        //  $idrental = $idrental->id;
+        
+        //var_dump($idrental);
+            $idrental->Deselect();
+            
+            
+            
+            //id rental 
+            //deselect
+            
+            
+            
             $books = Book::get_book_by_all();
             $selections = Rental::get_book_by_id($id);
         }
@@ -89,12 +100,12 @@ class ControllerRental extends Controller {
 
 
         if (isset($_POST['confirm'])) {
-    
+
             $username = $user->username;
             $user = User::get_member_by_pseudo($username);
             $user = $user->id;
-            
-        
+
+
 
 
             $books = Book::get_book_by_all();
