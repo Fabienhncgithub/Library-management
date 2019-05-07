@@ -66,15 +66,16 @@ class ControllerRental extends Controller {
             $username = $user->username;
             $user = User::get_member_by_pseudo($username);
             $user = $user->id;
-            var_dump($user);
+       
             $rental = Rental::get_user_by_id_rental_objet($user);
-            
-            var_dump($rental);
+                 var_dump($rental);
+     
 
-          //$rental->clear();
+          $rental->clear();
 
             $books = Book::get_book_by_all();
             $selections = Rental::get_rental_by_user($user);
+                   var_dump($selections);
             $user = $this->get_user_or_redirect();
 
             (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
