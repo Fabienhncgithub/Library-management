@@ -9,7 +9,17 @@
     </head>
     <body>
         <div class="title">Welcome <?= $user->username ?></div>
-        <?php include('menu.html'); ?>
+     
+        
+                <?php if($user->isAdmin($user->username)){
+                include('menuAdmin.html');
+                }
+              else{
+                    include('menu.html');            
+                  }
+        ?>
+        
+        
         <div class="main">
             <?php if (strlen($user->username) == 0): ?>
                 No profile string entered yet!

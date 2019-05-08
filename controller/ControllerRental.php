@@ -63,43 +63,30 @@ class ControllerRental extends Controller {
 
     public function clear_basket() {
         $user = $this->get_user_or_redirect();
-            $username = $user->username;
-            $user = User::get_member_by_pseudo($username);
-            $user = $user->id;
-       
-            $rental = Rental::get_user_by_id_rental_objet($user);
-                 var_dump($rental);
-     
-
-          $rental->clear();
-
-            $books = Book::get_book_by_all();
-            $selections = Rental::get_rental_by_user($user);
-                   var_dump($selections);
-            $user = $this->get_user_or_redirect();
-
-            (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
-        
+        $username = $user->username;
+        $user = User::get_member_by_pseudo($username);
+        $user = $user->id;
+        $rental = Rental::get_user_by_id_rental_objet($user);
+        $rental->clear();
+        $books = Book::get_book_by_all();
+        $selections = Rental::get_rental_by_user_objet($user);
+        $user = $this->get_user_or_redirect();
+        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
     }
 
     public function confirm_basket() {
         $user = $this->get_user_or_redirect();
         $rental = new Rental();
 
+        $username = $user->username;
+        $user = User::get_member_by_pseudo($username);
+        $user = $user->id;
 
-        if (isset($_POST['confirm'])) {
+        $books = Book::get_book_by_all();
+        $selections = Rental::get_book_by_id($id);
 
-            $username = $user->username;
-            $user = User::get_member_by_pseudo($username);
-            $user = $user->id;
-
-
-
-
-            $books = Book::get_book_by_all();
-            $selections = Rental::get_book_by_id($id);
-        }
-
+       // $today = date("Y-m-d H:i:s");
+        
 
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
     }

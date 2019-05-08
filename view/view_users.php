@@ -8,7 +8,7 @@
         <link href="css/styles.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-        <div class="title">Users</div>
+       <div class="title"><?php echo $user->fullname; ?>!</div>
         <?php include('menu.html'); ?>
         <div class="main">
             <table class="message_list">
