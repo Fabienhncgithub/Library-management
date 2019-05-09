@@ -51,9 +51,8 @@ class Rental extends Model {
             $ex->getMessage();
         }
     }
-    
-    
-        public static function get_rental_by_id_objet($id) {
+
+    public static function get_rental_by_id_objet($id) {
         $query = self::execute("SELECT * FROM rental where id = :id", array("id" => $id));
         $data = $query->fetch(); // un seul résultat au maximum
         if ($query->rowCount() == 0) {
@@ -62,9 +61,7 @@ class Rental extends Model {
             return new Rental($data["id"], $data["book"], $data["user"], $data["rentaldate"], $data["returndate"]);
         }
     }
-    
-    
-    
+
 //    public static function get_rental_by_user_objet($id) {
 //            $query = self::execute("SELECT * FROM rental where user =:user", array("user" => $id));
 //           $datas = $query->fetchall(); 
@@ -79,20 +76,34 @@ class Rental extends Model {
 //        }
 //      
 //    }
-    
-    
-    
-            public static function get_rental_by_user_objet($id) {
-        $query = self::execute("SELECT * FROM book where id =:user", array("user" => $id));
-        $data = $query->fetch(); // un seul résultat au maximum
-        if ($query->rowCount() == 0) {
-            return false;
-        } else {
-            return new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
+
+
+
+    public static function get_book_by_user($user) {
+        $result = [];
+        try {
+            $query = self::execute("SELECT * FROM book join rental on book.id=rental.book join user on rental.user=user.id  WHERE user =:user", array("user" => $user));
+
+            $datas = $query->fetchAll();
+            foreach ($datas as $data) {
+                $result[] = new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
+            }return $result;
+        } catch (Exception $ex) {
+            $ex->getMessage();
         }
     }
-    
-    
+
+//            public static function get_rental_by_user_objet($user) {
+//        $query = self::execute("SELECT * FROM rental where user =:user", array("user" => $user));
+//        $data = $query->fetch(); // un seul résultat au maximum
+//        if ($query->rowCount() == 0) {
+//            return false;
+//        } else {
+//            return new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
+//        }
+//    }
+
+
 
     public static function get_rental_by_user($id) {
         $result = [];
@@ -156,17 +167,17 @@ class Rental extends Model {
 //        }
 //    }
 //    
-    
-           public static function get_user_by_id_rental_objet($user) {
+
+    public static function get_user_by_id_rental_objet($user) {
         $query = self::execute("SELECT * FROM rental where user = :user", array("user" => $user));
         $data = $query->fetch(); // un seul résultat au maximum
         if ($query->rowCount() == 0) {
             return false;
         } else {
-            return new Rental($data["id"], $data["user"],$data["book"], $data["rentaldate"], $data["returndate"]);
+            return new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
         }
     }
-    
+
 //             public static function get_rental_by_id_user_objet($user) {
 //        $query = self::execute("SELECT * FROM rental where user = :user", array("user" => $user));
 //        $data = $query->fetch(); // un seul résultat au maximum
@@ -176,7 +187,7 @@ class Rental extends Model {
 //            return new Rental($data["id"], $data["user"],$data["book"], $data["rentaldate"], $data["returndate"]);
 //        }
 //    }
-    
+
 
     public function Select() {
         if (empty($this->rentaldate))
@@ -188,7 +199,7 @@ class Rental extends Model {
     }
 
     public function Deselect() {
-            $query = self::execute("DELETE FROM rental where id=:id", array('id' => $this->id));
+        $query = self::execute("DELETE FROM rental where id=:id", array('id' => $this->id));
     }
 
     public function rent() {
@@ -199,11 +210,10 @@ class Rental extends Model {
         self::execute("INSERT INTO rental (user,book,rentaldate,returndate) VALUES(:id,:user,:book,:rentaldate,:returndate)", array("user" => $this->user, "book" => $this->book));
     }
 
-    public  function clear() {
-        
+    public function clear() {
+
         //rentaldate="" car il s'agit de tout les livres pas encore loué.
         $query = self::execute("DELETE FROM rental where user=:user and  rentaldate is null", array('user' => $this->user));
     }
-
 
 }

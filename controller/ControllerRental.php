@@ -69,7 +69,7 @@ class ControllerRental extends Controller {
         $rental = Rental::get_user_by_id_rental_objet($user);
         $rental->clear();
         $books = Book::get_book_by_all();
-        $selections = Rental::get_rental_by_user_objet($user);
+        $selections = Rental::get_book_by_user($user);
         $user = $this->get_user_or_redirect();
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
     }
@@ -83,7 +83,8 @@ class ControllerRental extends Controller {
         $user = $user->id;
 
         $books = Book::get_book_by_all();
-        $selections = Rental::get_book_by_id($id);
+        $selections = Rental::get_rental_by_user_objet($user);
+        var_dump($selections);
 
        // $today = date("Y-m-d H:i:s");
         

@@ -9,7 +9,17 @@
     </head>
     <body>
        <div class="title"><?php echo $user->fullname; ?>!</div>
-        <?php include('menu.html'); ?>
+
+               
+                <?php if($user->isAdmin($user->username)){
+                include('menuAdmin.html');
+                }
+              else{
+                    include('menu.html');            
+                  }
+        ?>
+       
+       
         <div class="main">
             <table class="message_list">
                 <thead>
@@ -37,12 +47,12 @@
                                 <input type="submit" value="Edit">
                             </form>
                              <?php endif; ?>
-                            <?php if ($usr->id != $user->id && $user->isAdmin()): ?>
+                   <?php if ($usr->id != $user->id && $user->isAdmin()): ?>
                                 <form class="button" action="user/delete_user" method="POST">
                                     <input type="hidden" name="id" value="<?= $usr->id ?>">
                                     <input type="submit" value="Delete">
                                 </form>
-                            <?php endif; ?>
+                    <?php endif; ?>
                         </td>
                         </tr>
                     <?php endforeach; ?>

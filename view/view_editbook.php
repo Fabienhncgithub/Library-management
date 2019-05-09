@@ -9,7 +9,20 @@
     </head>
     <body>
         <div class="title">Edit Book</div>
-        <?php include('menu.html'); ?>
+       
+        
+        
+                
+                <?php if($user->isAdmin($user->username)){
+                include('menuAdmin.html');
+                }
+              else{
+                    include('menu.html');            
+                  }
+        ?>
+        
+        
+        
         <div class="main">
 
 
