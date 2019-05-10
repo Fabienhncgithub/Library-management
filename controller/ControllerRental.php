@@ -67,6 +67,9 @@ class ControllerRental extends Controller {
         $user = User::get_member_by_pseudo($username);
         $user = $user->id;
         $rental = Rental::get_user_by_id_rental_objet($user);
+        
+        var_dump($rental);
+        
         if ($rental == false){
                  $this->redirect("book", "index");
         }
@@ -84,17 +87,10 @@ class ControllerRental extends Controller {
         $user = User::get_member_by_pseudo($username);
         $user = $user->id;
         $rental = Rental::get_user_by_id_rental_objet($user);
-        
         var_dump($rental);
-        //$rental->clear();
         $rental->rent();
-        
         $books = Book::get_book_by_all();
         $selections = Rental::get_book_by_user($user);
-     
-        
-   
-
          $user = $this->get_user_or_redirect();
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
     }
