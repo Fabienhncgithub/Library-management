@@ -87,14 +87,13 @@ class ControllerRental extends Controller {
         
         var_dump($rental);
         //$rental->clear();
-        //$rental->rent();
+        $rental->rent();
         
         $books = Book::get_book_by_all();
         $selections = Rental::get_book_by_user($user);
      
         
-        
-        // $today = date("Y-m-d H:i:s");
+   
 
          $user = $this->get_user_or_redirect();
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
