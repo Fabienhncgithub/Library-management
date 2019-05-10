@@ -37,7 +37,7 @@ class ControllerRental extends Controller {
             $user = $user->id;
             $rentaldate = '';
             $returndate = '';
-            $books = Book::get_book_by_all_not_selected($_POST["selection"]);
+               $books = Book::get_book_by_all();
             $book = $_POST["selection"];
             $rental = new Rental('', $user, $book, $rentaldate, $returndate);
             $rental->Select();
@@ -67,6 +67,10 @@ class ControllerRental extends Controller {
         $user = User::get_member_by_pseudo($username);
         $user = $user->id;
         $rental = Rental::get_user_by_id_rental_objet($user);
+        if ($rental == false){
+                 $this->redirect("book", "index");
+        }
+        else
         $rental->clear();
         $books = Book::get_book_by_all();
         $selections = Rental::get_book_by_user($user);
@@ -76,19 +80,23 @@ class ControllerRental extends Controller {
 
     public function confirm_basket() {
         $user = $this->get_user_or_redirect();
-        $rental = new Rental();
-
         $username = $user->username;
         $user = User::get_member_by_pseudo($username);
         $user = $user->id;
-
-        $books = Book::get_book_by_all();
-        $selections = Rental::get_rental_by_user_objet($user);
-        var_dump($selections);
-
-       // $today = date("Y-m-d H:i:s");
+        $rental = Rental::get_user_by_id_rental_objet($user);
         
+        var_dump($rental);
+        //$rental->clear();
+        //$rental->rent();
+        
+        $books = Book::get_book_by_all();
+        $selections = Rental::get_book_by_user($user);
+     
+        
+        
+        // $today = date("Y-m-d H:i:s");
 
+         $user = $this->get_user_or_redirect();
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
     }
 

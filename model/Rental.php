@@ -202,18 +202,21 @@ class Rental extends Model {
         $query = self::execute("DELETE FROM rental where id=:id", array('id' => $this->id));
     }
 
-    public function rent() {
-        $book = "";
-        $user = "";
-        $rentaldate = NULL;
-        $returndate = $rentaldate + 7;
-        self::execute("INSERT INTO rental (user,book,rentaldate,returndate) VALUES(:id,:user,:book,:rentaldate,:returndate)", array("user" => $this->user, "book" => $this->book));
-    }
-
     public function clear() {
 
         //rentaldate="" car il s'agit de tout les livres pas encore loué.
         $query = self::execute("DELETE FROM rental where user=:user and  rentaldate is null", array('user' => $this->user));
     }
 
+    public function rent() {
+
+
+
+        if ($this->rentaldate == null)
+            $this->rentaldate = date('Y-m-d H:i:s');
+        self::execute("UPDATE rental SET username=:username, fullname=:fullname, email=:email, birthdate=:birthdate, role=:role WHERE id=:id ", array("id" => $this->id, "username" => $this->username, "fullname" => $this->fullname, "email" => $this->email, "birthdate" => $this->birthdate, "role" => $this->role));
+        // self::execute("UPDATE user SET username=:username, password=:password,fullname=:fullname, email=:email, birthdate=:birthdate,role=:role  WHERE id=:id ", array("id" => $this->id, "username" => $this->username, "password" => $this->hashed_password, "fullname" => $this->fullname, "email" => $this->email, "birthdate" => $this->birthdate, "role" => $this->role));
+    }
+
+    // self::execute("INSERT INTO rental (user,book,rentaldate,returndate) VALUES(:id,:user,:book,:rentaldate,:returndate)", array("user" => $this->user, "book" => $this->book));
 }
