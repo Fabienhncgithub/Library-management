@@ -88,6 +88,25 @@ class Rental extends Model {
         }
     }
 
+    
+    
+    
+        public static function get_rental_by_profile($id) {
+        $result = [];
+        try {
+            $query = self::execute("SELECT rentaldate,returndate,title FROM `rental` join book on book.id=rental.book where user =:user", array("user" => $id));
+            $datas = $query->fetchAll();
+            foreach ($datas as $data) {
+                $result[] = new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
+            }return $result;
+        } catch (Exception $ex) {
+            $ex->getMessage();
+        }
+    }
+    
+    
+    
+
     public static function get_rental_by_book($id) {
         $result = [];
         try {
@@ -161,6 +180,7 @@ class Rental extends Model {
         self::execute("UPDATE rental SET user=:user, book=:book, rentaldate=:rentaldate, returndate=:returndate WHERE user=:user ", array("id" => $this->id, "user" => $this->user, "book" => $this->book, "rentaldate" => $this->rentaldate, "returndate" => $this->returndate));
     }
     
+
 
 
 }

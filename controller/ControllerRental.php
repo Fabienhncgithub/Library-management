@@ -69,11 +69,10 @@ class ControllerRental extends Controller {
         $user = User::get_member_by_pseudo($username);
         $user = $user->id;
         $rental = Rental::get_user_by_id_rental_objet($user);
-        if ($rental == false){
-                 $this->redirect("book", "index");
-        }
-        else
-        $rental->clear();
+        if ($rental == false) {
+            $this->redirect("book", "index");
+        } else
+            $rental->clear();
         $books = Book::get_book_by_all();
         $selections = Rental::get_book_by_user($user);
         $user = $this->get_user_or_redirect();
@@ -89,10 +88,11 @@ class ControllerRental extends Controller {
         $rental->rent();
         $books = Book::get_book_by_all();
         $selections = Rental::get_book_by_user($user);
-         $user = $this->get_user_or_redirect();
-      $this->redirect("book", "index");    }
+        $user = $this->get_user_or_redirect();
+        $this->redirect("book", "index");
+    }
 
-        public function confirm_basket_for_user() {
+    public function confirm_basket_for_user() {
         $user = $this->get_user_or_redirect();
         $username = $user->username;
         $user = User::get_member_by_pseudo($username);
@@ -101,10 +101,9 @@ class ControllerRental extends Controller {
         $rental->rent();
         $books = Book::get_book_by_all();
         $selections = Rental::get_book_by_user($user);
-         $user = $this->get_user_or_redirect();
+        $user = $this->get_user_or_redirect();
     }
-    
-    
+
 //        public function selection_member() {
 //        $user = $this->get_user_or_redirect();
 //        if (isset($_POST['rental_select'])) {
@@ -131,21 +130,31 @@ class ControllerRental extends Controller {
 //        }
 //        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
 //    }
-    
-        public function user_choice(){
-           $user = $this->get_user_or_redirect();
-           
-           $member= User::get_member_by_pseudo($_POST['rental_select']);
-           var_dump($member);
-           
-        $books = Book::get_book_not_rental_by_user($user);
-       $selections = Rental::get_book_by_id($user);
-                 
-        
-            
-        (new View("reservation_member"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "member" => $member));
-        }
-    
+//        public function user_choice(){
+//           $user = $this->get_user_or_redirect();
+//           
+//           $member= User::get_member_by_pseudo($_POST['rental_select']);
+//           
+//           
+//        $books = Book::get_book_not_rental_by_user($user);
+//       $selections = Rental::get_book_by_id($user);
+//                 
+//        
+//            
+//        (new View("reservation_member"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "member" => $member));
+//        }
 
-    
+
+    public function return_book() {
+        $user = Controller::get_user_or_redirect();
+        $username = $user->username;
+        $user = User::get_member_by_pseudo($username);
+        $users = $user->id;
+       $returns = Rental::get_rental_by_user($users);
+       var_dump($returns);
+        
+        
+        (new View("return_book"))->show(array("user" => $user, "returns" => $returns));
+    }
+
 }

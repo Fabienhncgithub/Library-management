@@ -11,11 +11,8 @@
         <div class="title">Add User</div>
        
         
-        
-        
-        
-        
-        
+          <?php include('menuAdmin.html'); ?>
+    
         <div class="main">
             Please enter the user details :
             <br><br>

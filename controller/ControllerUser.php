@@ -20,11 +20,7 @@ class ControllerUser extends Controller {
         $username = $user->username;
         $user = User::get_member_by_pseudo($username);
         $users = $user->id;
-    
-    
        $rentals = Rental::get_rental_by_user($users);
-       var_dump($rentals);
-
         (new View("profile"))->show(array("user" => $user, "rentals" => $rentals));
     }
 

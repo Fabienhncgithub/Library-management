@@ -17,7 +17,6 @@ class ControllerBook extends Controller {
         $id = $users;
         $books = Book::get_book_not_rental_by_user($users);
        $selections = Rental::get_book_by_id($users);
-       var_dump($selections);
         $members = User::selection_member_by_all_not_selected($id);
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members));
     }
