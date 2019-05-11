@@ -161,7 +161,6 @@ class Rental extends Model {
         self::execute("UPDATE rental SET user=:user, book=:book, rentaldate=:rentaldate, returndate=:returndate WHERE user=:user ", array("id" => $this->id, "user" => $this->user, "book" => $this->book, "rentaldate" => $this->rentaldate, "returndate" => $this->returndate));
     }
     
-    
 
 
 }

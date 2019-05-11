@@ -96,13 +96,12 @@
             <?php endif; ?>
             
             
-      
+              <div class="title">You are changing the basket of  <?= $member->username ?></div>
 
 
             Basket of books to rent
             <br>
             <table>
-                  <thead>
                 <tr>
                     <th>ISBN</th>
                     <th>Title</th>
@@ -110,8 +109,6 @@
                     <th>Editor</th>
                     <th>action</th>
                 </tr>
-                  </thead>
-        <tbody>
                 <!--            selection est un ensemble de pré-réservation
                                 en appuyant sur selection on ajoute au panier de l'utilisateur courant/séléctionné
                                 une pré-réservation pour un livre dont la date de début est null-->
@@ -166,7 +163,6 @@
                         </td>
                     </tr>
                 <?php endforeach; ?>
-                        </tbody>
             </table>
 
 

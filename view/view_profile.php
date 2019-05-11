@@ -27,23 +27,29 @@
                 <?= $user->username; ?>
             <?php endif; ?>
             <br><br>
+            
+            
+            <tr>There are your currently rented books. Don't forget to return them in time!</tr>
+
+            
             <table>
-                <tr>There are your currently rented books. Don't forget to return them in time!</tr>
-                <br>
                 <tr>
-                    <td>Rental Date/Time</td>
-                    <td>Book</td>
-                    <td>To be returned on</td>
+                    <th>Rental Date/Time</th>
+                    <th>Book</th>
+                    <th>To be returned on</th>
                 </tr>
-                <br>
+        </thead>
+        <tbody>
+            
                 <?php foreach ($rentals as $rental):?>
                 <tr>
-                    <td><?php $rental -> rentaldate ?></td>
-                    <td><?php $rental -> book ?></td>
-                    <td><?php $rental -> returndate ?></td>
+                    <td><?= $rental->rentaldate ?></td>
+                    <td><?= $rental->book ?></td>
+                    <td><?= $rental->returndate ?></td>
                 </tr>
-                <?php var_dump($rentals) ?>
+             
                 <?php endforeach; ?>
+                </tbody>
             </table>
         </div>
     </body>

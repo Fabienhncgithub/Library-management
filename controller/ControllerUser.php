@@ -16,11 +16,14 @@ class ControllerUser extends Controller {
 
     //profil de l'utilisateur connecté ou donné
     public function profile() {
-        $user = $this->get_user_or_redirect();
-        if (isset($_GET["param1"]) && $_GET["param1"] !== "") {
-            $user = User::get_member_by_pseudo($_GET["param1"]);
-        }
-        $rentals = [];
+        $user = Controller::get_user_or_redirect();
+        $username = $user->username;
+        $user = User::get_member_by_pseudo($username);
+        $users = $user->id;
+    
+    
+       $rentals = Rental::get_rental_by_user($users);
+       var_dump($rentals);
 
         (new View("profile"))->show(array("user" => $user, "rentals" => $rentals));
     }
