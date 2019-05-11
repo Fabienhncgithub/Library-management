@@ -84,8 +84,19 @@
                         </td>
 
                     </tr>
+
                 <?php endforeach; ?>
             </table>
+            
+                    <?php if ($user->isAdmin($user->username)): ?>
+                <form class="button" action="book/add_book" method="POST">
+                    <input type="submit" value="Add Book"  name="new">
+                </form>
+            
+              <?php endif; ?>
+            
+            
+            
             Basket of books to rent
             <br>
             <table>
@@ -152,12 +163,9 @@
                 <?php endforeach; ?>
             </table>
 
-            <?php if ($user->isAdmin($user->username)): ?>
-                <form class="button" action="book/add_book" method="POST">
-                    <input type="submit" value="Add Book"  name="new">
-                </form>
+    
 
-
+    <?php if ($user->isAdmin($user->username)): ?>
                 <td>The basket is for:</td>
                 <td>                      
                     <select id="role" name="rental_select" > 
@@ -168,25 +176,17 @@
                 </td>
             </select>
 
+        <?php endif; ?>
 
-            <form class="button" action="rental/clear_basket_member" method="POST">               
-                <input type="submit" value="clear"  name="new">
+            <form class="button" action="rental/clear_basket" method="POST">               
+                <input type="submit" value="Effacer rental"   name="new">
             </form>
-            <form class="button" action="rental/confirm_basket_member" method="POST">
-                <input type="submit" name="confirm">
+            <form class="button" action="rental/confirm_basket" method="POST">
+                <input type="submit" name="Save rental">
             </form> 
 
 
-        <?php endif; ?>
-        <?php if ($user->isMember($user->username)): ?>
 
-            <form class="button" action="rental/clear_basket" method="POST">               
-                <input type="submit" value="clear"  name="new">
-            </form>
-            <form class="button" action="rental/confirm_basket" method="POST">
-                <input type="submit" name="confirm">
-            </form>
-        <?php endif; ?>
     </div>
 </body>
 </html>

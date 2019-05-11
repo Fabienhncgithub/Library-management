@@ -47,6 +47,26 @@ class Book extends Model {
             $ex->getMessage();
         }
     }
+    
+    
+    
+    public static function get_book_by_all_not_rental() {
+        $result = [];
+        try {
+            $query = self::execute("SELECT * FROM book where book.id !=: rental.book", array());
+            $datas = $query->fetchAll();
+            foreach ($datas as $data) {
+                $result[] = new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
+            }return $result;
+        } catch (Exception $ex) {
+            $ex->getMessage();
+        }
+    }
+    
+    
+    
+    
+    
 
     public static function get_book_by_filter($search) {
         $result = [];
@@ -215,5 +235,24 @@ class Book extends Model {
         }
         return $errors;
     }
+    
+        
+        public static function get_book_not_rental_by_user($user) {
+        $result = [];
+        try {
+            $query = self::execute("SELECT * FROM book  where book.id not in (select rental.book from rental join user on rental.user=user.id where rental.user=user.id)", array("user" => $user));
+
+            $datas = $query->fetchAll();
+            foreach ($datas as $data) {
+            $result[] = new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
+            }return $result;
+        } catch (Exception $ex) {
+            $ex->getMessage();
+        }
+    }
+    
+    
+    
+    
 
 }

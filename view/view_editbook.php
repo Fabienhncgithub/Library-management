@@ -49,22 +49,13 @@
                         <?php else: ?>
                         <img src='upload/<?= $books->picture ?>'>  
                     <?php endif; ?>
-
                     <td><input type='file' name='picture' accept="picture/x-png, picture/gif, picture/jpeg"><br></td>
-
                     </tr>
                 </table>
-
-
                 <input type="hidden" name="id" value=<?php echo $books->id ?>>
                 <input type='submit' name = "id" value="<?php echo $id ?>" >
                 <input type="submit" name="cancel" value="cancel">
             </form>
-            
-            
-                                     
-                                   
-            
             
             <?php
             if (isset($errors) && count($errors) > 0) {

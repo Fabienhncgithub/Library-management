@@ -55,6 +55,24 @@ class Rental extends Model {
             $ex->getMessage();
         }
     }
+    
+    
+    
+        public static function get_book_not_rental_by_user($user) {
+        $result = [];
+        try {
+            $query = self::execute("SELECT * FROM book join rental on book.id=rental.book join user on rental.user=user.id  WHERE user =:user", array("user" => $user));
+
+            $datas = $query->fetchAll();
+            foreach ($datas as $data) {
+                $result[] = new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
+            }return $result;
+        } catch (Exception $ex) {
+            $ex->getMessage();
+        }
+    }
+    
+    
 
 
     public static function get_rental_by_user($id) {
@@ -142,5 +160,8 @@ class Rental extends Model {
             $this->rentaldate = date('Y-m-d H:i:s');
         self::execute("UPDATE rental SET user=:user, book=:book, rentaldate=:rentaldate, returndate=:returndate WHERE user=:user ", array("id" => $this->id, "user" => $this->user, "book" => $this->book, "rentaldate" => $this->rentaldate, "returndate" => $this->returndate));
     }
+    
+    
+
 
 }

@@ -10,14 +10,7 @@
     <body>
         <div class="title">Create Book</div>
        
-                
-                <?php if($user->isAdmin($user->username)){
-                include('menuAdmin.html');
-                }
-              else{
-                    include('menu.html');            
-                  }
-        ?>
+
         
         <div class="main">
             <form method="post" action="book/add_book">
