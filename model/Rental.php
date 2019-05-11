@@ -19,26 +19,6 @@ class Rental extends Model {
         $this->returndate = $returndate; //date de retour
     }
 
-//    public function returndate($date){
-//        if($returndate > $rentaldate){
-//            $returndate = $date;
-//        }
-//        else
-//            $returndate = null;
-//    }
-//    
-//    public function rentaldate($date){
-//        if($rentaldate = null){
-//            $rentaldate = $date;
-//        }
-//        else
-//            $rentaldate = null;
-//    }
-//    
-//    public function deleterental(){
-//        
-//    }
-
     public static function get_rental_by_id($id) {
         $result = [];
         try {
@@ -62,23 +42,6 @@ class Rental extends Model {
         }
     }
 
-//    public static function get_rental_by_user_objet($id) {
-//            $query = self::execute("SELECT * FROM rental where user =:user", array("user" => $id));
-//           $datas = $query->fetchall(); 
-//        if ($query->rowCount() == 0) {
-//            return false;
-//        } else {
-//            foreach ($datas as $data) {
-//           $result = new Rental($data["id"], $data["book"], $data["user"], $data["rentaldate"], $data["returndate"]);
-//            }
-//         
-//            return $result;
-//        }
-//      
-//    }
-
-
-
     public static function get_book_by_user($user) {
         $result = [];
         try {
@@ -92,17 +55,6 @@ class Rental extends Model {
             $ex->getMessage();
         }
     }
-
-//            public static function get_rental_by_user_objet($user) {
-//        $query = self::execute("SELECT * FROM rental where user =:user", array("user" => $user));
-//        $data = $query->fetch(); // un seul résultat au maximum
-//        if ($query->rowCount() == 0) {
-//            return false;
-//        } else {
-//            return new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
-//        }
-//    }
-
 
 
     public static function get_rental_by_user($id) {
@@ -157,16 +109,6 @@ class Rental extends Model {
         }
     }
 
-//    public static function get_id_from_book_to_rental2($id) {
-//        $query = self::execute("SELECT * FROM rental, book WHERE rental.book = book.id", array("id" => $id));
-//        $data = $query->fetchAll(); // un seul résultat au maximum
-//        if ($query->rowCount() == 0) {
-//            return false;
-//        } else {
-//            $result[] = new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
-//        }
-//    }
-//    
 
     public static function get_user_by_id_rental_objet($user) {
         $query = self::execute("SELECT * FROM rental where user = :user", array("user" => $user));
@@ -177,17 +119,6 @@ class Rental extends Model {
             return new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
         }
     }
-
-//             public static function get_rental_by_id_user_objet($user) {
-//        $query = self::execute("SELECT * FROM rental where user = :user", array("user" => $user));
-//        $data = $query->fetch(); // un seul résultat au maximum
-//        if ($query->rowCount() == 0) {
-//            return false;
-//        } else {
-//            return new Rental($data["id"], $data["user"],$data["book"], $data["rentaldate"], $data["returndate"]);
-//        }
-//    }
-
 
     public function Select() {
         if (empty($this->rentaldate))
@@ -203,20 +134,13 @@ class Rental extends Model {
     }
 
     public function clear() {
-
-        //rentaldate="" car il s'agit de tout les livres pas encore loué.
         $query = self::execute("DELETE FROM rental where user=:user and  rentaldate is null", array('user' => $this->user));
     }
 
     public function rent() {
-
-
-
         if ($this->rentaldate == null)
             $this->rentaldate = date('Y-m-d H:i:s');
         self::execute("UPDATE rental SET user=:user, book=:book, rentaldate=:rentaldate, returndate=:returndate WHERE user=:user ", array("id" => $this->id, "user" => $this->user, "book" => $this->book, "rentaldate" => $this->rentaldate, "returndate" => $this->returndate));
-        // self::execute("UPDATE user SET username=:username, password=:password,fullname=:fullname, email=:email, birthdate=:birthdate,role=:role  WHERE id=:id ", array("id" => $this->id, "username" => $this->username, "password" => $this->hashed_password, "fullname" => $this->fullname, "email" => $this->email, "birthdate" => $this->birthdate, "role" => $this->role));
     }
 
-    // self::execute("INSERT INTO rental (user,book,rentaldate,returndate) VALUES(:id,:user,:book,:rentaldate,:returndate)", array("user" => $this->user, "book" => $this->book));
 }

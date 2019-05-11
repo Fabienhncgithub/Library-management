@@ -13,13 +13,7 @@
         
         
                 
-                <?php if($user->isAdmin($user->username)){
-                include('menuAdmin.html');
-                }
-              else{
-                    include('menu.html');            
-                  }
-        ?>
+
         
         
         
@@ -62,9 +56,8 @@
                 </table>
 
 
-                <input type="text" name="id" value=<?php echo $books->id ?> hidden>
+                <input type="hidden" name="id" value=<?php echo $books->id ?>>
                 <input type='submit' name = "id" value="<?php echo $id ?>" >
- <!--<input type='submit' value='edit'>-->
                 <input type="submit" name="cancel" value="cancel">
             </form>
             

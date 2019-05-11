@@ -36,7 +36,26 @@ class User extends Model {
         } catch (Exception $ex) {
             $ex->getUsers();
         }
-    }      
+    }
+    
+    
+    
+        public static function selection_member_by_all_not_selected($id) {
+        $result = [];
+        try {
+            $query = self::execute("SELECT * FROM user where id!=:id", array("id" => $id));
+            $datas = $query->fetchAll();
+            foreach ($datas as $data) {
+                $result[] = new User($data["id"], $data["username"], $data["password"], $data["fullname"], $data["email"], $data["birthdate"], $data["role"]);
+            }return $result;
+        } catch (Exception $ex) {
+            $ex->getUsers();
+        }
+    }
+    
+    
+    
+    
 
     public static function get_member_by_pseudo($username) {
         $query = self::execute("SELECT * FROM user where username = :username", array("username" => $username));

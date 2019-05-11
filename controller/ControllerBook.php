@@ -14,11 +14,12 @@ class ControllerBook extends Controller {
         $username = $user->username;
         $user = User::get_member_by_pseudo($username);
         $users = $user->id;
-
+        $id = $users;
         $books = Book::get_book_by_all();
-     
         $selections = Rental::get_book_by_id($users);
-        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
+        $members = User::selection_member_by_all_not_selected($id);
+   
+        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members));
     }
 
     public function search() {
@@ -46,7 +47,6 @@ class ControllerBook extends Controller {
         if (isset($_POST["details"])) {
 //            echo $_POST["details"];
             $books = Book::get_book_by_id($_POST["details"]);
-            // var_dump($books);
         }
         (new View("details"))->show(array("books" => $books, "user" => $user));
     }
@@ -210,5 +210,20 @@ class ControllerBook extends Controller {
         }
         (new View("add_book"))->show(array("isbn" => $isbn, "title" => $title, "author" => $author, "editor" => $editor, "picture" => $picture, "errors" => $errors));
     }
+    
+    
+     public function return_book() {
+        $user = Controller::get_user_or_redirect();
+        $username = $user->username;
+        $user = User::get_member_by_pseudo($username);
+        $users = $user->id;
+        $id = $users;
+        $books = Book::get_book_by_all();
+        $selections = Rental::get_book_by_id($users);
+        $members = User::selection_member_by_all_not_selected($id);
+   
+        (new View("return_book"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members));
+    }
+
 
 }

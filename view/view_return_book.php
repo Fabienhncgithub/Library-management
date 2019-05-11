@@ -23,7 +23,8 @@
         ?>
         
         <div class="main">
-            <form action="book/search_rental" method="post">
+            <form action="book/confirm" method="post">
+             <input type="hidden" name="book" value="radio">
                 <table>
                     <thead>
                         <tr>
@@ -31,28 +32,32 @@
                             <td>Member: <input id="member" name="member" type="text" ></td>
                             <td>Book: <input id="book" name="book" type="text"></td>
                             <td>Rental date: <input id="rental_date" name="rental_date" type="date"></td>
+                                         </tr>
+        
                             <td>State:
-                                <th><input id="state_open" name="state_open" type="radio"></th>
-                                <th><input id="state_returned" name="state_returned" type="radio"></th>
-                                <th><input id="state_all" name="state_all" type="radio"></th>
+                                <th><label>Open</label><input  name="open" type="radio"></th>
+                                <th><label>Returned</label><input  name="returned" type="radio"></th>
+                                <th><label>All</label><input name="all" type="radio"></th>
                             </td>
-                            <th><input type="submit" name="search"></th>
-                        </tr>
+                 
                 </table>
-            </form>
+                 <th><input type="submit" name="search"></th>
+<!--            </form>
             
             <form action="book/confirm" method="post">
-             <input type="hidden" name="book" value="<?php $books->id ?>">
+             <input type="hidden" name="book" value="radio">
             
-                <input type="radio"  name="confirm" value="1">
+                <input type="radio"  name="Open" value="open">
                 <label>Confirm</label>
-                <input type="radio"  name="confirm" value="0">
+                <input type="radio"  name="Returned" value="return">
+                <label>Cancel</label>
+                <input type="radio"  name="All" value="all">
                 <label>Cancel</label>
                 <br>
-                <input type='submit' value="Send">
-            </form>
+                        <th><input type="submit" name="search"></th>
+            </form>-->
             
-            <table>
+<!--            <table>
                 <thead>
                     <tr>
                         <th>ISBN</th>
@@ -96,7 +101,7 @@
                         <th>picture</th>
                         <th>action</th>
                     </tr>
-                </thead><br>
+                </thead><br>-->
         </div>
     </body>
 </html>

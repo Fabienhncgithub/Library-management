@@ -12,13 +12,13 @@
 
 
 
-        <?php
-        if ($user->isAdmin($user->username)) {
-            include('menuAdmin.html');
-        } else {
-            include('menu.html');
-        }
-        ?>
+ //       <?php
+ //       if ($user->isAdmin($user->username)) {
+ //           include('menuAdmin.html');
+ //       } else {
+ //           include('menu.html');
+ //       }
+   //     ?>
 
 
         <div class="main">
@@ -54,7 +54,7 @@
                         </td>
                     </tr>
                 </table>
-                <input type="submit" name="id" value="<?php echo $id ?>" >
+                <input type="hidden" name="id" value="<?php echo $id ?>" >
                 <input type='submit' value='edit'>
                 <input type="submit" name="cancel" value="cancel">
             </form>

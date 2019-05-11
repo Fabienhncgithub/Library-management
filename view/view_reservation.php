@@ -11,15 +11,15 @@
         <link href="styles.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-       <div class="title">Welcome <?= $user->username ?></div>
-     
-        
-                <?php if($user->isAdmin($user->username)){
-                include('menuAdmin.html');
-                }
-              else{
-                    include('menu.html');            
-                  }
+        <div class="title">Welcome <?= $user->username ?></div>
+
+
+        <?php
+        if ($user->isAdmin($user->username)) {
+            include('menuAdmin.html');
+        } else {
+            include('menu.html');
+        }
         ?>
         <div class="main">
             <form action="book/search" method="post">
@@ -157,14 +157,36 @@
                     <input type="submit" value="Add Book"  name="new">
                 </form>
 
+
+                <td>The basket is for:</td>
+                <td>                      
+                    <select id="role" name="rental_select" > 
+                        <option value=  <?= $user->username ? 'selected' : '' ?>><?= $user->username ?></option>
+                        <?php foreach ($members as $member): ?>
+                            <option value=  <?= $member->username ? 'selected' : '' ?>><?= $member->username ?></option>
+                        <?php endforeach; ?>   
+                </td>
+            </select>
+
+
+            <form class="button" action="rental/clear_basket_member" method="POST">               
+                <input type="submit" value="clear"  name="new">
+            </form>
+            <form class="button" action="rental/confirm_basket_member" method="POST">
+                <input type="submit" name="confirm">
+            </form> 
+
+
+        <?php endif; ?>
+        <?php if ($user->isMember($user->username)): ?>
+
             <form class="button" action="rental/clear_basket" method="POST">               
                 <input type="submit" value="clear"  name="new">
             </form>
             <form class="button" action="rental/confirm_basket" method="POST">
                 <input type="submit" name="confirm">
             </form>
-            <?php endif; ?>
-
-        </div>
-    </body>
+        <?php endif; ?>
+    </div>
+</body>
 </html>
