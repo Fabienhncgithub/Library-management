@@ -10,7 +10,7 @@
     <body>
         <div class="title">Create Book</div>
        
-
+       <?php include('menuAdmin.html');?>
         
         <div class="main">
             <form method="post" action="book/add_book">

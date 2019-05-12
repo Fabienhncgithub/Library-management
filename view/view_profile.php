@@ -11,7 +11,7 @@
         <div class="title">Welcome <?= $user->username ?></div>
      
         
-                <?php if($user->isAdmin($user->username)){
+                <?php if($user->isAdmin($user->username) || $user->isManager($user->username) ){
                 include('menuAdmin.html');
                 }
               else{

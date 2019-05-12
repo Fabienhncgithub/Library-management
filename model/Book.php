@@ -64,7 +64,6 @@ class Book extends Model {
     }
     
 
-
     public static function get_book_by_filter($search) {
         $result = [];
         try {
