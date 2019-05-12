@@ -134,19 +134,25 @@ class ControllerRental extends Controller {
 //        }
 //        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
 //    }
-//        public function user_choice(){
-//           $user = $this->get_user_or_redirect();
-//           
-//           $member= User::get_member_by_pseudo($_POST['rental_select']);
-//           
-//           
-//        $books = Book::get_book_not_rental_by_user($user);
-//       $selections = Rental::get_book_by_id($user);
-//                 
-//        
-//            
-//        (new View("reservation_member"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "member" => $member));
-//        }
+        public function user_choice(){
+//                  $user = Controller::get_user_or_redirect();
+//        $username = $user->username;
+//        $user = User::get_member_by_pseudo($username);
+//        var_dump($user);
+              $user = Controller::get_user_or_redirect();
+            $users = $user->id;
+           $member= User::get_member_by_pseudo($_POST['rental_select']);
+           $member = $member->id;
+           var_dump($member);
+           
+        $books = Book::get_book_not_rental_by_user($users);
+       $selections = Rental::get_book_by_user($member);
+       var_dump($selections);
+                 
+        
+            
+        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
+        }
 
 
     public function return_book() {
