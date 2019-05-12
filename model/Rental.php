@@ -55,10 +55,8 @@ class Rental extends Model {
             $ex->getMessage();
         }
     }
-    
-    
-    
-        public static function get_book_not_rental_by_user($user) {
+
+    public static function get_book_not_rental_by_user($user) {
         $result = [];
         try {
             $query = self::execute("SELECT * FROM book join rental on book.id=rental.book join user on rental.user=user.id  WHERE user =:user", array("user" => $user));
@@ -71,9 +69,6 @@ class Rental extends Model {
             $ex->getMessage();
         }
     }
-    
-    
-
 
     public static function get_rental_by_user($id) {
         $result = [];
@@ -88,10 +83,7 @@ class Rental extends Model {
         }
     }
 
-    
-    
-    
-        public static function get_rental_by_profile($id) {
+    public static function get_rental_by_profile($id) {
         $result = [];
         try {
             $query = self::execute("SELECT rentaldate,returndate,title FROM `rental` join book on book.id=rental.book where user =:user", array("user" => $id));
@@ -103,9 +95,6 @@ class Rental extends Model {
             $ex->getMessage();
         }
     }
-    
-    
-    
 
     public static function get_rental_by_book($id) {
         $result = [];
@@ -146,9 +135,8 @@ class Rental extends Model {
         }
     }
 
-
     public static function get_user_by_id_rental_objet($user) {
-        $query = self::execute("SELECT * FROM rental where user = :user", array("user" => $user));
+        $query = self::execute("SELECT * FROM rental where user = :user ", array("user" => $user));
         $data = $query->fetch(); // un seul résultat au maximum
         if ($query->rowCount() == 0) {
             return false;
@@ -156,6 +144,20 @@ class Rental extends Model {
             return new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
         }
     }
+    
+        public static function get_rental_by_user_objet($user) {
+        $query = self::execute("SELECT * FROM rental where user = :user and rentaldate is null", array("user" => $user));
+        $data = $query->fetch(); // un seul résultat au maximum
+        if ($query->rowCount() == 0) {
+            return false;
+        } else {
+            return new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
+        }
+    }
+    
+    
+    
+    
 
     public function Select() {
         if (empty($this->rentaldate))
@@ -177,10 +179,18 @@ class Rental extends Model {
     public function rent() {
         if ($this->rentaldate == null)
             $this->rentaldate = date('Y-m-d H:i:s');
-        self::execute("UPDATE rental SET user=:user, book=:book, rentaldate=:rentaldate, returndate=:returndate WHERE user=:user ", array("id" => $this->id, "user" => $this->user, "book" => $this->book, "rentaldate" => $this->rentaldate, "returndate" => $this->returndate));
+        self::execute("UPDATE  rental SET user=:user, book=:book, rentaldate=:rentaldate, returndate=:returndate WHERE user=:user and rentaldate is null", array("id" => $this->id, "user" => $this->user, "book" => $this->book, "rentaldate" => $this->rentaldate, "returndate" => $this->returndate));
     }
-    
 
+    public static function get_rental_by_filter($book) {
 
+        $query = self::execute("SELECT * FROM rental join book on rental.book=book.id where title LIKE :book", array(":book" => "%" . $book . "%"));
+        $data = $query->fetch(); // un seul résultat au maximum
+        if ($query->rowCount() == 0) {
+            return false;
+        } else {
+            return new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
+        }
+    }
 
 }
