@@ -91,20 +91,15 @@ class ControllerBook extends Controller {
     }
 
     public function delete() {
-        echo '0';
+       
         $books = new Book();
         $user = $this->get_user_or_redirect();
         if ($user->isAdmin()) {
-            echo '1';
             if (isset($_POST['id_book'])) {
-                echo '2';
                 $errors = user::validate_admin($user->username);
                 if (empty($errors)) {
-                    echo '3';
-                    $books->id = $_POST['id_book'];
-                    //$books = $_POST['id_book'];
-                    //recevoir un titre et envoyer id
-                    var_dump($books);
+                    $books = $_POST['id_book'];
+                    $books = Book::get_member_by_object_id($books);
                 }
             }
         }

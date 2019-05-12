@@ -8,8 +8,11 @@
         <link href="css/styles.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-        <div class="title">Confirm</div>
-        <?php echo $user->username; ?>
+      <div class="title">Confirmation page <?= $user->username ?></div>
+         <br>Désirez vous vraiment supprimer ce livre?<br>
+            <br><br>
+        <?php echo $books->title; ?>
+      <br><br>
         <div class="confirm">
             <form action='book/confirm_delete' method="POST">
                 <input type="text" name="idbook" value="<?php echo $books->id ?>" hidden>
@@ -17,7 +20,7 @@
                 <label>Confirm</label>
                 <input type="radio"  name="confirm" value="0">
                 <label>Cancel</label>
-                <br>
+                <br><br>
                 <input type='submit' value="Send">
             </form>
         </div>
