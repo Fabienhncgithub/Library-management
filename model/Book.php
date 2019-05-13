@@ -248,7 +248,18 @@ class Book extends Model {
     }
     
     
+            public static function get_book_not_rental_by_member($user) {
+        $result = [];
+        try {
+            $query = self::execute("SELECT * FROM book  where book.id not in (select rental.book from rental join user on rental.user=user.id where rental.user=:user)", array("user" => $user));
+            
+            $datas = $query->fetchAll();
+            foreach ($datas as $data) {
+            $result[] = new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
+            }return $result;
+        } catch (Exception $ex) {
+            $ex->getMessage();
+        }
     
-    
-
+            }
 }

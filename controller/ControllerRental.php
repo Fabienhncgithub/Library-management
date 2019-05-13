@@ -139,7 +139,9 @@ class ControllerRental extends Controller {
         $users = $user->id;
         $members = User::get_member_by_pseudo($_POST['rental_select']);
         $member = $members->id;
-        $books = Book::get_book_not_rental_by_user($member);
+        var_dump($member);  
+        $books = Book::get_book_not_rental_by_member($member);
+        var_dump($books);
         $selections = Rental::get_book_by_user($member);
         $members = User::selection_member_by_all_not_selected($users);
         var_dump($member);

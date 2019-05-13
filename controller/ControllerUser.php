@@ -73,6 +73,11 @@ class ControllerUser extends Controller {
         (new View("users"))->show(array("user" => $user, "users" => $users));
     }
 
+    
+    
+    
+    
+    
     public function add_user() {
         $id = null;
         $user = $this->get_user_or_redirect();
