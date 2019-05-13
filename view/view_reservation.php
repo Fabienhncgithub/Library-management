@@ -12,6 +12,7 @@
     </head>
     <body>
         <div class="title">Welcome <?= $user->username ?></div>
+     
 
 
         <?php
@@ -79,6 +80,7 @@
                         <td>
                             <form   action='rental/selection' method='post'>
                                 <input type='hidden' name='selection' value='<?= $book->id ?>' >
+                                 <input type='hidden' name='selections' value='<?= $smember->username ?>' >
                                 <input type='submit' value='selection'>
                             </form>
                         </td>
@@ -95,7 +97,7 @@
 
             <?php endif; ?>
             
-            
+                <div class="title">Basket of  <?= $smember->username ?></div>
       
 
 
@@ -161,6 +163,7 @@
                         <td>
                             <form   action='rental/deselection' method='post'>
                                 <input type='hidden' name='deselection' value='<?= $selection->id ?>' >
+                                
                                 <input type='submit' value='deselection'>
                             </form>
                         </td>
@@ -169,8 +172,6 @@
                         </tbody>
             </table>
 
-
-
             <?php if ($user->isAdmin($user->username)): ?>
             
              <form class="button" action="rental/user_choice" method="POST">
@@ -178,7 +179,7 @@
                 <td>The basket is for:</td>
                 <td>                      
                     <select id="member" name="rental_select" value="rental_select" > 
-                        <option value=  <?= $user->username ?  : '' ?>><?= $user->username ?></option>
+                       <!--<option value=  <?= $user->username ?  : '' ?>><?= $user->username ?></option>-->
                         <?php foreach ($members as $member): ?>
                             <option value=  <?= $member->username ?  : '' ?>><?= $member->username ?></option>
                         <?php endforeach; ?>   

@@ -31,23 +31,38 @@ class ControllerRental extends Controller {
     public function selection() {
         $user = $this->get_user_or_redirect();
 
-        if (isset($_POST['selection'])) {
+
+
+        if (isset($_POST['selection'])&& (isset($_POST['selections']))) {
+
+
+            var_dump($_POST['selection']);
+            var_dump($_POST['selections']);
+            $smember = User::get_member_by_pseudo($_POST['selections']);
+            $idsmember = $smember->id;
+            var_dump($idsmember);
+
             $username = $user->username;
             $user = User::get_member_by_pseudo($username);
             $user = $user->id;
+            $members = User::selection_member_by_all_not_selected($idsmember);
             $rentaldate = '';
             $returndate = '';
             $books = Book::get_book_by_all();
             $book = $_POST["selection"];
-            $rental = new Rental('', $user, $book, $rentaldate, $returndate);
+            
+            
+            
+            $rental = new Rental('', $idsmember, $book, $rentaldate, $returndate);
             $rental->Select();
-            $rentalbooks = Rental::get_rental_by_user($user);
+            
+            $rentalbooks = Rental::get_rental_by_user($idsmember);
             $id = $rental->book;
             $selections = Rental::get_book_by_id($id);
             $user = $this->get_user_or_redirect();
-            $this->redirect("book", "index");
+            $members = User::selection_member_by_all_not_selected($id);
         }
-        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members));
+        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
     }
 
     public function deselection() {
@@ -101,7 +116,7 @@ class ControllerRental extends Controller {
         $user = User::get_member_by_pseudo($username);
         $user = $user->id;
         $rental = Rental::get_user_by_id_rental_objet($user);
-        
+
         $rental->rent();
         $books = Book::get_book_by_all();
         $selections = Rental::get_book_by_user($user);
@@ -111,12 +126,7 @@ class ControllerRental extends Controller {
 //        public function selection_member() {
 //        $user = $this->get_user_or_redirect();
 //        if (isset($_POST['rental_select'])) {
-//            
-//            
 //            var_dump($_POST['rental_select']);
-//            
-//            
-//            
 //            $username = $user->username;
 //            $user = User::get_member_by_pseudo($username);
 //            $user = $user->id;
@@ -136,17 +146,18 @@ class ControllerRental extends Controller {
 //    }
     public function user_choice() {
         $user = Controller::get_user_or_redirect();
-        $users = $user->id;
-        $members = User::get_member_by_pseudo($_POST['rental_select']);
-        $member = $members->id;
-        var_dump($member);  
-        $books = Book::get_book_not_rental_by_member($member);
-        var_dump($books);
-        $selections = Rental::get_book_by_user($member);
-        $members = User::selection_member_by_all_not_selected($users);
-        var_dump($member);
-
-        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members));
+        if (isset($_POST['rental_select'])) {
+            $this->redirect("rental", "user_choice", $_POST["rental_select"]);
+        }
+        if (isset($_GET['param1'])) {
+            $username = $_GET['param1'];
+            $smember = User::get_member_by_pseudo($username);
+            $idmember = $smember->id;
+            $books = Book::get_book_not_rental_by_member($idmember);
+            $selections = Rental::get_book_by_user($idmember);
+            $members = User::selection_member_by_all_not_selected($idmember);
+        }
+        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
     }
 
     public function return_book() {
