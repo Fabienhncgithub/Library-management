@@ -31,35 +31,23 @@ class ControllerRental extends Controller {
     public function selection() {
         $user = $this->get_user_or_redirect();
 
-
-
         if (isset($_POST['selection'])&& (isset($_POST['selections']))) {
-
-
-            var_dump($_POST['selection']);
-            var_dump($_POST['selections']);
             $smember = User::get_member_by_pseudo($_POST['selections']);
             $idsmember = $smember->id;
-            var_dump($idsmember);
-
             $username = $user->username;
             $user = User::get_member_by_pseudo($username);
             $user = $user->id;
             $members = User::selection_member_by_all_not_selected($idsmember);
             $rentaldate = '';
             $returndate = '';
-            $books = Book::get_book_by_all();
+            $books = Book::get_book_not_rental_by_member($idsmember);
             $book = $_POST["selection"];
-            
-            
-            
             $rental = new Rental('', $idsmember, $book, $rentaldate, $returndate);
             $rental->Select();
-            
             $rentalbooks = Rental::get_rental_by_user($idsmember);
             $id = $rental->book;
-            $selections = Rental::get_book_by_id($id);
-            $user = $this->get_user_or_redirect();
+           $selections = Rental::get_book_by_user($idsmember);
+           $user = $this->get_user_or_redirect();
             $members = User::selection_member_by_all_not_selected($id);
         }
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
