@@ -31,7 +31,7 @@ class ControllerRental extends Controller {
     public function selection() {
         $user = $this->get_user_or_redirect();
 
-        if (isset($_POST['selection'])&& (isset($_POST['selections']))) {
+        if (isset($_POST['selection']) && (isset($_POST['selections']))) {
             $smember = User::get_member_by_pseudo($_POST['selections']);
             $idsmember = $smember->id;
             $username = $user->username;
@@ -46,24 +46,40 @@ class ControllerRental extends Controller {
             $rental->Select();
             $rentalbooks = Rental::get_rental_by_user($idsmember);
             $id = $rental->book;
-           $selections = Rental::get_book_by_user($idsmember);
-           $user = $this->get_user_or_redirect();
-            $members = User::selection_member_by_all_not_selected($id);
+            $selections = Rental::get_book_by_user($idsmember);
+            $user = $this->get_user_or_redirect();
+            $members = User::selection_member_by_all_not_selected($idsmember);
         }
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
     }
 
     public function deselection() {
         $user = $this->get_user_or_redirect();
-        if (isset($_POST['deselection'])) {
-            $id = $_POST['deselection'];
+        if (isset($_POST['deselection']) && ($_POST['sdeselection'])) {
+            
+            var_dump(($_POST['deselection']));
+             var_dump(($_POST['sdeselection']));
+            
+            $smember = User::get_member_by_pseudo($_POST['sdeselection']);
+            $idsmember = $smember->id;
+            $username = $user->username;
+            $user = User::get_member_by_pseudo($username);
+          //  $user = $user->id;
+            $members = User::selection_member_by_all_not_selected($idsmember);
+
+            $id = ($_POST['deselection']);
+            var_dump($id);
+            var_dump($idsmember);
             $idrental = Rental::get_rental_by_id_objet($id);
-            $idrental->Deselect();
-            $books = Book::get_book_by_all();
-            $selections = Rental::get_book_by_id($id);
-            $this->redirect("book", "index");
+            var_dump($idrental);            
+         //   $idrental = Rental::get_rental_by_member_book($id);
+         //     var_dump($idrental);
+        //  $idrental->Deselect();
+            $books = Book::get_book_not_rental_by_member($idsmember);
+            $selections = Rental::get_book_by_user($idsmember);
+            $user = $this->get_user_or_redirect();
         }
-        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
+        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
     }
 
     public function clear_basket() {

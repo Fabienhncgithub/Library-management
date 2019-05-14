@@ -12,7 +12,7 @@
     </head>
     <body>
         <div class="title">Welcome <?= $user->username ?></div>
-     
+
 
 
         <?php
@@ -80,7 +80,7 @@
                         <td>
                             <form   action='rental/selection' method='post'>
                                 <input type='hidden' name='selection' value='<?= $book->id ?>' >
-                                 <input type='hidden' name='selections' value='<?= $smember->username ?>' >
+                                <input type='hidden' name='selections' value='<?= $smember->username ?>' >
                                 <input type='submit' value='selection'>
                             </form>
                         </td>
@@ -96,110 +96,112 @@
                 </form>
 
             <?php endif; ?>
-            
-                <div class="title">Basket of  <?= $smember->username ?></div>
-      
+
+            <div class="title">Basket of  <?= $smember->username ?></div>
+
 
 
             Basket of books to rent
             <br>
             <table>
-                  <thead>
-                <tr>
-                    <th>ISBN</th>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Editor</th>
-                    <th>action</th>
-                </tr>
-                  </thead>
-        <tbody>
-                <!--            selection est un ensemble de pré-réservation
-                                en appuyant sur selection on ajoute au panier de l'utilisateur courant/séléctionné
-                                une pré-réservation pour un livre dont la date de début est null-->
-
-                <?php foreach ($selections as $selection): ?>
-
+                <thead>
                     <tr>
-                        <td><?= $selection->isbn ?></td>
-                        <td><?= $selection->title ?></td>
-                        <td><?= $selection->author ?></td>
-                        <td><?= $selection->editor ?></td>
-                        <td>
-                            <?php if ($user->isAdmin($user->username)): ?>
-                                <form  action='book/edit' method='post'>
-                                    <input type='hidden' name='edit' value='<?= $selection->id ?>'>
-                                    <input type='submit' value='edit'>
-                                </form>
-                            <?php endif; ?>
-                        </td>
-
-                        <td>
-                            <?php if ($user->isAdmin($user->username)): ?>
-                                <form  action='book/delete' method='post'>
-                                    <input type='hidden' name='id_book' value='<?= $selection->id ?>'>
-                                    <input type='submit' value='delete'>
-                                </form>
-                            <?php endif; ?>
-                        </td>
-
-                        <td>
-                            <?php if ($user->isManager($user->username)): ?>
-                                <form  action='book/details' method='post'>
-                                    <input type='hidden' name='details' value='<?= $selection->id ?>'>
-                                    <input type='submit' value='details'>
-                                </form>
-                            <?php endif; ?>
-                        </td>
-
-                        <td>
-                            <?php if ($user->isManager($user->username)): ?>
-                                <form  action='book/details' method='post'>
-                                    <input type='hidden' name='details' value='<?= $book->id ?>'>
-                                    <input type='submit' value='details'>
-                                </form>
-                            <?php endif; ?>
-                        </td>
-                        <td>
-                            <form   action='rental/deselection' method='post'>
-                                <input type='hidden' name='deselection' value='<?= $selection->id ?>' >
-                                
-                                <input type='submit' value='deselection'>
-                            </form>
-                        </td>
+                        <th>ISBN</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Editor</th>
+                        <th>action</th>
                     </tr>
-                <?php endforeach; ?>
-                        </tbody>
+                </thead>
+                <tbody>
+                    <!--            selection est un ensemble de pré-réservation
+                                    en appuyant sur selection on ajoute au panier de l'utilisateur courant/séléctionné
+                                    une pré-réservation pour un livre dont la date de début est null-->
+
+                    <?php foreach ($selections as $selection): ?>
+
+                        <tr>
+                            <td><?= $selection->isbn ?></td>
+                            <td><?= $selection->title ?></td>
+                            <td><?= $selection->author ?></td>
+                            <td><?= $selection->editor ?></td>
+                            <td>
+                                <?php if ($user->isAdmin($user->username)): ?>
+                                    <form  action='book/edit' method='post'>
+                                        <input type='hidden' name='edit' value='<?= $selection->id ?>'>
+                                        <input type='submit' value='edit'>
+                                    </form>
+                                <?php endif; ?>
+                            </td>
+
+                            <td>
+                                <?php if ($user->isAdmin($user->username)): ?>
+                                    <form  action='book/delete' method='post'>
+                                        <input type='hidden' name='id_book' value='<?= $selection->id ?>'>
+                                        <input type='submit' value='delete'>
+                                    </form>
+                                <?php endif; ?>
+                            </td>
+
+                            <td>
+                                <?php if ($user->isManager($user->username)): ?>
+                                    <form  action='book/details' method='post'>
+                                        <input type='hidden' name='details' value='<?= $selection->id ?>'>
+                                        <input type='submit' value='details'>
+                                    </form>
+                                <?php endif; ?>
+                            </td>
+
+                            <td>
+                                <?php if ($user->isManager($user->username)): ?>
+                                    <form  action='book/details' method='post'>
+                                        <input type='hidden' name='details' value='<?= $selection->id ?>'>
+                                        <input type='submit' value='details'>
+                                    </form>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <form   action='rental/deselection' method='post'>
+                                    <input type='hidden' name='deselection' value='<?= $selection->id ?>' >
+                                    
+                                    <input type='hidden' name='sdeselection' value='<?= $smember->username ?>' >
+
+                                    <input type='submit' value='deselection'>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
             </table>
 
             <?php if ($user->isAdmin($user->username)): ?>
-            
-             <form class="button" action="rental/user_choice" method="POST">
-            
-                <td>The basket is for:</td>
-                <td>                      
-                    <select id="member" name="rental_select" value="rental_select" > 
-                       <!--<option value=  <?= $user->username ?  : '' ?>><?= $user->username ?></option>-->
-                        <?php foreach ($members as $member): ?>
-                            <option value=  <?= $member->username ?  : '' ?>><?= $member->username ?></option>
-                        <?php endforeach; ?>   
-                </td>
-            </select>
-                <input type="submit" value="Valider user"   name="new">
-            </form>    
+
+                <form class="button" action="rental/user_choice" method="POST">
+
+                    <td>The basket is for:</td>
+                    <td>                      
+                        <select id="member" name="rental_select" value="rental_select" > 
+                           <!--<option value=  <?= $user->username ?: '' ?>><?= $user->username ?></option>-->
+                            <?php foreach ($members as $member): ?>
+                                <option value=  <?= $member->username ?: '' ?>><?= $member->username ?></option>
+                            <?php endforeach; ?>   
+                    </td>
+                    </select>
+                    <input type="submit" value="Valider user"   name="new">
+                </form>    
 
 
-        <?php endif; ?>
+            <?php endif; ?>
 
-        <form class="button" action="rental/clear_basket" method="POST">               
-            <input type="submit" value="Effacer rental"   name="new">
-        </form>
-        <form class="button" action="rental/confirm_basket" method="POST">
-            <input type="submit" name="Save rental" value="Save rental" >
-        </form> 
+            <form class="button" action="rental/clear_basket" method="POST">               
+                <input type="submit" value="Effacer rental"   name="new">
+            </form>
+            <form class="button" action="rental/confirm_basket" method="POST">
+                <input type="submit" name="Save rental" value="Save rental" >
+            </form> 
 
 
 
-    </div>
-</body>
+        </div>
+    </body>
 </html>

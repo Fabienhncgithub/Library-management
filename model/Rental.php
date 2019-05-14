@@ -41,6 +41,19 @@ class Rental extends Model {
             return new Rental($data["id"], $data["book"], $data["user"], $data["rentaldate"], $data["returndate"]);
         }
     }
+    
+    public static function get_rental_by_member_book($id){
+        
+        $query = self::execute("SELECT * FROM `rental` where rental.book =:id", array("id" => $id));
+        $data = $query->fetch(); // un seul résultat au maximum
+        if ($query->rowCount() == 0) {
+            return false;
+        } else {
+            return new Rental($data["id"], $data["book"], $data["user"], $data["rentaldate"], $data["returndate"]);
+        }
+    }
+        
+    
 
     public static function get_book_by_user($user) {
         $result = [];
