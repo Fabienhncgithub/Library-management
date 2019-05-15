@@ -197,7 +197,6 @@ class Rental extends Model {
     }
     
     
-    
 
     public function Select() {
         if (empty($this->rentaldate))
@@ -244,7 +243,11 @@ class Rental extends Model {
     }
     
     
-    
+        public function returndate($id,$user,$book,$rentaldate,$returndate) {
+        self::execute("UPDATE rental SET id=:id,user=:user, book=:book, rentaldate=:rentaldate, returndate=:returndate WHERE id=:id", array(':id' => $id,':user' => $user, ':book' => $book,':rentaldate' => $rentaldate,':returndate' => $returndate));
+        
+        }
     
 
+    
 }

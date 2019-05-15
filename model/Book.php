@@ -273,7 +273,7 @@ class Book extends Model {
 //    }
 
     public static function get_book_by_user_book($user,$book) {
-                  $query = self::execute("SELECT * FROM book join rental on book.id=rental.book join user on rental.user=user.id  WHERE rental.user =:user and rental.book =:book", array("user" => $user,"book" => $book));
+        $query = self::execute("SELECT * FROM book join rental on book.id=rental.book join user on rental.user=user.id  WHERE rental.user =:user and rental.book =:book", array("user" => $user,"book" => $book));
         $data = $query->fetch(); // un seul résultat au maximum
         if ($query->rowCount() == 0) {
             return false;
@@ -281,5 +281,16 @@ class Book extends Model {
             return  new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
         }
     }
+    
+        public static function get_book_by_id_rental($id) {
+        $query = self::execute("SELECT * FROM book join rental on book.id=rental.book WHERE rental.id =:id", array("id" => $id));
+        $data = $query->fetch(); // un seul résultat au maximum
+        if ($query->rowCount() == 0) {
+            return false;
+        } else {
+            return  new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
+        }
+    }
+    
 
 }

@@ -12,7 +12,7 @@
 
 
 
- //       <?php
+        <?php
  //       if ($user->isAdmin($user->username)) {
  //           include('menuAdmin.html');
  //       } else {

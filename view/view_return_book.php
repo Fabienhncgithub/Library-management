@@ -61,7 +61,7 @@
                     <td><?= $return->book ?></td>
                      <td><?= $return->returndate ?></td>
                                              <td>
-                            <?php if ($user->isAdmin($user->username)): ?>
+                         <?php if ($user->isAdmin() || $user->isManager()): ?>
                                 <form  action='book/delete' method='post'>
                                     <input type='hidden' name='id_book' value='<?= $return->id ?>'>
                                     <input type='submit' value='delete'>
@@ -70,10 +70,10 @@
                         </td>
 
                         <td>
-                            <?php if ($user->isAdmin($user->username)): ?>
-                                <form  action='book/details' method='post'>
-                                    <input type='hidden' name='details' value='<?= $return->id ?>'>
-                                    <input type='submit' value='details'>
+                              <?php if ($user->isAdmin() || $user->isManager()): ?>
+                                <form  action='rental/return_rental' method='post'>
+                                    <input type='hidden' name='return' value='<?= $return->id ?>'>
+                                    <input type='submit' value='return'>
                                 </form>
                             <?php endif; ?>
                         </td>
@@ -86,3 +86,4 @@
         </div>
     </body>
 </html>
+                  
