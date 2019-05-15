@@ -47,9 +47,7 @@ class Book extends Model {
             $ex->getMessage();
         }
     }
-    
-    
-    
+
     public static function get_book_by_all_not_rental() {
         $result = [];
         try {
@@ -62,7 +60,6 @@ class Book extends Model {
             $ex->getMessage();
         }
     }
-    
 
     public static function get_book_by_filter($search) {
         $result = [];
@@ -112,10 +109,18 @@ class Book extends Model {
             return new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
         }
     }
-    
-    
-    
-        public static function get_book_by_only_id($id) {
+
+    public static function get_member_by_object_title($title) {
+        $query = self::execute("SELECT * FROM book where title = :title", array("title" => $title));
+        $data = $query->fetch(); // un seul résultat au maximum
+        if ($query->rowCount() == 0) {
+            return false;
+        } else {
+            return new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
+        }
+    }
+
+    public static function get_book_by_only_id($id) {
         $query = self::execute("SELECT * FROM book where id = :id", array("id" => $id));
         $data = $query->fetch(); // un seul résultat au maximum
         if ($query->rowCount() == 0) {
@@ -124,9 +129,6 @@ class Book extends Model {
             return new Book($data["id"]);
         }
     }
-    
-    
-    
 
     public static function get_book_by_all_not_selected($id) {
         $result = [];
@@ -166,7 +168,7 @@ class Book extends Model {
 
     //renvoie un tableau d'erreur(s) 
     //le tableau est vide s'il n'y a pas d'erreur.
-    
+
     public static function validate_photo($file) {
         $errors = [];
         if (isset($file['name']) && $file['name'] != '') {
@@ -231,35 +233,53 @@ class Book extends Model {
         }
         return $errors;
     }
-    
-        
-        public static function get_book_not_rental_by_user($user) {
+
+    public static function get_book_not_rental_by_user($user) {
         $result = [];
         try {
             $query = self::execute("SELECT * FROM book  where book.id not in (select rental.book from rental join user on rental.user=user.id where rental.user=user.id)", array("user" => $user));
 
             $datas = $query->fetchAll();
             foreach ($datas as $data) {
-            $result[] = new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
+                $result[] = new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
             }return $result;
         } catch (Exception $ex) {
             $ex->getMessage();
         }
     }
-    
-    
-            public static function get_book_not_rental_by_member($user) {
+
+    public static function get_book_not_rental_by_member($user) {
         $result = [];
         try {
             $query = self::execute("SELECT * FROM book  where book.id not in (select rental.book from rental join user on rental.user=user.id where rental.user=:user)", array("user" => $user));
-            
+
             $datas = $query->fetchAll();
             foreach ($datas as $data) {
-            $result[] = new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
+                $result[] = new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
             }return $result;
         } catch (Exception $ex) {
             $ex->getMessage();
         }
-    
-            }
+    }
+
+//    public static function get_book_by_only_id($id) {
+//        $query = self::execute("SELECT * FROM book where id = :id", array("id" => $id));
+//        $data = $query->fetch(); // un seul résultat au maximum
+//        if ($query->rowCount() == 0) {
+//            return false;
+//        } else {
+//            return new Book($data["id"]);
+//        }
+//    }
+
+    public static function get_book_by_user_book($user,$book) {
+                  $query = self::execute("SELECT * FROM book join rental on book.id=rental.book join user on rental.user=user.id  WHERE rental.user =:user and rental.book =:book", array("user" => $user,"book" => $book));
+        $data = $query->fetch(); // un seul résultat au maximum
+        if ($query->rowCount() == 0) {
+            return false;
+        } else {
+            return  new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
+        }
+    }
+
 }

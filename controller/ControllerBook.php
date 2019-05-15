@@ -14,13 +14,13 @@ class ControllerBook extends Controller {
         $username = $user->username;
         $user = User::get_member_by_pseudo($username);
         $users = $user->id;
-        $id = $users;
         $books = Book::get_book_not_rental_by_member($users);
         $selections = Rental::get_book_by_user($users);
+        $id = $users;
         $members = User::selection_member_by_all_not_selected($id);
         $smember = $user;
-        
-        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members,  "smember" => $smember));
+
+        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
     }
 
     public function search() {
@@ -93,7 +93,7 @@ class ControllerBook extends Controller {
     }
 
     public function delete() {
-       
+
         $books = new Book();
         $user = $this->get_user_or_redirect();
         if ($user->isAdmin()) {
@@ -206,9 +206,8 @@ class ControllerBook extends Controller {
         }
         (new View("add_book"))->show(array("isbn" => $isbn, "title" => $title, "author" => $author, "editor" => $editor, "picture" => $picture, "errors" => $errors));
     }
-    
-    
-     public function return_book() {
+
+    public function return_book() {
         $user = Controller::get_user_or_redirect();
         $username = $user->username;
         $user = User::get_member_by_pseudo($username);
@@ -217,9 +216,8 @@ class ControllerBook extends Controller {
         $books = Book::get_book_by_all();
         $selections = Rental::get_book_by_id($users);
         $members = User::selection_member_by_all_not_selected($id);
-   
+
         (new View("return_book"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members));
     }
-
 
 }

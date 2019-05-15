@@ -42,6 +42,7 @@ class ControllerRental extends Controller {
             $returndate = '';
             $books = Book::get_book_not_rental_by_member($idsmember);
             $book = $_POST["selection"];
+            
             $rental = new Rental('', $idsmember, $book, $rentaldate, $returndate);
             $rental->Select();
             $rentalbooks = Rental::get_rental_by_user($idsmember);
@@ -56,25 +57,15 @@ class ControllerRental extends Controller {
     public function deselection() {
         $user = $this->get_user_or_redirect();
         if (isset($_POST['deselection']) && ($_POST['sdeselection'])) {
-            
-            var_dump(($_POST['deselection']));
-             var_dump(($_POST['sdeselection']));
-            
             $smember = User::get_member_by_pseudo($_POST['sdeselection']);
             $idsmember = $smember->id;
+           $book = Book::get_member_by_object_title($_POST['deselection']);
+           $book = $book->id;
+           $rental = Rental::get_rental_by_user_book($idsmember,$book);
             $username = $user->username;
             $user = User::get_member_by_pseudo($username);
-          //  $user = $user->id;
             $members = User::selection_member_by_all_not_selected($idsmember);
-
-            $id = ($_POST['deselection']);
-            var_dump($id);
-            var_dump($idsmember);
-            $idrental = Rental::get_rental_by_id_objet($id);
-            var_dump($idrental);            
-         //   $idrental = Rental::get_rental_by_member_book($id);
-         //     var_dump($idrental);
-        //  $idrental->Deselect();
+            $rental->Deselect();
             $books = Book::get_book_not_rental_by_member($idsmember);
             $selections = Rental::get_book_by_user($idsmember);
             $user = $this->get_user_or_redirect();

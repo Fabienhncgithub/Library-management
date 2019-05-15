@@ -162,7 +162,7 @@
                             </td>
                             <td>
                                 <form   action='rental/deselection' method='post'>
-                                    <input type='hidden' name='deselection' value='<?= $selection->id ?>' >
+                                    <input type='hidden' name='deselection' value='<?= $selection->title ?>' >
                                     
                                     <input type='hidden' name='sdeselection' value='<?= $smember->username ?>' >
 
