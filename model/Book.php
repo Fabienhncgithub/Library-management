@@ -292,5 +292,10 @@ class Book extends Model {
         }
     }
     
+        public static function get_username_by_id($id) {
+        $query = self::execute("SELECT title FROM book where id=:id", array("id"=>$id));
+        $data = $query->fetch();
+        return $data[0];
+    }
 
 }

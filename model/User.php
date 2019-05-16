@@ -117,11 +117,15 @@ class User extends Model {
         return $results;
     }
     
-      public static function get_username_by_id($id) {
-        $query = self::execute("SELECT title FROM book where id=:id", array("id"=>$id));
+  
+    
+          public static function get_user_by_id($id) {
+        $query = self::execute("SELECT username FROM user where id=:id", array("id"=>$id));
         $data = $query->fetch();
         return $data[0];
     }
+    
+    
 
     //renvoie un tableau d'erreur(s) 
     //le tableau est vide s'il n'y a pas d'erreur.

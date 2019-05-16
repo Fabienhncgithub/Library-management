@@ -9,11 +9,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="styles.css" rel="stylesheet" type="text/css"/>
         <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
-         <script src="lib/fullcalendar-scheduler-4.1.0/packages/moment/main.js" type="text/javascript"></script>
+        <script src="lib/fullcalendar-scheduler-4.1.0/packages/moment/main.js" type="text/javascript"></script>
         <script src="lib/fullcalendar-scheduler-4.1.0/packages/core/main.js" type="text/javascript"></script> 
-         <script src="lib/fullcalendar-scheduler-4.1.0/packages/interaction/main.js" type="text/javascript"></script>
+        <script src="lib/fullcalendar-scheduler-4.1.0/packages/interaction/main.js" type="text/javascript"></script>
         <script src="lib/fullcalendar-scheduler-4.1.0/packages/timeline/main.js" type="text/javascript"></script>
-         <script src="lib/fullcalendar-scheduler-4.1.0/packages/resource-common/main.js" type="text/javascript"></script>
+        <script src="lib/fullcalendar-scheduler-4.1.0/packages/resource-common/main.js" type="text/javascript"></script>
         <script src="lib/fullcalendar-scheduler-4.1.0/packages/resource-timeline/main.js" type="text/javascript"></script>
     </head>
     <body>
@@ -35,7 +35,7 @@
                     scrollTime: '08:00',
                     aspectRatio: 1.5,
                     views: {
-                        
+
                         resourceTimelineDay: {
                             buttonText: ':today',
                             slotDuration: {days: 1}
@@ -45,8 +45,8 @@
                             duration: {days: 7},
                             buttonText: 'week'
                         }
-                        
-                        
+
+
                     },
                     editable: true,
                     resourceLabelText: 'Return',
@@ -104,8 +104,8 @@
                         <?php foreach ($returns as $return): ?>
                             <tr>
                                 <td><?= $return->rentaldate ?></td>
-                                <td><?= $return->user ?></td>
-                                <td><?= $return->book ?></td>
+                             <td><?= User::get_user_by_id($return->user) ?></td>
+                                <td><?= Book::get_username_by_id($return->book) ?></td>
                                 <td><?= $return->returndate ?></td>
                                 <td>
                                     <?php if ($user->isAdmin() || $user->isManager()): ?>
