@@ -82,7 +82,11 @@ class ControllerRental extends Controller {
             $user = User::get_member_by_pseudo($username);
             $user = $user->id;
             $rental = Rental::get_rental_by_user_objet($idsmember);
-            $rental->clear();
+            if ($rental = 'false') {
+                $this->redirect("book", "index");
+            } else
+                $rental->clear();
+
             $books = Book::get_book_by_all();
             $members = User::selection_member_by_all_not_selected($idsmember);
             $selections = Rental::get_book_by_user($idsmember);
@@ -93,18 +97,24 @@ class ControllerRental extends Controller {
 
     public function confirm_basket() {
         $user = $this->get_user_or_redirect();
-        $username = $user->username;
-        $user = User::get_member_by_pseudo($username);
-        $user = $user->id;
-        $rental = Rental::get_rental_by_user_objet($user);
-        if ($rental = 'false') {
-            $this->redirect("book", "index");
-        } else
+        if (isset($_POST['memberconfirmbasket'])) {
+            $smember = User::get_member_by_pseudo($_POST['memberconfirmbasket']);
+            $idsmember = $smember->id;
+            $username = $user->username;
+            $user = User::get_member_by_pseudo($username);
+            $user = $user->id;
+            $rental = Rental::get_rental_by_user_objet($idsmember);
+            var_dump($rental);
+//        if ($rental = 'false') {
+//            $this->redirect("book", "index");
+//        } else
             $rental->rent();
-        $books = Book::get_book_by_all();
-        $selections = Rental::get_book_by_user($user);
-        $user = $this->get_user_or_redirect();
-        $this->redirect("book", "index");
+               $books = Book::get_book_by_all();
+            $members = User::selection_member_by_all_not_selected($idsmember);
+            $selections = Rental::get_book_by_user($idsmember);
+            $user = $this->get_user_or_redirect();
+        }
+        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
     }
 
     public function confirm_basket_for_user() {
