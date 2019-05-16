@@ -19,7 +19,6 @@ class ControllerBook extends Controller {
         $id = $users;
         $members = User::selection_member_by_all_not_selected($id);
         $smember = $user;
-
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
     }
 

@@ -9,80 +9,77 @@
         <link href="css/styles.css" rel="stylesheet" type="text/css"/>
          <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
         <script>
-            var username, errPseudo, password, errPassword, passwordConfirm, errPasswordConfirm ;
-            
+  <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
+        <script src="lib/jquery-validation-1.19.0/jquery.validate.min.js" type="text/javascript"></script>
+        <script>
+            $.validator.addMethod("regex", function (value, element, pattern) {
+                if (pattern instanceof Array) {
+                    for(p of pattern) {
+                        if (!p.test(value))
+                            return false;
+                    }
+                    return true;
+                } else {
+                    return pattern.test(value);
+                }
+            }, "Please enter a valid input.");
             $(function(){
-                    username = $("#username");
-                    errPseudo = $("#errPseudo");
-                    password = $("#password");
-                    errPassword = $("#errPassword");
-                    passwordConfirm = $("#passwordConfirm");
-                    errPasswordConfirm = $("#errPasswordConfirm");
-                    
-                    $("input:text:first").focus();
-                }
-            );
-            
-            function checkPseudoExists(){
-                $.get("user/user_exists_service/"+username.val(),
-                      function(data){
-                          if(data === "true"){
-                              errPseudo.append("<p>Pseudo already exists.</p>");
-                          }
-                      }
-                );
-            }
-
-            function checkPseudo(){
-                var ok = true;
-                errPseudo.html("");
-                if(!(/^.{3,16}$/).test(username.val())){
-                    errPseudo.append("<p>username length must be between 3 and 16.</p>");
-                    ok = false;
-                }
-                if(username.val().length > 0 && !(/^[a-zA-Z][a-zA-Z0-9]*$/).test(username.val())){
-                    errPseudo.append("<p>Pseudo must start by a letter and must contain only letters and numbers.</p>");  
-                    ok = false;
-                }
-                return ok;
-            }
-            
-            function checkPassword(){
-                var ok = true;
-                errPassword.html("");
-                var hasUpperCase = /[A-Z]/.test(password.val());
-                var hasNumbers = /\d/.test(password.val());
-                var hasPunct = /['";:,.\/?\\-]/.test(password.val());
-                if(!(hasUpperCase && hasNumbers && hasPunct)){
-                    errPassword.append("<p>Password must contain one uppercase letter, one number and one punctuation mark.</p>");
-                    ok = false;
-                }
-                if(!(/^.{8,16}$/).test(password.val())){
-                    errPassword.append("<p>Password length must be between 8 and 16.</p>");
-                    ok = false;
-                }
-                return ok;
-            }
-            
-            function checkPasswords(){
-                var ok = true;
-                errPasswordConfirm.html("");
-                if(password.val() !== passwordConfirm.val()){
-                    errPasswordConfirm.append("<p>You have to enter twice the same password.</p>");
-                    ok = false;
-                }
-                return ok;
-            }
-            
-            function checkAll(){
-                // les 3 lignes ci-dessous permettent d'éviter le shortcut
-                // par rapport à checkPseudo()&&checkPassword()&&checkPasswords();
-                var ok = checkPseudo();
-                ok = checkPassword() && ok;
-                ok = checkPasswords() && ok;
-                return ok;
-            }   
-        
+                $('#signupForm').validate({
+                    rules: {
+                        username: {
+                            remote: {
+                                url: 'user/pseudo_available_service',
+                                type: 'post',
+                                data:  {
+                                    username: function() { 
+                                        return $("#username").val();
+                                    }
+                                }
+                            },
+                            required: true,
+                            minlength: 3,
+                            maxlength: 16,
+                            regex: /^[a-zA-Z][a-zA-Z0-9]*$/,
+                        },
+                        password: {
+                            required: true,
+                            minlength: 8,
+                            maxlength: 16,
+                            regex: [/[A-Z]/, /\d/, /['";:,.\/?\\-]/],
+                        },
+                        password_confirm: {
+                            required: true,
+                            minlength: 8,
+                            maxlength: 16,
+                            equalTo: "#password",
+                            regex: [/[A-Z]/, /\d/, /['";:,.\/?\\-]/],
+                        }
+                    },
+                    messages: {
+                        username: {
+                            remote: 'this username is already taken',
+                            required: 'required',
+                            minlength: 'minimum 3 characters',
+                            maxlength: 'maximum 16 characters',
+                            regex: 'bad format for username',
+                        },
+                        password: {
+                            required: 'required',
+                            minlength: 'minimum 8 characters',
+                            maxlength: 'maximum 16 characters',
+                            regex: 'bad password format',
+                        },
+                        password_confirm: {
+                            required: 'required',
+                            minlength: 'minimum 8 characters',
+                            maxlength: 'maximum 16 characters',
+                            equalTo: 'must be identical to password above',
+                            regex: 'bad password format',
+                        }
+                    }
+                });
+                $("input:text:first").focus();
+            });
         </script>
     </head>
     <body>

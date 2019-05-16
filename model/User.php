@@ -39,7 +39,6 @@ class User extends Model {
     }
     
     
-    
         public static function selection_member_by_all_not_selected($id) {
         $result = [];
         try {
