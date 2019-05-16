@@ -19,7 +19,7 @@
     <body>
         <script>
             $('#calendar').hide();
-            console.log("coucou");
+            //console.log("coucou");
             document.addEventListener('DOMContentLoaded', function () {
                 var calendarEl = document.getElementById('calendar');
 
@@ -31,22 +31,29 @@
                         center: 'title',
                         right: 'resourceTimelineDay,resourceTimelineTenDay,resourceTimelineMonth,resourceTimelineYear'
                     },
-                    defaultView: 'resourceTimelineDay',
+                    defaultView: 'resourceTimelineMonth',
                     scrollTime: '08:00',
                     aspectRatio: 1.5,
                     views: {
+                        
+                        
+                        
+                        
+                        
                         resourceTimelineDay: {
-                            buttonText: ':15 slots',
-                            slotDuration: '00:15'
+                            buttonText: ':today',
+                            slotDuration: {days: 1}
                         },
                         resourceTimelineTenDay: {
                             type: 'resourceTimeline',
-                            duration: {days: 10},
-                            buttonText: '10 days'
+                            duration: {days: 7},
+                            buttonText: 'week'
                         }
+                        
+                        
                     },
                     editable: true,
-                    resourceLabelText: 'Rooms',
+                    resourceLabelText: 'Return',
                     resources: 'https://fullcalendar.io/demo-resources.json?with-nesting&with-colors',
                     events: 'https://fullcalendar.io/demo-events.json?single-day&for-resource-timeline'
                 });
