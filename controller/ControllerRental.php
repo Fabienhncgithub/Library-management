@@ -203,17 +203,17 @@ class ControllerRental extends Controller {
             
             
             $rental = Rental::get_rental_by_id_objet($_POST["return"]);
-            
+            var_dump($rental);
             $id = $rental->id;
             $user = $rental->user;
+            var_dump($user);
             $book = $rental->book;
+            var_dump($book);
             $rentaldate = $rental->rentaldate;
             $returndate = ($_POST["return_date"]);
             Rental::returndate($id,$user,$book,$rentaldate,$returndate);
             
-            
-
-                $this->redirect("rental", "returnbook");
+           $this->redirect("book", "index");
         }
     }
 

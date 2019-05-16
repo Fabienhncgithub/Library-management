@@ -9,6 +9,21 @@ class ControllerUser extends Controller {
 
     const UPLOAD_ERR_OK = 0;
 
+    
+    public function user_exists_service(){
+        $res = "false";
+        if(isset($_GET["param1"]) && $_GET["param1"] !== ""){
+            $member = User::get_member_by_pseudo($_GET["param1"]);
+            if($member)
+                $res =  "true";
+        } 
+        echo $res;
+    }
+    
+    
+    
+    
+
     //page d'accueil. 
     public function index() {
         $this->profile();
@@ -21,7 +36,6 @@ class ControllerUser extends Controller {
         $user = User::get_member_by_pseudo($username);
         $users = $user->id;
        $rentals = Rental::get_rental_by_user($users);
-       var_dump($rentals);
         (new View("profile"))->show(array("user" => $user, "rentals" => $rentals));
     }
 

@@ -9,17 +9,17 @@
     </head>
     <body>
         <div class="title">Welcome <?= $user->username ?></div>
-     
-        
-                <?php if($user->isAdmin($user->username) || $user->isManager($user->username) ){
-                include('menuAdmin.html');
-                }
-              else{
-                    include('menu.html');            
-                  }
+
+
+        <?php
+        if ($user->isAdmin($user->username) || $user->isManager($user->username)) {
+            include('menuAdmin.html');
+        } else {
+            include('menu.html');
+        }
         ?>
-        
-        
+
+
         <div class="main">
             <?php if (strlen($user->username) == 0): ?>
                 No profile string entered yet!
@@ -27,28 +27,29 @@
                 <?= $user->username; ?>
             <?php endif; ?>
             <br><br>
-            
-            
-            <tr>There are your currently rented books. Don't forget to return them in time!</tr>
 
-            
+
+            <tr>There are your currently rented books. Don't forget to return them in time!</tr>
+            <br><br>
+            <br><br>
             <table>
                 <tr>
                     <th>Rental Date/Time</th>
                     <th>Book</th>
                     <th>To be returned on</th>
                 </tr>
-        </thead>
-        <tbody>
-            
-                <?php foreach ($rentals as $rental):?>
-                <tr>
-                    <td><?= $rental->rentaldate ?></td>
-                    <td><?= $rental->book ?></td>
-                    <td><?= $rental->returndate ?></td>
-                </tr>
-             
-                <?php endforeach; ?>
+
+                </thead>
+                <tbody>
+
+                    <?php foreach ($rentals as $rental): ?>
+                        <tr>
+                            <td><?= $rental->rentaldate ?></td>
+                            <td><?= $rental->book ?></td>
+                            <td><?= $rental->returndate ?></td>
+                        </tr>
+
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>

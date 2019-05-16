@@ -38,7 +38,7 @@ class Rental extends Model {
         if ($query->rowCount() == 0) {
             return false;
         } else {
-            return new Rental($data["id"], $data["book"], $data["user"], $data["rentaldate"], $data["returndate"]);
+            return new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
         }
     }
     
