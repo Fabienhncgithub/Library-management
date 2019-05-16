@@ -31,6 +31,22 @@ class Rental extends Model {
             $ex->getMessage();
         }
     }
+    
+    
+    
+        public static function get_all_rental() {
+        $result = [];
+        try {
+            $query = self::execute("SELECT * FROM rental", array());
+            $datas = $query->fetchAll();
+            foreach ($datas as $data) {
+                $result[] = new Rental($data["id"], $data["book"], $data["user"], $data["rentaldate"], $data["returndate"]);
+            }return $result;
+        } catch (Exception $ex) {
+            $ex->getMessage();
+        }
+    }
+    
 
     public static function get_rental_by_id_objet($id) {
         $query = self::execute("SELECT * FROM rental where id = :id", array("id" => $id));

@@ -23,13 +23,19 @@ class ControllerBook extends Controller {
     }
 
     public function search() {
-        $books = Book::get_book_by_all();
-        $user = Controller::get_user_or_redirect();
-        $selections = [];
+           $user = Controller::get_user_or_redirect();
+        $username = $user->username;
+        $user = User::get_member_by_pseudo($username);
+        $users = $user->id;
+        $books = Book::get_book_not_rental_by_member($users);
+        $selections = Rental::get_book_by_user($users);
+        $id = $users;
+        $members = User::selection_member_by_all_not_selected($id);
+        $smember = $user;
         if (isset($_POST["critere"])) {
             $books = Book::get_book_by_filter($_POST["critere"]);
         }
-        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
+        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
     }
 
     public function search_rental() {

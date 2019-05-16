@@ -116,10 +116,12 @@
                     <tr>
                         <td>Email:</td>
                         <td><input id="email" name="email" type="email" value="<?php echo $email; ?>"></td>
+                        <td class="errors" id="errEmail"></td>
                     </tr>
                     <tr>
                         <td>Birth Date:</td>
                         <td><input id="birthdate" name="birthdate" type="date" value="<?php echo $birthdate; ?>"></td>
+                        <td class="errors" id="errBirthdate"></td>
                     </tr>
                 </table>
                      <input id="btn" type="submit" value="Sign Up">

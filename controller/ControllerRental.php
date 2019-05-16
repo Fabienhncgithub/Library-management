@@ -156,21 +156,28 @@ class ControllerRental extends Controller {
     }
 
     public function filter_return() {
+        
+        //empty - renvoyer tout
+        //
+        // 3requêtes qui reprennent le all return open
+        
+        var_dump($_POST['radio']);
+        
+        
         $user = Controller::get_user_or_redirect();
-
         $username = $user->username;
         $user = User::get_member_by_pseudo($username);
         $users = $user->id;
         $user = User::get_member_by_id($users);
         $returns = Rental::get_rental_by_id_user_objet($users);
 
-        if (isset($_POST['book'])) {
-            $returns = Rental::get_rental_by_filter($_POST["book"]);
-            var_dump($returns);
-        }
-        if (isset($_POST["member"])) {
-            $member = User::get_member_by_id(($_POST["member"]));
-        }
+//        if (isset($_POST['book'])) {
+//            $returns = Rental::get_rental_by_filter($_POST["book"]);
+//            var_dump($returns);
+//        }
+//        if (isset($_POST["member"])) {
+//            $member = User::get_member_by_id(($_POST["member"]));
+//        }
 
         //      $returns = new Rental('', $users, $book, $rentaldate, '');
         //      var_dump($returns);
@@ -218,6 +225,12 @@ class ControllerRental extends Controller {
             Rental::returndate($id, $user, $book, $rentaldate, $returndate);
             $this->redirect("rental", "return_book");
         }
+    }
+    
+    
+    public function get_rental(){
+         $rent = Rental::get_all_rental();
+         echo json_encode($rent);
     }
 
 }

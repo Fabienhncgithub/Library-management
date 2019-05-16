@@ -45,7 +45,7 @@
                     <?php foreach ($rentals as $rental): ?>
                         <tr>
                             <td><?= $rental->rentaldate ?></td>
-                            <td><?= User::get_username_by_id($rental->book) ?></td>
+                            <td><?= Book::get_username_by_id($rental->book) ?></td>
                             <td><?= $rental->returndate ?></td>
                         </tr>
 
