@@ -53,8 +53,6 @@ class User extends Model {
     }
     
     
-    
-    
 
     public static function get_member_by_pseudo($username) {
         $query = self::execute("SELECT * FROM user where username = :username", array("username" => $username));

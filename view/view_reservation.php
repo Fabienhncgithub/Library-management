@@ -193,10 +193,12 @@
 
             <?php endif; ?>
 
-            <form class="button" action="rental/clear_basket" method="POST">               
+            <form class="button" action="rental/clear_basket" method="POST">
+                   <input type='hidden' name='memberclearbasket' value='<?= $smember->username ?>' >
                 <input type="submit" value="Effacer rental"   name="new">
             </form>
             <form class="button" action="rental/confirm_basket" method="POST">
+                   <input type='hidden' name='memberconfirmbasket' value='<?= $smember->username ?>' >
                 <input type="submit" name="Save rental" value="Save rental" >
             </form> 
 

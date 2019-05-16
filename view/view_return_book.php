@@ -36,10 +36,6 @@
                     aspectRatio: 1.5,
                     views: {
                         
-                        
-                        
-                        
-                        
                         resourceTimelineDay: {
                             buttonText: ':today',
                             slotDuration: {days: 1}
