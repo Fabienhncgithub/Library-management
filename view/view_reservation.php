@@ -29,7 +29,9 @@
                         <tr>
                             <td>Filters</td>
                             <td><input id="critere" name="critere" type="text" ></td>
+                             <input type='hidden' name='member' value='<?= $smember->username ?>' >
                             <td><input type="submit" name="search"></td>
+                             
                         </tr>
                     </thead>
                 </table>

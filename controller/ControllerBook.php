@@ -23,17 +23,28 @@ class ControllerBook extends Controller {
     }
 
     public function search() {
-           $user = Controller::get_user_or_redirect();
-        $username = $user->username;
-        $user = User::get_member_by_pseudo($username);
-        $users = $user->id;
-        $books = Book::get_book_not_rental_by_member($users);
-        $selections = Rental::get_book_by_user($users);
-        $id = $users;
-        $members = User::selection_member_by_all_not_selected($id);
-        $smember = $user;
-        if (isset($_POST["critere"])) {
-            $books = Book::get_book_by_filter($_POST["critere"]);
+        $user = Controller::get_user_or_redirect();
+              
+
+        
+        if (isset($_POST['critere']) && isset($_POST['member'])) {
+            
+         
+
+            $smember = User::get_member_by_pseudo($_POST['member']);
+            $idsmember = $smember->id;
+
+
+            $username = $user->username;
+            $user = User::get_member_by_pseudo($username);
+            $users = $user->id;
+            $selections = Rental::get_book_by_user($idsmember);
+            $id = $users;
+            $members = User::selection_member_by_all_not_selected($id);
+         
+$search =   ($_POST['critere']);
+            $books = Book::get_book_by_filter($search,$idsmember);
+            var_dump($books);
         }
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
     }
