@@ -69,35 +69,28 @@ class ControllerUser extends Controller {
     }
 
     public function delete_user() {
-                $user = Controller::get_user_or_redirect();
+        $user = Controller::get_user_or_redirect();
         $username = $user->username;
         $user = User::get_member_by_pseudo($username);
-            if (isset($_POST['id'])) {
-                $id = $_POST['id'];
-                $users = User::get_member_by_id($id);
-         
-            }
-            (new View("confirm_delete_user"))->show(array("user" => $user, "users" => $users));
+        if (isset($_POST['id'])) {
+            $id = $_POST['id'];
+            $users = User::get_member_by_id($id);
         }
-    
+        (new View("confirm_delete_user"))->show(array("user" => $user, "users" => $users));
+    }
 
     public function confirm_delete_user() {
         $user = $this->get_user_or_redirect();
-     
-            if (isset($_POST['iduser']) && isset($_POST['confirm'])) {
-                $confirm = $_POST['confirm'];
-                $users = ($_POST["iduser"]);
+
+        if (isset($_POST['iduser']) && isset($_POST['confirm'])) {
+            $confirm = $_POST['confirm'];
+            $users = ($_POST["iduser"]);
+            if ($confirm != 0) {
                 $users = User::get_member_by_id($users);
-                if ($confirm == 1) {
-                
-                    $users->delete();
-                       
-                }
-     $this->redirect("User", "Users");
-         
+                $users->deleteuser();
             }
+        }
            $this->redirect("User", "Users");
-        
     }
 
     public function add_user() {

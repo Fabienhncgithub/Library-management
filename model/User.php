@@ -274,14 +274,11 @@ class User extends Model {
         }
     }
     
-        public function delete() {
-        try {
-            $query = self::execute("DELETE FROM user where username=:username", array("username" => $this->username));
-            return true;
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-            echo $exc->getMessage();
-        }
+        public function deleteuser() {
+         self::execute("delete from rental where rental.user=:id",  array("id" => $this->id));
+         self::execute("delete from user where user.id=:id",  array("id" => $this->id));
+         
+
     }
 
 }

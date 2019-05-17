@@ -265,7 +265,7 @@ class Rental extends Model {
         $result = [];
         try {
         
-        $query = self::execute("SELECT * FROM rental join book on rental.book=book.id join user on rental.user = user.id where isbn LIKE :book OR title LIKE :book OR author LIKE :book OR editor LIKE :book and username like :member or fullname like :member and rental.rentaldate=:rentaldate", array(":book" => "%" . $book . "%", ":member" => "%" . $user . "%",':rentaldate' => $rentaldate));
+        $query = self::execute("SELECT * FROM rental join book on rental.book=book.id join user on rental.user = user.id where (isbn LIKE :book OR title LIKE :book OR author LIKE :book OR editor LIKE :book) and username like :member or username like :member and rental.rentaldate=:rentaldate", array(":book" => "%" . $book . "%", ":member" => "%" . $user . "%",':rentaldate' => $rentaldate));
             $datas = $query->fetchAll();
             foreach ($datas as $data) {
                 $result[] = new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
@@ -281,7 +281,7 @@ class Rental extends Model {
         $result = [];
         try {
         
-        $query = self::execute("SELECT * FROM rental join book on rental.book=book.id join user on rental.user = user.id where isbn LIKE :book OR title LIKE :book OR author LIKE :book OR editor LIKE :book and username like :member or fullname like :member and rental.rentaldate=:rentaldate and rental.rentaldate is not null", array(":book" => "%" . $book . "%", ":member" => "%" . $user . "%",':rentaldate' => $rentaldate));
+        $query = self::execute("SELECT * FROM rental join book on rental.book=book.id join user on rental.user = user.id where (isbn LIKE :book OR title LIKE :book OR author LIKE :book OR editor LIKE :book and username like :member or username like :member and rental.rentaldate=:rentaldate and rental.rentaldate is not null", array(":book" => "%" . $book . "%", ":member" => "%" . $user . "%",':rentaldate' => $rentaldate));
             $datas = $query->fetchAll();
             foreach ($datas as $data) {
                 $result[] = new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
@@ -298,7 +298,7 @@ class Rental extends Model {
         $result = [];
         try {
         
-        $query = self::execute("SELECT * FROM rental join book on rental.book=book.id join user on rental.user = user.id where isbn LIKE :book OR title LIKE :book OR author LIKE :book OR editor LIKE :book and username like :member or fullname like :member and rental.rentaldate=:rentaldate and rentaldate is not null and returndate is not null", array(":book" => "%" . $book . "%", ":member" => "%" . $user . "%",':rentaldate' => $rentaldate));
+        $query = self::execute("SELECT * FROM rental join book on rental.book=book.id join user on rental.user = user.id where (isbn LIKE :book OR title LIKE :book OR author LIKE :book OR editor LIKE :book and username like :member or username like :member and rental.rentaldate=:rentaldate and rentaldate is not null and returndate is not null", array(":book" => "%" . $book . "%", ":member" => "%" . $user . "%",':rentaldate' => $rentaldate));
             $datas = $query->fetchAll();
             foreach ($datas as $data) {
                 $result[] = new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
