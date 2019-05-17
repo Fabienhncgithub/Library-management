@@ -64,7 +64,7 @@ class Book extends Model {
     public static function get_book_by_filter($search,$user) {
         $result = [];
         try {
-            $query = self::execute("SELECT * FROM book join rental on book.id = rental.book where title LIKE :search OR author LIKE :search OR editor LIKE :search and rental.user !=user and rental.rentaldate is null", array(":search" => "%" . $search . "%","user" => $user));
+            $query = self::execute("SELECT * FROM book join rental on book.id = rental.book where title LIKE :search OR author LIKE :search OR editor LIKE :search and rental.book!=book.id and rental.user = :user", array(":search" => "%" . $search . "%","user" => $user));
             $datas = $query->fetchAll();
             foreach ($datas as $data) {
                 $result[] = new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);

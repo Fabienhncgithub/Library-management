@@ -27,14 +27,14 @@
          <meta name="viewport" content="width=device-width, initial-scale=1.0">
          <link href="styles.css" rel="stylesheet" type="text/css"/>
          <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
--         <script src="lib/fullcalendar-scheduler-4.1.0/packages/moment/main.js" type="text/javascript"></script>
-+        <script src="lib/fullcalendar-scheduler-4.1.0/packages/moment/main.js" type="text/javascript"></script>
+        <script src="lib/fullcalendar-scheduler-4.1.0/packages/moment/main.js" type="text/javascript"></script>
+       <script src="lib/fullcalendar-scheduler-4.1.0/packages/moment/main.js" type="text/javascript"></script>
          <script src="lib/fullcalendar-scheduler-4.1.0/packages/core/main.js" type="text/javascript"></script> 
--         <script src="lib/fullcalendar-scheduler-4.1.0/packages/interaction/main.js" type="text/javascript"></script>
-+        <script src="lib/fullcalendar-scheduler-4.1.0/packages/interaction/main.js" type="text/javascript"></script>
+        <script src="lib/fullcalendar-scheduler-4.1.0/packages/interaction/main.js" type="text/javascript"></script>
+       <script src="lib/fullcalendar-scheduler-4.1.0/packages/interaction/main.js" type="text/javascript"></script>
          <script src="lib/fullcalendar-scheduler-4.1.0/packages/timeline/main.js" type="text/javascript"></script>
--         <script src="lib/fullcalendar-scheduler-4.1.0/packages/resource-common/main.js" type="text/javascript"></script>
-+        <script src="lib/fullcalendar-scheduler-4.1.0/packages/resource-common/main.js" type="text/javascript"></script>
+        <script src="lib/fullcalendar-scheduler-4.1.0/packages/resource-common/main.js" type="text/javascript"></script>
+        <script src="lib/fullcalendar-scheduler-4.1.0/packages/resource-common/main.js" type="text/javascript"></script>
          <script src="lib/fullcalendar-scheduler-4.1.0/packages/resource-timeline/main.js" type="text/javascript"></script>
    
 
@@ -115,7 +115,7 @@
                 calendar.render();
             });
         </script>
-        <div class="title"><?php echo $user->fullname; ?>!</div>
+       <div class="title"><?php echo $user->username; ?>!</div>
 
 
 
@@ -136,11 +136,11 @@
                             <td>Filters: </td>
                             <td>Member: <input id="member" name="member" type="text" ></td>
                             <td>Book: <input id="book" name="book" type="text"></td>
-                            <td>Rental date: <input id="rental_date" name="rental_date" type="date"></td>
+                            <td>Rental date: <input id="rental_date" name="rentaldate" type="date"></td>
                         </tr>
 
                     <td>State:
-                        <input type="radio" name="MyRadio" value="1" checked>All<br>
+                        <input type="radio" name="MyRadio" value="1" checked>All
                         <input type="radio" name="MyRadio" value="2">Open
                         <input type="radio" name="MyRadio" value="3">Return
                     </td>
