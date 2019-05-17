@@ -103,10 +103,9 @@ class ControllerRental extends Controller {
             $user = User::get_member_by_pseudo($username);
             $user = $user->id;
             $rental = Rental::get_rental_by_user_objet($idsmember);
-            if ($rental = 'false') {
-                $this->redirect("book", "index");
-            } else
-                $rental->rent();
+            if ($rental != 'false') {
+                      $rental->rent();
+            } 
             $books = Book::get_book_by_all();
             $members = User::selection_member_by_all_not_selected($idsmember);
             $selections = Rental::get_book_by_user($idsmember);

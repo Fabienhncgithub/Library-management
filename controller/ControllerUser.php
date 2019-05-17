@@ -9,20 +9,15 @@ class ControllerUser extends Controller {
 
     const UPLOAD_ERR_OK = 0;
 
-    
-    public function user_exists_service(){
+    public function user_exists_service() {
         $res = "false";
-        if(isset($_GET["param1"]) && $_GET["param1"] !== ""){
+        if (isset($_GET["param1"]) && $_GET["param1"] !== "") {
             $member = User::get_member_by_pseudo($_GET["param1"]);
-            if($member)
+            if ($member)
                 $res = "true";
-        } 
+        }
         echo $res;
     }
-    
-    
-    
-    
 
     //page d'accueil. 
     public function index() {
@@ -35,7 +30,7 @@ class ControllerUser extends Controller {
         $username = $user->username;
         $user = User::get_member_by_pseudo($username);
         $users = $user->id;
-       $rentals = Rental::get_rental_by_user($users);
+        $rentals = Rental::get_rental_by_user($users);
         (new View("profile"))->show(array("user" => $user, "rentals" => $rentals));
     }
 
@@ -74,25 +69,37 @@ class ControllerUser extends Controller {
     }
 
     public function delete_user() {
-        $user = $this->get_user_or_redirect();
-        $users = User::get_member_by_all();
-        if ($user->isAdmin()) {
+                $user = Controller::get_user_or_redirect();
+        $username = $user->username;
+        $user = User::get_member_by_pseudo($username);
             if (isset($_POST['id'])) {
                 $id = $_POST['id'];
-                $user = User::get_member_by_id($id);
-                $user->delete();
+                $users = User::get_member_by_id($id);
+         
             }
-            $users = User::get_member_by_all();
-            $this->redirect("user", "users");
+            (new View("confirm_delete_user"))->show(array("user" => $user, "users" => $users));
         }
-        (new View("users"))->show(array("user" => $user, "users" => $users));
+    
+
+    public function confirm_delete_user() {
+        $user = $this->get_user_or_redirect();
+     
+            if (isset($_POST['iduser']) && isset($_POST['confirm'])) {
+                $confirm = $_POST['confirm'];
+                $users = ($_POST["iduser"]);
+                $users = User::get_member_by_id($users);
+                if ($confirm == 1) {
+                
+                    $users->delete();
+                       
+                }
+     $this->redirect("User", "Users");
+         
+            }
+           $this->redirect("User", "Users");
+        
     }
 
-    
-    
-    
-    
-    
     public function add_user() {
         $id = null;
         $user = $this->get_user_or_redirect();

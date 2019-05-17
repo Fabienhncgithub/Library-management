@@ -37,9 +37,8 @@ class User extends Model {
             $ex->getUsers();
         }
     }
-    
-    
-        public static function selection_member_by_all_not_selected($id) {
+
+    public static function selection_member_by_all_not_selected($id) {
         $result = [];
         try {
             $query = self::execute("SELECT * FROM user where id!=:id", array("id" => $id));
@@ -51,8 +50,6 @@ class User extends Model {
             $ex->getUsers();
         }
     }
-    
-    
 
     public static function get_member_by_pseudo($username) {
         $query = self::execute("SELECT * FROM user where username = :username", array("username" => $username));
@@ -74,16 +71,7 @@ class User extends Model {
         }
     }
 
-    
-    public function delete() {
-        try {
-            $query = self::execute("DELETE FROM user where id=:id", array("id" => $this->id));
-            return true;
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-            echo $exc->getMessage();
-        }
-    }
+
 
     public static function get_member_by_id($id) {
         $query = self::execute("SELECT * FROM user where id = :id", array("id" => $id));
@@ -94,9 +82,8 @@ class User extends Model {
             return new User($data["id"], $data["username"], $data["password"], $data["fullname"], $data["email"], $data["birthdate"], $data["role"]);
         }
     }
-    
-    
-        public static function get_member_by_only_id($id) {
+
+    public static function get_member_by_only_id($id) {
         $query = self::execute("SELECT * FROM user where id = :id", array("id" => $id));
         $data = $query->fetch(); // un seul résultat au maximum
         if ($query->rowCount() == 0) {
@@ -105,7 +92,6 @@ class User extends Model {
             return $data;
         }
     }
-    
 
     public static function get_members() {
         $query = self::execute("SELECT * FROM user", array());
@@ -116,16 +102,12 @@ class User extends Model {
         }
         return $results;
     }
-    
-  
-    
-          public static function get_user_by_id($id) {
-        $query = self::execute("SELECT username FROM user where id=:id", array("id"=>$id));
+
+    public static function get_user_by_id($id) {
+        $query = self::execute("SELECT username FROM user where id=:id", array("id" => $id));
         $data = $query->fetch();
         return $data[0];
     }
-    
-    
 
     //renvoie un tableau d'erreur(s) 
     //le tableau est vide s'il n'y a pas d'erreur.
@@ -212,16 +194,13 @@ class User extends Model {
             self::execute("INSERT INTO user (username,password, fullname, email, birthdate, role) VALUES(:username,:password,:fullname,:email,:birthdate, :role)", array("username" => $this->username, "password" => $this->hashed_password, "fullname" => $this->fullname, "email" => $this->email, "birthdate" => $this->birthdate, "role" => $this->role));
         return $this;
     }
-    
-    
-        public function update_User() {
+
+    public function update_User() {
         if (empty($this->birthdate))
             $this->birthdate = null;
         self::execute("UPDATE user SET username=:username, fullname=:fullname, email=:email, birthdate=:birthdate, role=:role WHERE id=:id ", array("id" => $this->id, "username" => $this->username, "fullname" => $this->fullname, "email" => $this->email, "birthdate" => $this->birthdate, "role" => $this->role));
         // self::execute("UPDATE user SET username=:username, password=:password,fullname=:fullname, email=:email, birthdate=:birthdate,role=:role  WHERE id=:id ", array("id" => $this->id, "username" => $this->username, "password" => $this->hashed_password, "fullname" => $this->fullname, "email" => $this->email, "birthdate" => $this->birthdate, "role" => $this->role));
-        }
-    
-    
+    }
 
     public function isAdmin() {
         $query = self::execute("select * from user where username=:username and role='admin'", array(":username" => $this->username));
@@ -284,8 +263,25 @@ class User extends Model {
     function format_date($date) {
         return $date === null ? '' : (new DateTime($date))->format('d/m/Y');
     }
+
+    public function delete_user() {
+        try {
+            $query = self::execute("DELETE FROM user where id=:id", array("id" => $this->id));
+            return true;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            echo $exc->getMessage();
+        }
+    }
     
-    
-    
+        public function delete() {
+        try {
+            $query = self::execute("DELETE FROM user where username=:username", array("username" => $this->username));
+            return true;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            echo $exc->getMessage();
+        }
+    }
 
 }

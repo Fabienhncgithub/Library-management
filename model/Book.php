@@ -158,7 +158,9 @@ class Book extends Model {
 
     public function delete_Book() {
         try {
-            $query = self::execute("DELETE FROM book where id=:id", array('id' => $this->id));
+            self::execute("DELETE FROM book where id=:id", array('id' => $this->id));
+            //self::execute("DELETE FROM rental where rental.book=:id", array('rental.book' => $this->id));
+            
             return true;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
