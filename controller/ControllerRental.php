@@ -204,36 +204,8 @@ class ControllerRental extends Controller {
         } else if ($selection == 'return') {
             $returns = Rental::get_rental_by_filter_return($book, $member, $rentaldate);
         }
-
-
-
-//        var_dump($return);
-//        if (isset($_POST['MyRadio']) && (isset($_POST['book']))){
-//            var_dump($_POST['MyRadio']);
-//            var_dump($_POST['book']);
-//             $returns = Rental::get_rental_by_filter($_POST["book"]);
-//            var_dump($returns);
-//        }
-//        if (isset($_POST['book'])) {
-//            $returns = Rental::get_rental_by_filter($_POST["book"]);
-//            var_dump($returns);
-//        }
-//        if (isset($_POST["member"])) {
-//            $member = User::get_member_by_id(($_POST["member"]));
-//        }
         (new View("return_book"))->show(array("user" => $user, "returns" => $returns));
     }
-
-//        public function search() {
-//        $books = Book::get_book_by_all();
-//        $user = Controller::get_user_or_redirect();
-//        $selections = [];
-//        if (isset($_POST["critere"])) {
-//            $books = Book::get_book_by_filter($_POST["critere"]);
-//        }
-//        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
-//    }
-
 
     public function return_rental() {
         $user = Controller::get_user_or_redirect();
@@ -269,6 +241,34 @@ class ControllerRental extends Controller {
     public function get_rental() {
         $rent = Rental::get_all_rental();
         echo json_encode($rent);
+    }
+
+    public function delete_rental_return() {
+        $user = Controller::get_user_or_redirect();
+        $username = $user->username;
+        $user = User::get_member_by_pseudo($username);
+        $users = $user->id;
+        if (isset($_POST["deleterental"])) {
+            $return = ($_POST["deleterental"]);
+            $return = Rental::get_rental_by_id_objet($return);
+        }
+        (new View("confirm_delete_return"))->show(array("user" => $user, "return" => $return));
+    }
+
+    public function confirm_delete() {
+        $user = $this->get_user_or_redirect();
+        if ($user->isAdmin()) {
+            if (isset($_POST['idrental']) && isset($_POST['confirm'])) {
+                $confirm = $_POST['confirm'];
+                $return = ($_POST["idrental"]);
+                $return = Rental::get_rental_by_id_objet($return);
+                if ($confirm != 0) {
+                    $return->delete_rental();
+                }
+                $this->redirect("rental", "return_book");
+            }
+            $this->redirect("rental", "return_book");
+        }
     }
 
 }

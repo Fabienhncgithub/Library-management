@@ -165,15 +165,16 @@
                                     <td><?= User::get_user_by_id($return->user) ?></td>
                                     <td><?= Book::get_username_by_id($return->book) ?></td>
                                     <td><?= $return->returndate ?></td>
+                                    
                                     <td>
-                                        <?php if ($user->isAdmin() || $user->isManager()): ?>
-                                            <form  action='book/delete' method='post'>
-                                                <input type='hidden' name='id_book' value='<?= $return->id ?>'>
-                                                <input type='submit' value='delete'>
+                                        <?php if ($user->isAdmin()): ?>
+                                            <form  action='rental/delete_rental_return' method='post'>
+                                                <input type='hidden' name='deleterental' value='<?= $return->id ?>'>
+                                                <input type='submit' value='delete rental'>
                                             </form>
                                         <?php endif; ?>
                                     </td>
-
+                                    
                                     <td>
                                         <?php if ($user->isAdmin() || $user->isManager()): ?>
                                             <form  action='rental/return_rental' method='post'>

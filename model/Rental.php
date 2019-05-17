@@ -326,6 +326,16 @@ class Rental extends Model {
         self::execute("UPDATE rental SET id=:id,user=:user, book=:book, rentaldate=:rentaldate, returndate=:returndate WHERE id=:id", array(':id' => $id,':user' => $user, ':book' => $book,':rentaldate' => $rentaldate,':returndate' => $returndate));
         
         }
+        
+        public function delete_rental(){
+                try {
+            $query = self::execute("DELETE FROM rental where id=:id", array('id' => $this->id));
+            return true;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+            echo $exc->getMessage();
+        }   
+        }
     
 
     
