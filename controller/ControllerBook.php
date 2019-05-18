@@ -27,18 +27,18 @@ class ControllerBook extends Controller {
         if (isset($_POST['critere']) && isset($_POST['member'])) {
             $smember = User::get_member_by_pseudo($_POST['member']);
             $idsmember = $smember->id;
-            $username = $user->username;
-            $user = User::get_member_by_pseudo($username);
+            var_dump($idsmember);
+            $user = User::get_member_by_pseudo($user->username);
             $users = $user->id;
-            $selections = Rental::get_book_by_user($idsmember);
+            $selections = Rental::get_book_by_user($smember->id);
             $id = $users;
             $members = User::selection_member_by_all_not_selected($id);
             $search = ($_POST['critere']);
             
-            var_dump($search);
-            var_dump($idsmember);
+            var_dump($selections);
+            var_dump($smember);
             
-            $books = Book::get_book_by_filter($search, $idsmember);
+            $books = Book::get_book_by_filter($search, $smember->id);
             var_dump($books);
         }
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
@@ -230,5 +230,24 @@ class ControllerBook extends Controller {
 
         (new View("return_book"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members));
     }
+    
+    
+        
+    public function find_book() {
+        if (isset($_GET['param1']) && !$_GET['param1'] == "" && isset($_GET['param2'])) {
+            if ($_GET['param1'] !== " ") {
+                $result = Book::get_book_by_filter($_GET['param1'], $_GET['param2']);
+                echo json_encode($result);
+            } else {
+                $result = Book::get_book_by_all($_GET['param2']);
+                echo json_encode($result);
+            }
+        }
+    }
+
+
+    
+    
+    
 
 }

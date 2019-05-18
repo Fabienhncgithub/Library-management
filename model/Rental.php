@@ -58,9 +58,6 @@ class Rental extends Model {
         } catch (Exception $ex) {
             $ex->getMessage();
         }  
-       
-        
-        
     }
     
 

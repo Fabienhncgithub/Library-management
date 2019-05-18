@@ -53,10 +53,13 @@
                             maxlength: 16,
                             equalTo: "#password",
                             regex: [/[A-Z]/, /\d/, /['";:,.\/?\\-]/],
+                        },
+                        fullname: {
+                             required: true,
+                        },
+                        email: {
+                             required: true,
                         }
-//                        email: {
-//                             required: true,
-//                        }
                     },
                     messages: {
                         username: {
@@ -78,11 +81,14 @@
                             maxlength: 'maximum 16 characters',
                             equalTo: 'must be identical to password above',
                             regex: 'bad password format',
+                        },
+                          fullname: {
+                               required: 'required', 
+                        },
+                        email:{
+                            remote: 'this email is already taken',
+                            required: 'required', 
                         }
-//                        email:{
-//                            remote: 'this email is already taken',
-//                            required: 'required', 
-//                        }
                     }
                 });
                 $("input:text:first").focus();

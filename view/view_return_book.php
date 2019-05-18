@@ -23,9 +23,6 @@
         <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
         <script src="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.min.js" type="text/javascript"></script>-->
 
-
-         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-         <link href="styles.css" rel="stylesheet" type="text/css"/>
          <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
         <script src="lib/fullcalendar-scheduler-4.1.0/packages/moment/main.js" type="text/javascript"></script>
        <script src="lib/fullcalendar-scheduler-4.1.0/packages/moment/main.js" type="text/javascript"></script>
@@ -102,10 +99,14 @@
                         url: 'rental/get_rental',
                         method: "post"
                     },
-//                    events: {
-//                        url:"rental/...",
-//                        method:"post"
-//                    }
+                    
+                    
+                    events: {
+                        url:"rental/get_events",
+                        method: "post"
+                    },
+
+
                     editable: true,
 //                    resourceLabelText: 'Return',
 //                    resources: 'https://fullcalendar.io/demo-resources.json?with-nesting&with-colors',

@@ -241,6 +241,13 @@ class ControllerRental extends Controller {
         $rent = Rental::get_rental_all();
         echo json_encode($rent);
     }
+    
+    public function get_events(){
+        $events  = Rental::get_rental_all();
+        echo json_encode($events);
+    }
+    
+    
 
     public function delete_rental_return() {
         $user = Controller::get_user_or_redirect();

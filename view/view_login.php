@@ -6,7 +6,30 @@
         <base href="<?= $web_root ?>"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="css/styles.css" rel="stylesheet" type="text/css"/>
-        
+
+        <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
+        <script src="lib/jquery-validation-1.19.0/jquery.validate.min.js" type="text/javascript"></script>
+        <script>
+            $().ready(function () {
+                $("#loginForm").validate({
+                    rules: {
+                        username: 'required',
+                        password: {
+                            required: true,
+                            minlength: 8,
+                            maxlength: 16,
+                        }
+                    },
+                    messages: {
+                        username: 'required',
+                    password: {
+                            required: 'required',
+                            minlength: 'minimum 8 characters',
+                        }
+                    }
+                });
+            });
+        </script>
     </head>
     <body>
         <div class="title">Log In</div>
@@ -15,7 +38,7 @@
             <a href="main/signup">Sign Up</a>
         </div>
         <div class="main">
-            <form action="main/login" method="post">
+            <form id="loginForm" action="main/login" method="post">
                 <table>
                     <tr>
                         <td>Username</td>

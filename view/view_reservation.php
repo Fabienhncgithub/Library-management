@@ -9,8 +9,18 @@
         <title>filter</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="styles.css" rel="stylesheet" type="text/css"/>
+
+        <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
+        <script src="lib/jquery-validation-1.19.0/jquery.validate.min.js" type="text/javascript"></script>
+
+
     </head>
-    <body>
+    <body id="body">
+
+
+        <script>
+
+        </script>
         <div class="title">Welcome <?= $user->username ?></div>
 
 
@@ -22,21 +32,21 @@
             include('menu.html');
         }
         ?>
-        <div class="main">
+        <div class="list">
             <form action="book/search" method="post">
-                <table>
+                <table >
                     <thead>
                         <tr>
                             <td>Filters</td>
-                            <td><input id="critere" name="critere" type="text" ></td>
-                             <input type='hidden' name='member' value='<?= $smember->username ?>' >
-                            <td><input type="submit" name="search"></td>
-                             
-                        </tr>
+                            <td><input  name="critere" type="text" id="search"  placeholder="text"></td>
+                    <input type='hidden' name='member' value='<?= $smember->username ?>' >
+                    <td ><input type="submit" name="search" id="btnsearch"></td>
+
+                    </tr>
                     </thead>
                 </table>
             </form><br>
-            <table>
+            <table id="list">
                 <thead>
                     <tr>
                         <th>ISBN</th>
@@ -105,7 +115,7 @@
 
             Basket of books to rent
             <br>
-            <table>
+            <table >
                 <thead>
                     <tr>
                         <th>ISBN</th>
@@ -165,7 +175,7 @@
                             <td>
                                 <form   action='rental/deselection' method='post'>
                                     <input type='hidden' name='deselection' value='<?= $selection->title ?>' >
-                                    
+
                                     <input type='hidden' name='sdeselection' value='<?= $smember->username ?>' >
 
                                     <input type='submit' value='deselection'>
@@ -183,9 +193,9 @@
                     <td>The basket is for:</td>
                     <td>                      
                         <select id="member" name="rental_select" value="rental_select" > 
-                           <!--<option value=  <?= $user->username ?: '' ?>><?= $user->username ?></option>-->
+                            <option value= ' <?= $smember->id ?: '' ?>' id="memberz"><?= $smember->username ?></option>
                             <?php foreach ($members as $member): ?>
-                                <option value=  <?= $member->username ?: '' ?>><?= $member->username ?></option>
+                                <option value=  '<?= $member->username ?: '' ?>'  ><?= $member->username ?></option>
                             <?php endforeach; ?>   
                     </td>
                     </select>
@@ -193,14 +203,15 @@
                 </form>    
 
 
-            <?php endif; ?>
+            <?php endif; ?><?php ?>
+            
 
             <form class="button" action="rental/clear_basket" method="POST">
-                   <input type='hidden' name='memberclearbasket' value='<?= $smember->username ?>' >
+                <input type='hidden' name='memberclearbasket' value='<?= $smember->username ?>' >
                 <input type="submit" value="Effacer rental"   name="new">
             </form>
             <form class="button" action="rental/confirm_basket" method="POST">
-                   <input type='hidden' name='memberconfirmbasket' value='<?= $smember->username ?>' >
+                <input type='hidden' name='memberconfirmbasket' value='<?= $smember->username ?>' >
                 <input type="submit" name="Save rental" value="Save rental" >
             </form> 
 
