@@ -58,6 +58,15 @@
                              required: true,
                         },
                         email: {
+                               remote: {
+                                url: 'user/email_exists_service',
+                                type: 'post',
+                                data:  {
+                                    username: function() { 
+                                        return $("#email").val();
+                                    }
+                                }
+                            },
                              required: true,
                         }
                     },

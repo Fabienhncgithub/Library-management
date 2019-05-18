@@ -9,16 +9,7 @@ class ControllerUser extends Controller {
 
     const UPLOAD_ERR_OK = 0;
 
-    public function user_exists_service() {
-        $res = "true";
-        if(isset($_POST["username"]) && $_POST["username"] !== ""){
-            $member = User::get_member_by_pseudo($_POST["username"]);
-            if($member){
-                $res = "false";
-            }
-        }
-        echo $res;
-    }
+
 
     //page d'accueil. 
     public function index() {
@@ -204,6 +195,29 @@ class ControllerUser extends Controller {
             }
         }
         (new View("edit-user"))->show(array("username" => $username, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "role" => $role, "errors" => $errors));
+    }
+    
+        public function user_exists_service() {
+        $res = "true";
+        if(isset($_POST["username"]) && $_POST["username"] !== ""){
+            $member = User::get_member_by_pseudo($_POST["username"]);
+            if($member){
+                $res = "false";
+            }
+        }
+        echo $res;
+    }
+    
+  
+        public function   email_exists_service() {
+        $res = "true";
+        if(isset($_POST["email"]) && $_POST["email"] !== ""){
+            $email = User::get_member_by_email($_POST["email"]);
+            if($email){
+                $res = "false";
+            }
+        }
+        echo $res;
     }
 
 }
