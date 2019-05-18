@@ -10,11 +10,12 @@ class ControllerUser extends Controller {
     const UPLOAD_ERR_OK = 0;
 
     public function user_exists_service() {
-        $res = "false";
-        if (isset($_GET["param1"]) && $_GET["param1"] !== "") {
-            $member = User::get_member_by_pseudo($_GET["param1"]);
-            if ($member)
-                $res = "true";
+        $res = "true";
+        if(isset($_POST["username"]) && $_POST["username"] !== ""){
+            $member = User::get_member_by_pseudo($_POST["username"]);
+            if($member){
+                $res = "false";
+            }
         }
         echo $res;
     }

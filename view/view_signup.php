@@ -28,7 +28,7 @@
                     rules: {
                         username: {
                             remote: {
-                                url: 'user/pseudo_available_service',
+                                url: 'user/user_exists_service',
                                 type: 'post',
                                 data:  {
                                     username: function() { 
