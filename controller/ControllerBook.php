@@ -244,7 +244,18 @@ class ControllerBook extends Controller {
             }
         }
     }
-
+    
+    
+    public function isbn_available_service(){
+           $res = "true";
+        if(isset($_POST["isbn"]) && $_POST["isbn"] !== ""){
+            $isbn = Book::get_book_by_ISBN($_POST["isbn"]);
+            if($isbn){
+                $res = "false";
+            }
+        }
+        echo $res;
+    }
 
     
     
