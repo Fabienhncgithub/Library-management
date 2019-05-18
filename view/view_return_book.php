@@ -99,7 +99,7 @@
                     },
 
                     resources: {
-                        url: 'rental/get_rental/',
+                        url: 'rental/get_rental',
                         method: "post"
                     },
 //                    events: {

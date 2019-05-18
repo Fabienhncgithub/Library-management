@@ -45,6 +45,22 @@ class Rental extends Model {
         } catch (Exception $ex) {
             $ex->getMessage();
         }
+        
+        }
+        public static function get_rental_all() {
+            $result = [];
+        try {
+            $query = self::execute("SELECT * FROM rental join book on rental.book = book.id join user on user.id =rental.user", array());
+            $datas = $query->fetchAll();
+            foreach ($datas as $data) {
+                $result[] = new Rental($data["id"], $data["username"], $data["title"], $data["rentaldate"], $data["returndate"]);
+            }return $result;
+        } catch (Exception $ex) {
+            $ex->getMessage();
+        }  
+       
+        
+        
     }
     
 

@@ -238,7 +238,7 @@ class ControllerRental extends Controller {
     }
 
     public function get_rental() {
-        $rent = Rental::get_all_rental();
+        $rent = Rental::get_rental_all();
         echo json_encode($rent);
     }
 
