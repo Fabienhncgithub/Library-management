@@ -50,7 +50,7 @@ class Rental extends Model {
         public static function get_rental_all() {
             $result = [];
         try {
-            $query = self::execute("SELECT * FROM rental join book on rental.book = book.id join user on user.id =rental.user", array());
+            $query = self::execute("SELECT rental.id, user.username, book.title,rental.rentaldate,rental. returndate FROM rental join book on rental.book = book.id join user on user.id =rental.user", array());
             $datas = $query->fetchAll();
             foreach ($datas as $data) {
                 $result[] = new Rental($data["id"], $data["username"], $data["title"], $data["rentaldate"], $data["returndate"]);

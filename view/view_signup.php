@@ -7,8 +7,8 @@
         <base href="<?= $web_root ?>"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="css/styles.css" rel="stylesheet" type="text/css"/>
-         <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
-        <script>
+      
+     
   <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
         <script src="lib/jquery-validation-1.19.0/jquery.validate.min.js" type="text/javascript"></script>
         <script>
@@ -54,6 +54,9 @@
                             equalTo: "#password",
                             regex: [/[A-Z]/, /\d/, /['";:,.\/?\\-]/],
                         }
+//                        email: {
+//                             required: true,
+//                        }
                     },
                     messages: {
                         username: {
@@ -76,6 +79,10 @@
                             equalTo: 'must be identical to password above',
                             regex: 'bad password format',
                         }
+//                        email:{
+//                            remote: 'this email is already taken',
+//                            required: 'required', 
+//                        }
                     }
                 });
                 $("input:text:first").focus();
