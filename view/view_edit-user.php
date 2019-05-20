@@ -87,14 +87,7 @@
                 $("input:text:first").focus();
             });
         </script> 
-
-
-
         <div class="title">Edit User</div>
-
-
-
-
         <div class="main">
             Please enter the user details :
             <br><br>
@@ -135,13 +128,10 @@
                 </table>
                 <input id="id" type="hidden" name="id" value="<?php echo $id ?>" >
                 <input type='submit' value='edit'>
-                <input type="submit" name="cancel" value="cancel">
             </form>
-            <!--            <form>
-                            
-                              <form action='user/save_user' method="POST">
-                            <input type="submit" name="cancel" value="cancel">
-                        </form>-->
+            <form action='user/save_user' method="POST">
+           <input type="submit" name="cancel" value="cancel">
+            </form>
 
             <?php
             if (isset($errors) && count($errors) > 0) {

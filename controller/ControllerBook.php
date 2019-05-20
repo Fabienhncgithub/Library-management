@@ -258,7 +258,21 @@ class ControllerBook extends Controller {
     }
 
     
-    
-    
+        public function isbn_available_service_edit(){
+       $res = "true";
+        if (isset($_POST["isbn"]) && isset($_POST["idbook"])) {
+            
+            $book = Book::get_book_isbn($_POST["isbn"]);
+            $book2 = Book::get_book_id(($_POST["idbook"]));
+            
+            if ($book) {
+                 $res = "false";
+                if ($book->isbn === $book2->isbn) {
+                    $res = "true";
+                }
+            }
+        }
+        echo $res;
+    }
 
 }
