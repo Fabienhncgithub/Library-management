@@ -9,8 +9,6 @@ class ControllerUser extends Controller {
 
     const UPLOAD_ERR_OK = 0;
 
-
-
     //page d'accueil. 
     public function index() {
         $this->profile();
@@ -23,7 +21,7 @@ class ControllerUser extends Controller {
         $user = User::get_member_by_pseudo($username);
         $users = $user->id;
         $rentals = Rental::get_rental_by_user($users);
-      
+
         (new View("profile"))->show(array("user" => $user, "rentals" => $rentals));
     }
 
@@ -83,7 +81,7 @@ class ControllerUser extends Controller {
                 $users->deleteuser();
             }
         }
-           $this->redirect("User", "Users");
+        $this->redirect("User", "Users");
     }
 
     public function add_user() {
@@ -160,13 +158,10 @@ class ControllerUser extends Controller {
 
     public function save_user() {
         $user = $this->get_user_or_redirect();
-
         $errors = [];
-
         if (isset($_POST['cancel'])) {
             $this->redirect("user", "users");
         }
-
         if (isset($_POST['id']) && isset($_POST['username']) && isset($_POST['fullname']) && isset($_POST['email']) && isset($_POST['birthdate']) && isset($_POST['role'])) {
             $id = $_POST['id'];
             $username = $_POST['username'];
@@ -197,37 +192,38 @@ class ControllerUser extends Controller {
         }
         (new View("edit-user"))->show(array("username" => $username, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "role" => $role, "errors" => $errors));
     }
-    
-        public function user_exists_service() {
+
+    public function user_exists_service_edit() {
         $res = "true";
-        if(isset($_POST["username"]) && $_POST["username"] !== ""){
+        if (isset($_POST["username"]) && isset($_POST["iduser"])) {
             $member = User::get_member_by_pseudo($_POST["username"]);
-            if($member){
+            $member2 = User::get_member_by_id(($_POST["iduser"]));
+            if ($member) {
+                 $res = "false";
+                if ($member->username === $member2->username) {
+                    $res = "true";
+                }
+            }
+        }
+        echo $res;
+    }
+
+    public function user_exists_service() {
+        $res = "true";
+        if (isset($_POST["username"]) && $_POST["username"] !== "") {
+            $member = User::get_member_by_pseudo($_POST["username"]);
+            if ($member) {
                 $res = "false";
             }
         }
         echo $res;
     }
-    
-            public function user_exists_service_edit() {
-   
+
+    public function email_exists_service() {
         $res = "true";
-        if(isset($_POST["username"]) && $_POST["username"] !== ""){
-            $member = User::get_member_by_pseudo($_POST["username"]);
-            if($member){
-                $res = "false";
-            }
-        }
-        echo $res;
-    }
-    
-    
-  
-        public function   email_exists_service() {
-        $res = "true";
-        if(isset($_POST["email"]) && $_POST["email"] !== ""){
+        if (isset($_POST["email"]) && $_POST["email"] !== "") {
             $email = User::get_member_by_email($_POST["email"]);
-            if($email){
+            if ($email) {
                 $res = "false";
             }
         }
@@ -235,8 +231,20 @@ class ControllerUser extends Controller {
     }
     
     
-    
-    
-    
+        public function email_exists_service_edit() {
+        $res = "true";
+        if (isset($_POST["email"]) && isset($_POST["iduser"])) {
+            
+            $member = User::get_member_by_email($_POST["email"]);
+            $member2 = User::get_member_by_id(($_POST["iduser"]));
+            if ($member) {
+                 $res = "false";
+                if ($member->email === $member2->email) {
+                    $res = "true";
+                }
+            }
+        }
+        echo $res;
+    }
 
 }

@@ -28,16 +28,15 @@
                     rules: {
                         username: {
                             remote: {
-                                url: 'user/user_exists_service',
+                                url: 'user/user_exists_service_edit',
                                 type: 'post',
                                 data: {
                                     username: function () {
                                         return $("#username").val();
 
-                                        }
-                                        id: function () {
-                                            return $("#id").val();
-                                        }
+                                    },
+                                    iduser: function () {
+                                        return $("#id").val();
                                     }
 
                                 }
@@ -53,11 +52,14 @@
                         },
                         email: {
                             remote: {
-                                url: 'user/email_exists_service',
+                                url: 'user/email_exists_service_edit',
                                 type: 'post',
                                 data: {
                                     username: function () {
                                         return $("#email").val();
+                                    },
+                                    iduser: function () {
+                                        return $("#id").val();
                                     }
                                 }
                             },
@@ -98,7 +100,7 @@
             <br><br>
             <form id="edituserForm"action='user/save_user' method="POST">
                 <input id ='iduser'type="text" name="id" value="<?php echo $users->id ?>" hidden>
-                
+
                 <table>
                     <tr>
                         <td>User Name:</td>
@@ -135,7 +137,11 @@
                 <input type='submit' value='edit'>
                 <input type="submit" name="cancel" value="cancel">
             </form>
-
+            <!--            <form>
+                            
+                              <form action='user/save_user' method="POST">
+                            <input type="submit" name="cancel" value="cancel">
+                        </form>-->
 
             <?php
             if (isset($errors) && count($errors) > 0) {
