@@ -147,7 +147,7 @@ class ControllerRental extends Controller {
         $username = $user->username;
         $user = User::get_member_by_pseudo($username);
         $users = $user->id;
-        $returns = Rental::get_all_rental();
+        $returns = Rental::get_rental_all();
         (new View("return_book"))->show(array("user" => $user, "returns" => $returns));
     }
 
@@ -194,7 +194,7 @@ class ControllerRental extends Controller {
                 $selection = "return";
             }
         }
-        var_dump($selection);
+ 
 
         if ($selection == 'all') {
             $returns = Rental::get_rental_by_filter_all($book, $member, $rentaldate);

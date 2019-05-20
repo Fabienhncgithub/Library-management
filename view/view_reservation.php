@@ -8,7 +8,7 @@
         <link href="css/styles.css" rel="stylesheet" type="text/css"/>
         <title>filter</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="styles.css" rel="stylesheet" type="text/css"/>
+
 
         <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
         <script src="lib/jquery-validation-1.19.0/jquery.validate.min.js" type="text/javascript"></script>
@@ -19,6 +19,86 @@
 
 
         <script>
+            var list;
+            var actual;
+
+            $(function () {
+                $('#btnsearch').hide();
+                $('#search').focus();
+
+
+                list = $('.list').val();
+                actual = $('#memberz').val();
+
+                $('#search').keyup(function () {
+
+                    console.log($('#memberz').val());
+                    $.get("book/find_book/" + $('#search').val() + "/" + $('#memberz').val(), function (data) {
+                        var mesDN = JSON.parse(data);
+                        $(list).html("");
+                        displayTable(mesDN);
+                    });
+                });
+            });
+
+            function displayTable(datas) {
+
+                var html = "<tr>\n\
+                        <th id='isbn' >Isbn</th>" +
+                        "<th id='title'>Title</th>" +
+                        "<th id='author' >Athor</th>" +
+                        "<th id='editor' >Editor</th>" +
+                        "<th id='action' >Action</th>\
+                         </tr>";
+
+
+                for (var m = 0; m < datas.length; ++m) {
+                    html += "<tr>";
+                    html += "<td>" + datas[m].isbn + "</td>";
+                    html += "<td>" + datas[m].title + "</td>";
+                    html += "<td>" + datas[m].author + "</td>";
+                    html += "<td>" + datas[m].editor + "</td>";
+                    html += "</tr>";
+                    html += "<td> <form class='link' action='book/edit' method='post'><input type='text' name='id_book' value=' " + datas[m].id + "'  hidden><input class='submit' type='submit' value='" + m.title + "'></form> </td>";
+
+
+
+
+                    " <td><form  method='post' action='book/edit'>"
+                    html += "<input type='hidden' name='editbook' value='" + datas[m].id + "'>"
+                    html += "<input type='hidden' name='basketof' value='" + actual + "'>"
+                    html += "<button type='submit' name='selections' >"
+                    html += "</button>"
+                    html += "</form>"
+                    html += "</td>";
+                    html += "</tr>";
+
+                    html += "<td style='border:none;' bgcolor='white' >" +
+                            "<form  method='post' action='book/book_detail'>" +
+                            "<input type='hidden' name='idbook' value='" + datas[m].id + "'>" +
+                            "<input type='hidden' name='basketof'; value='" + actual + "'>" +
+                            "<button type='submit' name='idsubmit' class='btn btn-default'>" +
+                            "<span class='glyphicon glyphicon-eye-open'></span>" +
+                            "</button>" +
+                            "</form>" +
+                            " </td>";
+
+                    html += " <td style='border:none;margin-left:10px;' bgcolor='white' id='list'>" +
+                            "<form  method='post' action='book/delete_book'>" +
+                            " <input type='hidden' name='delbook' value='" + datas[m].id + "'>" +
+                            " <input type='hidden' name='basketof' value='" + actual + "'>" +
+                            "<button type='submit' name='idsubmit' class='btn btn-danger'>" +
+                            "<span class='glyphicon glyphicon-trash'></span >" +
+                            " </button> " +
+                            "</form>" +
+                            " </td>";
+
+
+
+                }
+
+                $('#list').html(html);
+            }
 
         </script>
         <div class="title">Welcome <?= $user->username ?></div>
@@ -152,6 +232,7 @@
                                         <input type='hidden' name='id_book' value='<?= $selection->id ?>'>
                                         <input type='submit' value='delete'>
                                     </form>
+                                    </form>
                                 <?php endif; ?>
                             </td>
 
@@ -193,7 +274,7 @@
                     <td>The basket is for:</td>
                     <td>                      
                         <select id="member" name="rental_select" value="rental_select" > 
-                            <option value= ' <?= $smember->id ?: '' ?>' id="memberz"><?= $smember->username ?></option>
+                            <option value= '<?= $smember->id ?: '' ?>'id="memberz"><?= $smember->username ?></option>
                             <?php foreach ($members as $member): ?>
                                 <option value=  '<?= $member->username ?: '' ?>'  ><?= $member->username ?></option>
                             <?php endforeach; ?>   
@@ -204,7 +285,7 @@
 
 
             <?php endif; ?><?php ?>
-            
+
 
             <form class="button" action="rental/clear_basket" method="POST">
                 <input type='hidden' name='memberclearbasket' value='<?= $smember->username ?>' >

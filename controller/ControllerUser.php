@@ -23,6 +23,7 @@ class ControllerUser extends Controller {
         $user = User::get_member_by_pseudo($username);
         $users = $user->id;
         $rentals = Rental::get_rental_by_user($users);
+      
         (new View("profile"))->show(array("user" => $user, "rentals" => $rentals));
     }
 
@@ -208,6 +209,19 @@ class ControllerUser extends Controller {
         echo $res;
     }
     
+            public function user_exists_service_edit() {
+   
+        $res = "true";
+        if(isset($_POST["username"]) && $_POST["username"] !== ""){
+            $member = User::get_member_by_pseudo($_POST["username"]);
+            if($member){
+                $res = "false";
+            }
+        }
+        echo $res;
+    }
+    
+    
   
         public function   email_exists_service() {
         $res = "true";
@@ -219,5 +233,10 @@ class ControllerUser extends Controller {
         }
         echo $res;
     }
+    
+    
+    
+    
+    
 
 }

@@ -60,6 +60,14 @@ class User extends Model {
             return new User($data["id"], $data["username"], $data["password"], $data["fullname"], $data["email"], $data["birthdate"], $data["role"]);
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
 
     public static function get_member_by_email($email) {
         $query = self::execute("SELECT * FROM user where email = :email", array("email" => $email));

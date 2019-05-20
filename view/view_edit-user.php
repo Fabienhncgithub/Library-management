@@ -8,13 +8,13 @@
         <link href="css/styles.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-        
-         <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
+
+        <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
         <script src="lib/jquery-validation-1.19.0/jquery.validate.min.js" type="text/javascript"></script>
         <script>
             $.validator.addMethod("regex", function (value, element, pattern) {
                 if (pattern instanceof Array) {
-                    for(p of pattern) {
+                    for (p of pattern) {
                         if (!p.test(value))
                             return false;
                     }
@@ -23,17 +23,23 @@
                     return pattern.test(value);
                 }
             }, "Please enter a valid input.");
-            $(function(){
+            $(function () {
                 $('#edituserForm').validate({
                     rules: {
                         username: {
                             remote: {
                                 url: 'user/user_exists_service',
                                 type: 'post',
-                                data:  {
-                                    username: function() { 
+                                data: {
+                                    username: function () {
                                         return $("#username").val();
+
+                                        }
+                                        id: function () {
+                                            return $("#id").val();
+                                        }
                                     }
+
                                 }
                             },
                             required: true,
@@ -41,22 +47,22 @@
                             maxlength: 16,
                             regex: /^[a-zA-Z][a-zA-Z0-9]*$/,
                         },
- 
+
                         fullname: {
-                             required: true,
+                            required: true,
                         },
                         email: {
-                               remote: {
+                            remote: {
                                 url: 'user/email_exists_service',
                                 type: 'post',
-                                data:  {
-                                    username: function() { 
+                                data: {
+                                    username: function () {
                                         return $("#email").val();
                                     }
                                 }
                             },
-                             required: true,
-                         }
+                            required: true,
+                        }
                     },
                     messages: {
                         username: {
@@ -66,22 +72,22 @@
                             maxlength: 'maximum 16 characters',
                             regex: 'bad format for username',
                         },
-    
-                          fullname: {
-                               required: 'required', 
+
+                        fullname: {
+                            required: 'required',
                         },
-                        email:{
+                        email: {
                             remote: 'this email is already taken',
-                            required: 'required', 
+                            required: 'required',
                         }
                     }
                 });
                 $("input:text:first").focus();
             });
         </script> 
-        
-        
-        
+
+
+
         <div class="title">Edit User</div>
 
 
@@ -91,7 +97,8 @@
             Please enter the user details :
             <br><br>
             <form id="edituserForm"action='user/save_user' method="POST">
-                <input type="text" name="id" value="<?php echo $users->id ?>" hidden>
+                <input id ='iduser'type="text" name="id" value="<?php echo $users->id ?>" hidden>
+                
                 <table>
                     <tr>
                         <td>User Name:</td>
@@ -124,7 +131,7 @@
                         </td>
                     </tr>
                 </table>
-                <input type="hidden" name="id" value="<?php echo $id ?>" >
+                <input id="id" type="hidden" name="id" value="<?php echo $id ?>" >
                 <input type='submit' value='edit'>
                 <input type="submit" name="cancel" value="cancel">
             </form>

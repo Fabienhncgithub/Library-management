@@ -8,6 +8,65 @@
         <link href="css/styles.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
+        
+         <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
+        <script src="lib/jquery-validation-1.19.0/jquery.validate.min.js" type="text/javascript"></script> 
+        <script>
+            $().ready(function () {
+                $("#editbookForm").validate({
+                    rules: {
+                        isbn: {
+                            required: true,
+                            number: true,
+                            minlength: 13,
+//                            remote: {
+//                                url: 'book/isbn_available_service',
+//                                type: 'post',
+//                                data: {
+//                                    isbn: function () {
+//                                        return $("#isbn").val();
+//                                    }
+//                                }
+//                            },
+                            required: true,
+                        },
+                        title: {
+                            required: true,
+                        },
+                        author: {
+                            required: true,
+                        },
+                        editor: {
+                            required: true,
+                        }
+
+                    },
+                    messages: {
+                        isbn: {
+                            required: "ISBN required",
+                            number: "Only numbers",
+                            minlength: "ISBN is composed by 13 numbers",
+                            remote: "This isbn exists",
+                        },
+                        password: {
+                            required: 'required',
+                        },
+                        title: {
+                            required: 'required',
+                        },
+                        author: {
+                            required: 'required',
+                        },
+                        editor: {
+                            required: 'required',
+                        }
+
+                    }
+                });
+                     $("input:text:first").focus();
+            });
+        </script>
+        
         <div class="title">Edit Book</div>
        
         
@@ -22,25 +81,29 @@
 
             Please enter the book details :
             <br><br>
-            <form action='book/edit_book' method="POST">
+            <form id="editbookForm" action='book/edit_book' method="POST">
 
                 <table> 
                     <tr>
                         <td>isbn:</td>
                         <td><input id="isbn" name="isbn" type="text" value="<?php echo $isbn; ?>"></td>
+                            <td class="errors" id="errPseudo"></td>
                     </tr>
                     <tr>
                         <td>titre:</td>
                         <td><input id="title" name="title" type="text" value="<?php echo $title; ?>"></td>
+                          <td class="errors" id="errTitle"></td>
                     </tr>
                     <tr>
                     <tr>
                         <td>author:</td>
                         <td><input id="author" name="author" type="text" value="<?php echo $author; ?>"></td>
+                           <td class="errors" id="errAuthor"></td>
                     </tr>
                     <tr>
                         <td>editor:</td>
                         <td><input id="editor" name="editor" type="text" value="<?php echo $editor; ?>"></td>
+                          <td class="errors" id="errEditor"></td>
                     </tr>
                     <tr>
                         <td>Picture:</td>
