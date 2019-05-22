@@ -32,8 +32,10 @@ class ControllerRental extends Controller {
         $user = $this->get_user_or_redirect();
 
         if (isset($_POST['selection']) && (isset($_POST['selections']))) {
-            $smember = User::get_member_by_pseudo($_POST['selections']);
-            $idsmember = $smember->id;
+           var_dump(($_POST['selections']));
+           var_dump(($_POST['selection']));
+            $smember = User::get_member_by_id($_POST['selections']);
+            $idsmember = ($_POST['selections']);
             $username = $user->username;
             $user = User::get_member_by_pseudo($username);
             $user = $user->id;
@@ -43,6 +45,7 @@ class ControllerRental extends Controller {
             $books = Book::get_book_not_rental_by_member($idsmember);
             $book = $_POST["selection"];
             $rental = new Rental('', $idsmember, $book, $rentaldate, $returndate);
+            var_dump($rental);
             $rental->Select();
             $rentalbooks = Rental::get_rental_by_user($idsmember);
             $id = $rental->book;

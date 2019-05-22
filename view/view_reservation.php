@@ -34,9 +34,10 @@
 
                     console.log($('#memberz').val());
                     $.get("book/find_book/" + $('#search').val() + "/" + $('#memberz').val(), function (data) {
-                        var mesDN = JSON.parse(data);
-                        $(list).html("");
-                        displayTable(mesDN);
+                        var DN = JSON.parse(data);
+                        displayTable(DN);
+                        console.log(actual);
+                        //console.log("coucou");
                     });
                 });
             });
@@ -48,8 +49,7 @@
                         "<th id='title'>Title</th>" +
                         "<th id='author' >Athor</th>" +
                         "<th id='editor' >Editor</th>" +
-                        "<th id='action' >Action</th>\
-                         </tr>";
+                        "<th id='action' >Action</th>\</tr>";
 
 
                 for (var m = 0; m < datas.length; ++m) {
@@ -58,13 +58,11 @@
                     html += "<td>" + datas[m].title + "</td>";
                     html += "<td>" + datas[m].author + "</td>";
                     html += "<td>" + datas[m].editor + "</td>";
-                    html += "<td> <form class='button' action='book/edit' method='post'><input name='edit' value=' " + datas[m].id + "' hidden><input class='submit' type='submit' value='" + "edit" + "'></form> </td>";
-                    html += "<td> <form class='button' action='book/delete' method='post'><input name='edit' value=' " + datas[m].id + "' hidden><input class='submit' type='submit' value='" + "delete" + "'></form> </td>";
-                    html += "<td> <form class='button' action='rental/selection' method='post'><input name='selection' value=' " + datas[m].id + "' hidden><input type='text' name='selections' value='" + actual + "' hidden><input class='submit' type='submit' value='" + "selection" + "'></form> </td>";
+                    html += "<td> <form action='book/edit' method='post'><input name='edit' value=' " + datas[m].id + "' hidden><input class='submit' type='submit' value='" + "edit" + "'></form> </td>";
+                    html += "<td> <form action='book/delete' method='post'><input name='edit' value=' " + datas[m].id + "' hidden><input class='submit' type='submit' value='" + "delete" + "'></form> </td>";
+                    html += "<td> <form action='rental/selection' method='post'><input name='selection' value=' " + datas[m].id + "' hidden><input name='selections' value='" + actual + "' hidden><input class='submit' type='submit' value='" + "selection" + "'></form> </td>";
                     html += "</tr>";
-                
                 }
-
                 $('#list').html(html);
             }
 
@@ -140,7 +138,7 @@
                         <td>
                             <form   action='rental/selection' method='post'>
                                 <input type='hidden' name='selection' value='<?= $book->id ?>' >
-                                <input type='hidden' name='selections' value='<?= $smember->username ?>' >
+                                <input type='hidden' name='selections' value='<?= $smember->id ?>' >
                                 <input type='submit' value='selection'>
                             </form>
                         </td>
