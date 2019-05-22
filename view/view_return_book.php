@@ -8,8 +8,8 @@
         <title>Books</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
-<!--        
-<link href='lib/fullcalendar/packages/core/main.css' rel='stylesheet' />
+        
+<!--<link href='lib/fullcalendar/packages/core/main.css' rel='stylesheet' />
         <link href='lib/fullcalendar/packages/timeline/main.css' rel='stylesheet' />
         <link href='lib/fullcalendar/packages/resource-timeline/main.css' rel='stylesheet' />
         <link href="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.min.css" rel="stylesheet" type="text/css"/>

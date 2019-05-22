@@ -44,7 +44,7 @@
             function displayTable(datas) {
 
                 var html = "<tr>\n\
-                        <th id='isbn' >Isbn</th>" +
+                        <th id='isbn' >ISBN</th>" +
                         "<th id='title'>Title</th>" +
                         "<th id='author' >Athor</th>" +
                         "<th id='editor' >Editor</th>" +
@@ -58,43 +58,11 @@
                     html += "<td>" + datas[m].title + "</td>";
                     html += "<td>" + datas[m].author + "</td>";
                     html += "<td>" + datas[m].editor + "</td>";
+                    html += "<td> <form class='button' action='book/edit' method='post'><input name='edit' value=' " + datas[m].id + "' hidden><input class='submit' type='submit' value='" + "edit" + "'></form> </td>";
+                    html += "<td> <form class='button' action='book/delete' method='post'><input name='edit' value=' " + datas[m].id + "' hidden><input class='submit' type='submit' value='" + "delete" + "'></form> </td>";
+                    html += "<td> <form class='button' action='rental/selection' method='post'><input name='selection' value=' " + datas[m].id + "' hidden><input type='text' name='selections' value='" + actual + "' hidden><input class='submit' type='submit' value='" + "selection" + "'></form> </td>";
                     html += "</tr>";
-                    html += "<td> <form class='link' action='book/edit' method='post'><input type='text' name='id_book' value=' " + datas[m].id + "'  hidden><input class='submit' type='submit' value='" + m.title + "'></form> </td>";
-
-
-
-
-                    " <td><form  method='post' action='book/edit'>"
-                    html += "<input type='hidden' name='editbook' value='" + datas[m].id + "'>"
-                    html += "<input type='hidden' name='basketof' value='" + actual + "'>"
-                    html += "<button type='submit' name='selections' >"
-                    html += "</button>"
-                    html += "</form>"
-                    html += "</td>";
-                    html += "</tr>";
-
-                    html += "<td style='border:none;' bgcolor='white' >" +
-                            "<form  method='post' action='book/book_detail'>" +
-                            "<input type='hidden' name='idbook' value='" + datas[m].id + "'>" +
-                            "<input type='hidden' name='basketof'; value='" + actual + "'>" +
-                            "<button type='submit' name='idsubmit' class='btn btn-default'>" +
-                            "<span class='glyphicon glyphicon-eye-open'></span>" +
-                            "</button>" +
-                            "</form>" +
-                            " </td>";
-
-                    html += " <td style='border:none;margin-left:10px;' bgcolor='white' id='list'>" +
-                            "<form  method='post' action='book/delete_book'>" +
-                            " <input type='hidden' name='delbook' value='" + datas[m].id + "'>" +
-                            " <input type='hidden' name='basketof' value='" + actual + "'>" +
-                            "<button type='submit' name='idsubmit' class='btn btn-danger'>" +
-                            "<span class='glyphicon glyphicon-trash'></span >" +
-                            " </button> " +
-                            "</form>" +
-                            " </td>";
-
-
-
+                
                 }
 
                 $('#list').html(html);
@@ -256,9 +224,7 @@
                             <td>
                                 <form   action='rental/deselection' method='post'>
                                     <input type='hidden' name='deselection' value='<?= $selection->title ?>' >
-
                                     <input type='hidden' name='sdeselection' value='<?= $smember->username ?>' >
-
                                     <input type='submit' value='deselection'>
                                 </form>
                             </td>
