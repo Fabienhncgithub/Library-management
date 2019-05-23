@@ -37,7 +37,7 @@
                             <td><?= $book->title ?></td>
                             <td><?= $book->author ?></td>
                             <td><?= $book->editor ?></td>
-                            <td><?= $book->picture ?></td>
+                            <td><img src="upload/<?= $book->picture ?>" />     </td>
                         </tr>
                     <?php endforeach; ?>
                 </table>

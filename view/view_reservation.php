@@ -25,7 +25,7 @@
             $(function () {
                 $('#btnsearch').hide();
                 $('#search').focus();
-
+                
 
                 list = $('.list').val();
                 actual = $('#memberz').val();
@@ -37,7 +37,7 @@
                         var DN = JSON.parse(data);
                         displayTable(DN);
                         console.log(actual);
-                        //console.log("coucou");
+               
                     });
                 });
             });
@@ -58,6 +58,7 @@
                     html += "<td>" + datas[m].title + "</td>";
                     html += "<td>" + datas[m].author + "</td>";
                     html += "<td>" + datas[m].editor + "</td>";
+                    
                     html += "<td> <form action='book/edit' method='post'><input name='edit' value=' " + datas[m].id + "' hidden><input class='submit' type='submit' value='" + "edit" + "'></form> </td>";
                     html += "<td> <form action='book/delete' method='post'><input name='edit' value=' " + datas[m].id + "' hidden><input class='submit' type='submit' value='" + "delete" + "'></form> </td>";
                     html += "<td> <form action='rental/selection' method='post'><input name='selection' value=' " + datas[m].id + "' hidden><input name='selections' value='" + actual + "' hidden><input class='submit' type='submit' value='" + "selection" + "'></form> </td>";
@@ -85,7 +86,7 @@
                         <tr>
                             <td>Filters</td>
                             <td><input  name="critere" type="text" id="search"  placeholder="text"></td>
-                    <input type='hidden' name='member' value='<?= $smember->username ?>' >
+                    <input type='hidden' id ="userconnect" name='member' value='<?= $smember->username ?>' >
                     <td ><input type="submit" name="search" id="btnsearch"></td>
 
                     </tr>
@@ -99,6 +100,7 @@
                         <th>Title</th>
                         <th>Author</th>
                         <th>Editor</th>
+                        <th>image</th>
                         <th>action</th>
                     </tr>
                 </thead>
@@ -108,6 +110,8 @@
                         <td><?= $book->title ?></td>
                         <td><?= $book->author ?></td>
                         <td><?= $book->editor ?></td>
+                        
+                         <td><img src="upload/<?= $book->picture ?>" style="width:30%; " /></td>
 
                         <td>
                             <?php if ($user->isAdmin($user->username)): ?>
@@ -128,7 +132,7 @@
                         </td>
 
                         <td>
-                            <?php if ($user->isManager($user->username)): ?>
+                            <?php if ($user->isAdmin($user->username)): ?>
                                 <form  action='book/details' method='post'>
                                     <input type='hidden' name='details' value='<?= $book->id ?>'>
                                     <input type='submit' value='details'>
