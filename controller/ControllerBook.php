@@ -4,6 +4,7 @@ require_once 'model/book.php';
 require_once 'model/rental.php';
 require_once 'framework/View.php';
 require_once 'framework/Controller.php';
+require_once 'framework/Utils.php';
 
 class ControllerBook extends Controller {
 
@@ -34,12 +35,18 @@ class ControllerBook extends Controller {
             $id = $users;
             $members = User::selection_member_by_all_not_selected($id);
             $search = ($_POST['critere']);
-            
-            var_dump($selections);
-            var_dump($smember);
-            
-            $books = Book::get_book_by_filter($search, $smember->id);
-            var_dump($books);
+
+            $filter = [];
+            if (isset($_GET["param1"])) {
+                $filter = Utils::url_safe_decode($_GET["param1"]);
+                if (!$filter)
+                    Utils::abort("bad url parameter");
+            }
+            if (isset($_POST["critere"])) {
+                $filter["critere"] = $_POST["critere"];
+                $this->redirect("book", "index", Utils::url_safe_encode($filter));
+            }
+            $books = Book::get_book_by_filter($filter["critere"], $smember->id);
         }
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
     }

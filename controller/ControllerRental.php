@@ -3,6 +3,7 @@
 require_once 'model/rental.php';
 require_once 'framework/View.php';
 require_once 'framework/Controller.php';
+require_once 'framework/Utils.php';
 
 class ControllerRental extends Controller {
 
