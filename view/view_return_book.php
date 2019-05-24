@@ -7,38 +7,26 @@
         <link href="css/styles.css" rel="stylesheet" type="text/css"/>
         <title>Books</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
-        
-<!--<link href='lib/fullcalendar/packages/core/main.css' rel='stylesheet' />
-        <link href='lib/fullcalendar/packages/timeline/main.css' rel='stylesheet' />
-        <link href='lib/fullcalendar/packages/resource-timeline/main.css' rel='stylesheet' />
+        <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
+        <script src="lib/jquery-validation-1.19.0/jquery.validate.min.js" type="text/javascript"></script>
+        <script src='lib/fullcalendar-scheduler-4.1.0/packages/moment/main.js'></script>
+        <script src='lib/fullcalendar-scheduler-4.1.0/packages/core/main.js'></script>
+        <script src='lib/fullcalendar-scheduler-4.1.0/packages/interaction/main.js'></script>
+        <script src='lib/fullcalendar-scheduler-4.1.0/packages/timeline/main.js'></script>
+        <script src='lib/fullcalendar-scheduler-4.1.0/packages/resource-common/main.js'></script>
+        <script src='lib/fullcalendar-scheduler-4.1.0/packages/resource-timeline/main.js'></script>
+        <link href='lib/fullcalendar-scheduler-4.1.0/packages/core/main.css' rel='stylesheet' />
+        <link href='lib/fullcalendar-scheduler-4.1.0/packages/timeline/main.css' rel='stylesheet' />
+        <link href='lib/fullcalendar-scheduler-4.1.0/packages/resource-timeline/main.css' rel='stylesheet' />
         <link href="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
         <link href="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.theme.min.css" rel="stylesheet" type="text/css"/>
         <link href="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.structure.min.css" rel="stylesheet" type="text/css"/>
-        
-        <script src='lib/fullcalendar/packages/core/main.js'></script>
-        <script src='lib/fullcalendar/packages/timeline/main.js'></script>
-        <script src='lib/fullcalendar/packages/resource-common/main.js'></script>
-        <script src='lib/fullcalendar/packages/resource-timeline/main.js'></script>
+        <script src='lib/fullcalendar-scheduler-4.1.0/packages/core/main.js'></script>
+        <script src='lib/fullcalendar-scheduler-4.1.0/packages/timeline/main.js'></script>
+        <script src='lib/fullcalendar-scheduler-4.1.0/packages/resource-common/main.js'></script>
+        <script src='lib/fullcalendar-scheduler-4.1.0/packages/resource-timeline/main.js'></script>
         <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
-        <script src="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.min.js" type="text/javascript"></script>-->
-
-         <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
-        <script src="lib/fullcalendar-scheduler-4.1.0/packages/moment/main.js" type="text/javascript"></script>
-       <script src="lib/fullcalendar-scheduler-4.1.0/packages/moment/main.js" type="text/javascript"></script>
-         <script src="lib/fullcalendar-scheduler-4.1.0/packages/core/main.js" type="text/javascript"></script> 
-        <script src="lib/fullcalendar-scheduler-4.1.0/packages/interaction/main.js" type="text/javascript"></script>
-       <script src="lib/fullcalendar-scheduler-4.1.0/packages/interaction/main.js" type="text/javascript"></script>
-         <script src="lib/fullcalendar-scheduler-4.1.0/packages/timeline/main.js" type="text/javascript"></script>
-        <script src="lib/fullcalendar-scheduler-4.1.0/packages/resource-common/main.js" type="text/javascript"></script>
-        <script src="lib/fullcalendar-scheduler-4.1.0/packages/resource-common/main.js" type="text/javascript"></script>
-         <script src="lib/fullcalendar-scheduler-4.1.0/packages/resource-timeline/main.js" type="text/javascript"></script>
-   
-
-
-
-
-
+        <script src="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.min.js" type="text/javascript"></script>
     </head>
     <body>
         <script>
@@ -70,7 +58,7 @@
                     defaultView: 'resourceTimelineMonth',
                     scrollTime: '08:00',
                     aspectRatio: 1.5,
-                    
+
                     resourceColumns: [
                         {
                             labelText: 'User',
@@ -99,13 +87,11 @@
                         url: 'rental/get_rental',
                         method: "post"
                     },
-                    
-                    
+
                     events: {
-                        url:"rental/get_events",
+                        url: "rental/get_events",
                         method: "post"
                     },
-
 
                     editable: true,
 //                    resourceLabelText: 'Return',
@@ -116,7 +102,7 @@
                 calendar.render();
             });
         </script>
-       <div class="title"><?php echo $user->username; ?>!</div>
+        <div class="title"><?php echo $user->username; ?>!</div>
 
 
 
@@ -166,7 +152,7 @@
                                     <td><?= User::get_user_by_id($return->user) ?></td>
                                     <td><?= Book::get_username_by_id($return->book) ?></td>
                                     <td><?= $return->returndate ?></td>
-                                    
+
                                     <td>
                                         <?php if ($user->isAdmin()): ?>
                                             <form  action='rental/delete_rental_return' method='post'>
@@ -175,7 +161,7 @@
                                             </form>
                                         <?php endif; ?>
                                     </td>
-                                    
+
                                     <td>
                                         <?php if ($user->isAdmin() || $user->isManager()): ?>
                                             <form  action='rental/return_rental' method='post'>
