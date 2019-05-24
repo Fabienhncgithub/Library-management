@@ -19,22 +19,10 @@ class ControllerRental extends Controller {
         (new View("profile"))->show(array("rentals" => $rentals, "user" => $user));
     }
 
-//    public function removeSelection() {
-//        $user = Controller::get_user_or_redirect();
-//        $books = Book::get_book_by_all();
-//        $selections = [];
-//        if (isset($_POST["selection"])) {
-//            $selections = array_shift(Book::get_book_by_id($_POST["selection"]));
-//        }
-//        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user));
-//    }
-
     public function selection() {
         $user = $this->get_user_or_redirect();
 
         if (isset($_POST['selection']) && (isset($_POST['selections']))) {
-           var_dump(($_POST['selections']));
-           var_dump(($_POST['selection']));
             $smember = User::get_member_by_id($_POST['selections']);
             $idsmember = ($_POST['selections']);
             $username = $user->username;
@@ -46,8 +34,8 @@ class ControllerRental extends Controller {
             $books = Book::get_book_not_rental_by_member($idsmember);
             $book = $_POST["selection"];
             $rental = new Rental('', $idsmember, $book, $rentaldate, $returndate);
-            var_dump($rental);
             $rental->Select();
+            $books = Book::get_book_not_rental_by_member($idsmember);
             $rentalbooks = Rental::get_rental_by_user($idsmember);
             $id = $rental->book;
             $selections = Rental::get_book_by_user($idsmember);
@@ -85,11 +73,10 @@ class ControllerRental extends Controller {
             $user = User::get_member_by_pseudo($username);
             $user = $user->id;
             $rental = Rental::get_rental_by_user_objet($idsmember);
-            if ($rental = 'false') {
+            if ($rental == 'false') {
                 $this->redirect("book", "index");
             } else
                 $rental->clear();
-
             $books = Book::get_book_by_all();
             $members = User::selection_member_by_all_not_selected($idsmember);
             $selections = Rental::get_book_by_user($idsmember);
@@ -107,9 +94,10 @@ class ControllerRental extends Controller {
             $user = User::get_member_by_pseudo($username);
             $user = $user->id;
             $rental = Rental::get_rental_by_user_objet($idsmember);
-            if ($rental != 'false') {
-                      $rental->rent();
-            } 
+            if ($rental == 'false') {
+                $this->redirect("book", "index");
+            } else
+                $rental->rent();
             $books = Book::get_book_by_all();
             $members = User::selection_member_by_all_not_selected($idsmember);
             $selections = Rental::get_book_by_user($idsmember);
@@ -118,17 +106,17 @@ class ControllerRental extends Controller {
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
     }
 
-    public function confirm_basket_for_user() {
-        $user = $this->get_user_or_redirect();
-        $username = $user->username;
-        $user = User::get_member_by_pseudo($username);
-        $user = $user->id;
-        $rental = Rental::get_user_by_id_rental_objet($user);
-        $rental->rent();
-        $books = Book::get_book_by_all();
-        $selections = Rental::get_book_by_user($user);
-        $user = $this->get_user_or_redirect();
-    }
+//    public function confirm_basket_for_user() {
+//        $user = $this->get_user_or_redirect();
+//        $username = $user->username;
+//        $user = User::get_member_by_pseudo($username);
+//        $user = $user->id;
+//        $rental = Rental::get_user_by_id_rental_objet($user);
+//        $rental->rent();
+//        $books = Book::get_book_by_all();
+//        $selections = Rental::get_book_by_user($user);
+//        $user = $this->get_user_or_redirect();
+//    }
 
     public function user_choice() {
         $user = Controller::get_user_or_redirect();
@@ -156,11 +144,9 @@ class ControllerRental extends Controller {
     }
 
     public function filter_return() {
-
         //empty - renvoyer tout
         //
         // 3requêtes qui reprennent le all return open
-
         $user = Controller::get_user_or_redirect();
         $username = $user->username;
         $user = User::get_member_by_pseudo($username);
@@ -209,7 +195,54 @@ class ControllerRental extends Controller {
         }
         (new View("return_book"))->show(array("user" => $user, "returns" => $returns));
     }
-
+    
+    
+    
+            public function get_rental() {
+        $rentaldate = null;
+        $title = "";
+        $author = "";
+        $MyRadio = 1;
+        if (isset($_POST['title'])) {
+            $title = $_POST['title'];
+        }
+        if (isset($_POST['author'])) {
+            $author = $_POST['author'];
+        }
+        if (isset($_POST['rentaldate'])) {
+            $rentaldate = $_POST['rentaldate'];
+        }
+            if (isset($_POST['MyRadio'])) {
+            $selection = ($_POST['MyRadio']);
+        }
+        if ($title == "" && $author == "" && $rentaldate == null) {
+            $rents = Rental::get_rental_all();
+        }
+        if ($rents != null) {
+            foreach ($rents as $rent) {
+                if ($rent->returndate == null) {
+                    if (date('Y-m-d', strtotime('1 month', strtotime($rent->rentaldate))) >= date('Y-m-d')) {
+                        $rent->eventColor = 'green';
+                    } else {
+                        $rent->eventColor = 'red';
+                    }
+                } else {
+                    if (date('Y-m-d', strtotime('1 month', strtotime($rent->rentaldate))) >= $rent->returndate) {
+                        $rent->eventColor = 'blue';
+                    } else {
+                        $rent->eventColor = 'yellow';
+                    }
+                }
+                if ($rent->returndate == null) {
+                    $rent->end = "/";
+                } else {
+                    $rent->end = $rent->returndate;
+                }
+            }
+        }
+        echo json_encode($rents);
+    }
+    
     public function return_rental() {
         $user = Controller::get_user_or_redirect();
         $username = $user->username;
@@ -222,7 +255,8 @@ class ControllerRental extends Controller {
             $book = Book::get_book_by_id_rental($idreturns);
         }
         (new View("return_date"))->show(array("user" => $user, "returns" => $returns, "book" => $book));
-    }
+}
+
 
     public function insert_return_date() {
         $user = Controller::get_user_or_redirect();
@@ -241,18 +275,26 @@ class ControllerRental extends Controller {
         }
     }
 
-    public function get_rental() {
-        $rent = Rental::get_rental_all();
-        echo json_encode($rent);
-    }
     
     public function get_events(){
-        $events  = Rental::get_rental_all();
+        $events = Rental::get_rental_all();
+        foreach ($events as $event) {
+            $event->start = $event->rentaldate;
+            $event->resourceId = $event->id;
+            if ($event->returndate == null) {
+            if (date('Y-m-d h:i:s', strtotime('1 month', strtotime($event->rentaldate))) >= date('Y-m-d h:i:s')) {
+                    $event->end = date('Y-m-d h:i:s', strtotime('1 month', strtotime($event->rentaldate)));
+                } else {
+                    $event->end = date('Y-m-d h:i:s');
+                }
+            } else {
+                $event->end = $event->returndate;
+            }
+        }
         echo json_encode($events);
     }
     
     
-
     public function delete_rental_return() {
         $user = Controller::get_user_or_redirect();
         $username = $user->username;
@@ -265,6 +307,14 @@ class ControllerRental extends Controller {
         (new View("confirm_delete_return"))->show(array("user" => $user, "return" => $return));
     }
 
+    
+       public function del_Rental() {
+        if (isset($_POST['delete'])) {
+            $rent = Rental::get_rental_by_id($_POST['delete']);
+            $rent[0]->delete_rental();
+        }
+    }
+    
     public function confirm_delete() {
         $user = $this->get_user_or_redirect();
         if ($user->isAdmin()) {
@@ -280,5 +330,11 @@ class ControllerRental extends Controller {
             $this->redirect("rental", "return_book");
         }
     }
-
+        
+        public function return_date() {
+        if (isset($_POST['retour'])) {
+            $rent = Rental::get_rental_by_id($_POST['retour']);
+            $rent[0]->returndate(date('Y-m-d h:i:s'));
+        }
+    }
 }

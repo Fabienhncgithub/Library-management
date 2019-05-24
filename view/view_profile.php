@@ -19,7 +19,6 @@
         }
         ?>
 
-
         <div class="main">
             <?php if (strlen($user->username) == 0): ?>
                 No profile string entered yet!

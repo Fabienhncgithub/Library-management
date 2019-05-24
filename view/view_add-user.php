@@ -154,16 +154,13 @@
                                 <option value="member" >member</option>
                         </td>
                     </tr>
-                        
-                        
-                        
                 </table>                    
 
-                </table>
                 <input type="submit" name="save" value="Save">
-                <input type="submit" name="cancel" value="Cancel">
             </form>
-            
+                <form action="user/adduser" method="post">
+           <input type="submit" name="cancel" value="cancel">
+            </form>
       
             <?php
             if (isset($errors) && count($errors) > 0) {

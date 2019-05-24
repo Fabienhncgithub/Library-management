@@ -31,10 +31,8 @@ class Rental extends Model {
             $ex->getMessage();
         }
     }
-    
-    
-    
-        public static function get_all_rental() {
+
+    public static function get_all_rental() {
         $result = [];
         try {
             $query = self::execute("SELECT * FROM rental", array());
@@ -45,21 +43,20 @@ class Rental extends Model {
         } catch (Exception $ex) {
             $ex->getMessage();
         }
-        
-        }
-        public static function get_rental_all() {
-            $result = [];
+    }
+
+    public static function get_rental_all() {
+        $result = [];
         try {
-            $query = self::execute("SELECT rental.id, user.username, book.title,rental.rentaldate,rental. returndate FROM rental join book on rental.book = book.id join user on user.id =rental.user", array());
+            $query = self::execute("SELECT rental.id, user.username, book.title,rental.rentaldate,rental. returndate FROM rental join book on rental.book = book.id join user on user.id =rental.user where rental.rentaldate is not null", array());
             $datas = $query->fetchAll();
             foreach ($datas as $data) {
                 $result[] = new Rental($data["id"], $data["username"], $data["title"], $data["rentaldate"], $data["returndate"]);
             }return $result;
         } catch (Exception $ex) {
             $ex->getMessage();
-        }  
+        }
     }
-    
 
     public static function get_rental_by_id_objet($id) {
         $query = self::execute("SELECT * FROM rental where id = :id", array("id" => $id));
@@ -70,9 +67,9 @@ class Rental extends Model {
             return new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
         }
     }
-    
-    public static function get_rental_by_member_book($id){
-        
+
+    public static function get_rental_by_member_book($id) {
+
         $query = self::execute("SELECT * FROM `rental` where rental.book =:id", array("id" => $id));
         $data = $query->fetch(); // un seul résultat au maximum
         if ($query->rowCount() == 0) {
@@ -81,8 +78,6 @@ class Rental extends Model {
             return new Rental($data["id"], $data["book"], $data["user"], $data["rentaldate"], $data["returndate"]);
         }
     }
-        
-    
 
     public static function get_book_by_user($user) {
         $result = [];
@@ -97,10 +92,8 @@ class Rental extends Model {
             $ex->getMessage();
         }
     }
-    
-    
-    
-        public static function get_book_by_member_book($user) {
+
+    public static function get_book_by_member_book($user) {
         $result = [];
         try {
             $query = self::execute("SELECT * FROM book join rental on book.id=rental.book join user on rental.user=user.id  WHERE user =:user", array("user" => $user));
@@ -113,7 +106,6 @@ class Rental extends Model {
             $ex->getMessage();
         }
     }
-    
 
     public static function get_book_not_rental_by_user($user) {
         $result = [];
@@ -133,6 +125,19 @@ class Rental extends Model {
         $result = [];
         try {
             $query = self::execute("SELECT * FROM rental where user =:user", array("user" => $id));
+            $datas = $query->fetchAll();
+            foreach ($datas as $data) {
+                $result[] = new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
+            }return $result;
+        } catch (Exception $ex) {
+            $ex->getMessage();
+        }
+    }
+
+    public static function get_rental_by_user_with_rentaldate($id) {
+        $result = [];
+        try {
+            $query = self::execute("SELECT * FROM rental where user =:user and rentaldate is NOT NULL", array("user" => $id));
             $datas = $query->fetchAll();
             foreach ($datas as $data) {
                 $result[] = new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
@@ -203,8 +208,8 @@ class Rental extends Model {
             return new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
         }
     }
-    
-        public static function get_rental_by_user_objet($user) {
+
+    public static function get_rental_by_user_objet($user) {
         $query = self::execute("SELECT * FROM rental where user = :user and rentaldate is null", array("user" => $user));
         $data = $query->fetch(); // un seul résultat au maximum
         if ($query->rowCount() == 0) {
@@ -213,8 +218,7 @@ class Rental extends Model {
             return new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
         }
     }
-    
-    
+
     public static function get_rental_user_id_by_username_objet($username) {
         $query = self::execute("SELECT * FROM rental join user on user.id=rental.user where user.username = :username", array("username" => $username));
         $data = $query->fetch(); // un seul résultat au maximum
@@ -224,8 +228,6 @@ class Rental extends Model {
             return new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
         }
     }
-    
-    
 
     public function Select() {
         if (empty($this->rentaldate))
@@ -241,13 +243,14 @@ class Rental extends Model {
     }
 
     public function clear() {
-        $query = self::execute("DELETE FROM rental where user=:user and  rentaldate is null", array('user' => $this->user));
+        self::execute("DELETE FROM rental where user=:user and  rentaldate is null", array('user' => $this->user));
     }
+
 
     public function rent() {
         if ($this->rentaldate == null)
             $this->rentaldate = date('Y-m-d H:i:s');
-        self::execute("UPDATE  rental SET user=:user, book=:book, rentaldate=:rentaldate, returndate=:returndate WHERE user=:user and rentaldate is null", array("id" => $this->id, "user" => $this->user, "book" => $this->book, "rentaldate" => $this->rentaldate, "returndate" => $this->returndate));
+        self::execute("UPDATE rental SET user=:user, book=:book, rentaldate=:rentaldate, returndate=:returndate WHERE user=:user and rentaldate is null", array("id" => $this->id, "user" => $this->user, "book" => $this->book, "rentaldate" => $this->rentaldate, "returndate" => $this->returndate));
     }
 
 //    public static function get_rental_by_filter($book) {
@@ -260,11 +263,12 @@ class Rental extends Model {
 //            return new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
 //        }
 //    }
-    
-        public static function get_rental_by_filter($book) {
+
+
+    public static function get_rental_by_filter($book) {
         $result = [];
         try {
-        $query = self::execute("SELECT * FROM rental join book on rental.book=book.id where isbn LIKE :book OR title LIKE :book OR author LIKE :book OR editor LIKE :book ", array(":book" => "%" . $book . "%"));
+            $query = self::execute("SELECT rental.id, user.username, book.title,rental.rentaldate,rental. returndate FROM rental join book on rental.book=book.id where isbn LIKE :book OR title LIKE :book OR author LIKE :book OR editor LIKE :book ", array(":book" => "%" . $book . "%"));
             $datas = $query->fetchAll();
             foreach ($datas as $data) {
                 $result[] = new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
@@ -273,12 +277,25 @@ class Rental extends Model {
             $ex->getMessage();
         }
     }
-    
-          public static function get_rental_by_filter_all($book,$user,$rentaldate) {
+
+    public static function get_rental_by_filter_all($book, $user, $rentaldate) {
         $result = [];
         try {
-        
-        $query = self::execute("SELECT * FROM rental join book on rental.book=book.id join user on rental.user = user.id where (isbn LIKE :book OR title LIKE :book OR author LIKE :book OR editor LIKE :book) and username like :member or username like :member and rental.rentaldate=:rentaldate", array(":book" => "%" . $book . "%", ":member" => "%" . $user . "%",':rentaldate' => $rentaldate));
+            $query = self::execute("SELECT rental.id, user.username, book.title,rental.rentaldate,rental. returndate FROM rental join book on rental.book = book.id join user on user.id =rental.user where (isbn LIKE :book OR title LIKE :book OR author LIKE :book OR editor LIKE :book) and (username like :member or username like :member) and rental.rentaldate is NOT NULL", array(":book" => "%" . $book . "%", ":member" => "%" . $user . "%", ':rentaldate' => $rentaldate));
+            $datas = $query->fetchAll();
+            foreach ($datas as $data) {
+                $result[] = new Rental($data["id"], $data["username"], $data["title"], $data["rentaldate"], $data["returndate"]);
+            }return $result;
+        } catch (Exception $ex) {
+            $ex->getMessage();
+        }
+    }
+
+    public static function get_rental_by_filter_open($book, $user, $rentaldate) {
+        $result = [];
+        try {
+
+            $query = self::execute("SELECT * FROM rental join book on rental.book=book.id join user on rental.user = user.id where (isbn LIKE :book OR title LIKE :book OR author LIKE :book OR editor LIKE :book and username like :member or username like :member and rental.rentaldate=:rentaldate and rental.rentaldate is not null", array(":book" => "%" . $book . "%", ":member" => "%" . $user . "%", ':rentaldate' => $rentaldate));
             $datas = $query->fetchAll();
             foreach ($datas as $data) {
                 $result[] = new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
@@ -286,15 +303,13 @@ class Rental extends Model {
         } catch (Exception $ex) {
             $ex->getMessage();
         }
-    
     }
-    
-    
-              public static function get_rental_by_filter_open($book,$user,$rentaldate) {
+
+    public static function get_rental_by_filter_return($book, $user, $rentaldate) {
         $result = [];
         try {
-        
-        $query = self::execute("SELECT * FROM rental join book on rental.book=book.id join user on rental.user = user.id where (isbn LIKE :book OR title LIKE :book OR author LIKE :book OR editor LIKE :book and username like :member or username like :member and rental.rentaldate=:rentaldate and rental.rentaldate is not null", array(":book" => "%" . $book . "%", ":member" => "%" . $user . "%",':rentaldate' => $rentaldate));
+
+            $query = self::execute("SELECT * FROM rental join book on rental.book=book.id join user on rental.user = user.id where (isbn LIKE :book OR title LIKE :book OR author LIKE :book OR editor LIKE :book and username like :member or username like :member and rental.rentaldate=:rentaldate and rentaldate is not null and returndate is not null", array(":book" => "%" . $book . "%", ":member" => "%" . $user . "%", ':rentaldate' => $rentaldate));
             $datas = $query->fetchAll();
             foreach ($datas as $data) {
                 $result[] = new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
@@ -302,54 +317,41 @@ class Rental extends Model {
         } catch (Exception $ex) {
             $ex->getMessage();
         }
-    
     }
-    
-    
-    
-              public static function get_rental_by_filter_return($book,$user,$rentaldate) {
-        $result = [];
-        try {
-        
-        $query = self::execute("SELECT * FROM rental join book on rental.book=book.id join user on rental.user = user.id where (isbn LIKE :book OR title LIKE :book OR author LIKE :book OR editor LIKE :book and username like :member or username like :member and rental.rentaldate=:rentaldate and rentaldate is not null and returndate is not null", array(":book" => "%" . $book . "%", ":member" => "%" . $user . "%",':rentaldate' => $rentaldate));
-            $datas = $query->fetchAll();
-            foreach ($datas as $data) {
-                $result[] = new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
-            }return $result;
-        } catch (Exception $ex) {
-            $ex->getMessage();
-        }
-    
-    }
-  
-        
-    
-        public static function get_rental_by_user_book($user,$book) {
-                  $query = self::execute("SELECT * FROM rental WHERE user =:user and book =:book", array("user" => $user,"book" => $book));
+
+    public static function get_rental_by_user_book($user, $book) {
+        $query = self::execute("SELECT * FROM rental WHERE user =:user and book =:book", array("user" => $user, "book" => $book));
         $data = $query->fetch(); // un seul résultat au maximum
         if ($query->rowCount() == 0) {
             return false;
         } else {
-            return  new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
+            return new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
         }
     }
-    
-    
-        public function returndate($id,$user,$book,$rentaldate,$returndate) {
-        self::execute("UPDATE rental SET id=:id,user=:user, book=:book, rentaldate=:rentaldate, returndate=:returndate WHERE id=:id", array(':id' => $id,':user' => $user, ':book' => $book,':rentaldate' => $rentaldate,':returndate' => $returndate));
-        
-        }
-        
-        public function delete_rental(){
-                try {
+
+    public function returndate($id, $user, $book, $rentaldate, $returndate) {
+        self::execute("UPDATE rental SET id=:id,user=:user, book=:book, rentaldate=:rentaldate, returndate=:returndate WHERE id=:id", array(':id' => $id, ':user' => $user, ':book' => $book, ':rentaldate' => $rentaldate, ':returndate' => $returndate));
+    }
+
+    public function delete_rental() {
+        try {
             $query = self::execute("DELETE FROM rental where id=:id", array('id' => $this->id));
             return true;
         } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
             echo $exc->getMessage();
-        }   
         }
+    }
+    
+        
+        
+        
+        
+        
+    }
+    
+    
+    
+    
+    
     
 
-    
-}

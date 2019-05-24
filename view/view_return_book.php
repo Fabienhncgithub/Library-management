@@ -7,6 +7,7 @@
         <link href="css/styles.css" rel="stylesheet" type="text/css"/>
         <title>Books</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
         <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
         <script src="lib/jquery-validation-1.19.0/jquery.validate.min.js" type="text/javascript"></script>
         <script src='lib/fullcalendar-scheduler-4.1.0/packages/moment/main.js'></script>
@@ -27,6 +28,9 @@
         <script src='lib/fullcalendar-scheduler-4.1.0/packages/resource-timeline/main.js'></script>
         <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
         <script src="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.min.js" type="text/javascript"></script>
+
+
+
     </head>
     <body>
         <script>
@@ -35,14 +39,27 @@
 //         resource = colonne
 //         event = rental mettre URL & METHOD
 
+//         view = ligne
+//         resource = colonne
+//         event = rental mettre URL & METHOD
 
-            $('#calendar').hide();
-            $.get("rental/get_rental", function (data) {
-                console.log(JSON.parse(data));
-            })
-            //console.log("coucou");
+            $('#calendar').focusout(function () {
+                $.get("rental/get_rental", function (data) {
+                    console.log(JSON.parse(data));
+                });
+            });
+//            $('#calendar').hide();
+//            $.get("rental/get_rental", function (data) {
+//                console.log(JSON.parse(data));
+//            });
+//            //console.log("coucou");
             document.addEventListener('DOMContentLoaded', function () {
                 var calendarEl = document.getElementById('calendar');
+                $('#calendar').keyup(function () {
+                    $.get("rental/get_rental", function (data) {
+                        console.log(JSON.parse(data));
+                    });
+                });
 
                 var calendar = new FullCalendar.Calendar(calendarEl, {
                     plugins: ['interaction', 'resourceTimeline'],
@@ -71,7 +88,21 @@
                     ],
 
                     views: {
-
+                        year: {
+                            slotDuration: {month: 1}
+                        },
+                        month: {
+                            slotDuration: {day: 1},
+                            slotLabelFormat: [
+                                {day: 'numeric'}
+                            ]
+                        },
+                        week: {
+                            slotDuration: {day: 1},
+                            slotLabelFormat: [
+                                {day: 'numeric'}
+                            ]
+                        },
                         resourceTimelineDay: {
                             buttonText: ':today',
                             slotDuration: {days: 1}
@@ -93,18 +124,44 @@
                         method: "post"
                     },
 
+                    eventClick: function (data) {
+                        var res = data.event.getResources();
+                        var colonne = res["0"]._resource.extendedProps;
+                        $("#id").text(data.event.id);
+                        $("#user").text(colonne.user);
+                        $("#title").text(colonne.book);
+                        $("#start").text(data.event.start.toDateString());
+                        $("#end").text(colonne.end);
+                        $('#confirmDialog').dialog({
+
+                            buttons: {
+                                retour: function () {
+                                    $.post("Rental/return_date", {retour: data.event.id}, refetch, "html");
+                                    $(this).dialog("close");
+                                },
+                                delete: function () {
+                                    $.post("rental/del_rental", {delete: data.event.id}, refetch, "html");
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                    },
                     editable: true,
 //                    resourceLabelText: 'Return',
 //                    resources: 'https://fullcalendar.io/demo-resources.json?with-nesting&with-colors',
 //                    events: 'https://fullcalendar.io/demo-events.json?single-day&for-resource-timeline'
                 });
-
                 calendar.render();
+                $("#title, #author, #rentaldate, select, #rentalid").on("input", function () {
+                    refetch();
+                });
+                function refetch() {
+                    calendar.refetchEvents();
+                    calendar.refetchResources();
+                }
             });
         </script>
         <div class="title"><?php echo $user->username; ?>!</div>
-
-
 
         <?php
         if ($user->isAdmin($user->username)) {
@@ -131,51 +188,57 @@
                         <input type="radio" name="MyRadio" value="2">Open
                         <input type="radio" name="MyRadio" value="3">Return
                     </td>
+                </table>
+                <th><input type="submit" name="search"></th>
+                <table id="calendar">
+                    <tr>
+                        <th>Rental Date/Time</th>
+                        <th>User</th>
+                        <th>Book</th>
+                        <th>To be returned on</th>
+                        <th>Actions</th>
 
+                    </tr>
+                    </thead>
+                    <tbody>
 
-                    <th><input type="submit" name="search"></th>
-                    <table id="calendar">
-                        <tr>
-                            <th>Rental Date/Time</th>
-                            <th>User</th>
-                            <th>Book</th>
-                            <th>To be returned on</th>
-                            <th>Actions</th>
+                        <?php foreach ($returns as $return): ?>
+                            <tr>
+                                <td><?= $return->rentaldate ?></td>
+                                <td><?= $return->user ?></td>
+                                <td><?= $return->book ?></td>
+                                <td><?= $return->returndate ?></td>
 
-                        </tr>
-                        </thead>
-                        <tbody>
+                                <td>
+                                    <?php if ($user->isAdmin()): ?>
+                                        <form  action='rental/delete_rental_return' method='post'>
+                                            <input type='hidden' name='deleterental' value='<?= $return->id ?>'>
+                                            <input type='submit' value='delete rental'>
+                                        </form>
+                                    <?php endif; ?>
+                                </td>
 
-                            <?php foreach ($returns as $return): ?>
-                                <tr>
-                                    <td><?= $return->rentaldate ?></td>
-                                    <td><?= User::get_user_by_id($return->user) ?></td>
-                                    <td><?= Book::get_username_by_id($return->book) ?></td>
-                                    <td><?= $return->returndate ?></td>
+                                <td>
+                                    <?php if ($user->isAdmin() || $user->isManager()): ?>
+                                        <form  action='rental/return_rental' method='post'>
+                                            <input type='hidden' name='return' value='<?= $return->id ?>'>
+                                            <input type='submit' value='return'>
+                                        </form>
+                                    <?php endif; ?>
+                                </td>
 
-                                    <td>
-                                        <?php if ($user->isAdmin()): ?>
-                                            <form  action='rental/delete_rental_return' method='post'>
-                                                <input type='hidden' name='deleterental' value='<?= $return->id ?>'>
-                                                <input type='submit' value='delete rental'>
-                                            </form>
-                                        <?php endif; ?>
-                                    </td>
+                            </tr>
 
-                                    <td>
-                                        <?php if ($user->isAdmin() || $user->isManager()): ?>
-                                            <form  action='rental/return_rental' method='post'>
-                                                <input type='hidden' name='return' value='<?= $return->id ?>'>
-                                                <input type='submit' value='return'>
-                                            </form>
-                                        <?php endif; ?>
-                                    </td>
-
-                                </tr>
-
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                    </div>
-                    </body>
-                    </html>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <div id="confirmDialog" hidden>
+                    <p hidden>id: <strong id="id"></strong></p>
+                    <p>Membre: <strong id="user"></strong></p>
+                    <p>Titre: <strong id="title"></strong></p>
+                    <p>Date de location: <strong id="start"></strong></p>
+                    <p>Date de Retour:<strong id="end"></strong></p>
+                </div>
+        </div>
+    </body>
+</html>

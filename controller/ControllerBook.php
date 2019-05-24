@@ -98,8 +98,6 @@ class ControllerBook extends Controller {
         if (isset($_POST["edit"]) && $_POST["edit"] !== "") {
             $edit = Book::get_member_by_object_id($_POST["edit"]);
 
-            var_dump($edit);
-
             $id = $edit->id;
             $isbn = $edit->isbn;
             $title = $edit->title;

@@ -100,7 +100,7 @@
                         <th>Title</th>
                         <th>Author</th>
                         <th>Editor</th>
-                        <th>image</th>
+                       <!--<th>image</th>-->
                         <th>action</th>
                     </tr>
                 </thead>
@@ -111,7 +111,7 @@
                         <td><?= $book->author ?></td>
                         <td><?= $book->editor ?></td>
                         
-                         <td><img src="upload/<?= $book->picture ?>" style="width:30%; " /></td>
+                         <!--<td><img src="upload/<?= $book->picture ?>" style="width:30%; " /></td>-->
 
                         <td>
                             <?php if ($user->isAdmin($user->username)): ?>
@@ -132,7 +132,7 @@
                         </td>
 
                         <td>
-                            <?php if ($user->isAdmin($user->username)): ?>
+                            <?php if ($user->isManager($user->username)): ?>
                                 <form  action='book/details' method='post'>
                                     <input type='hidden' name='details' value='<?= $book->id ?>'>
                                     <input type='submit' value='details'>

@@ -132,7 +132,6 @@
             <form action='user/save_user' method="POST">
            <input type="submit" name="cancel" value="cancel">
             </form>
-
             <?php
             if (isset($errors) && count($errors) > 0) {
                 echo "<div class='errors'>
