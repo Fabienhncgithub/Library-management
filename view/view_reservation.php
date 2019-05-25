@@ -188,7 +188,7 @@
                             <td><?= $selection->author ?></td>
                             <td><?= $selection->editor ?></td>
                             <td>
-                                <?php if ($user->isAdmin($user->username)): ?>
+<!--                                <?php if ($user->isAdmin($user->username)): ?>
                                     <form  action='book/edit' method='post'>
                                         <input type='hidden' name='edit' value='<?= $selection->id ?>'>
                                         <input type='submit' value='edit'>
@@ -222,7 +222,7 @@
                                         <input type='submit' value='details'>
                                     </form>
                                 <?php endif; ?>
-                            </td>
+                            </td>-->
                             <td>
                                 <form   action='rental/deselection' method='post'>
                                     <input type='hidden' name='deselection' value='<?= $selection->title ?>' >
@@ -259,7 +259,7 @@
                 <input type='hidden' name='memberclearbasket' value='<?= $smember->username ?>' >
                 <input type="submit" value="Effacer rental"   name="new">
             </form>
-            <form class="button" action="rental/confirm_basket" method="POST">
+            <form class="button" action="rental/confirm_basket2" method="POST">
                 <input type='hidden' name='memberconfirmbasket' value='<?= $smember->username ?>' >
                 <input type="submit" name="Save rental" value="Save rental" >
             </form> 

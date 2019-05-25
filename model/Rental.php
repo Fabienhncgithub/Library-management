@@ -237,6 +237,18 @@ class Rental extends Model {
         self::execute("INSERT INTO rental (user,book,rentaldate,returndate) VALUES(:user,:book,:rentaldate,:returndate)", array("user" => $this->user, "book" => $this->book, "rentaldate" => $this->rentaldate, "returndate" => $this->returndate));
         return $this;
     }
+    
+    
+    
+//        public function Select2($user) {
+//        if (empty($this->rentaldate))
+//            $this->rentaldate = null;
+//        if (empty($this->returndate))
+//            $this->returndate = null;
+//        self::execute("INSERT INTO rental (rentaldate) VALUES(:rentaldate)", array("user" => $this->user,"rentaldate" => $this->rentaldate));
+//        return $this;
+//    }
+    
 
     public function Deselect() {
         $query = self::execute("DELETE FROM rental where id=:id", array('id' => $this->id));
@@ -252,17 +264,16 @@ class Rental extends Model {
             $this->rentaldate = date('Y-m-d H:i:s');
         self::execute("UPDATE rental SET user=:user, book=:book, rentaldate=:rentaldate, returndate=:returndate WHERE user=:user and rentaldate is null", array("id" => $this->id, "user" => $this->user, "book" => $this->book, "rentaldate" => $this->rentaldate, "returndate" => $this->returndate));
     }
+    public function rent2() {
+        if ($this->rentaldate == null)
+            $this->rentaldate = date('Y-m-d H:i:s');
+        self::execute("UPDATE rental SET user=:user, rentaldate=:rentaldate WHERE user=:user and rentaldate is null", array("user" => $this->user,"rentaldate" => $this->rentaldate));
+    }
 
-//    public static function get_rental_by_filter($book) {
-//
-//        $query = self::execute("SELECT * FROM rental join book on rental.book=book.id where title LIKE :book", array(":book" => "%" . $book . "%"));
-//        $data = $query->fetch(); // un seul résultat au maximum
-//        if ($query->rowCount() == 0) {
-//            return false;
-//        } else {
-//            return new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
-//        }
-//    }
+    
+    
+    
+    
 
 
     public static function get_rental_by_filter($book) {

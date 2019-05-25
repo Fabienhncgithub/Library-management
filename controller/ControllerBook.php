@@ -35,7 +35,6 @@ class ControllerBook extends Controller {
             $id = $users;
             $members = User::selection_member_by_all_not_selected($id);
             $search = ($_POST['critere']);
-
             $filter = [];
             if (isset($_GET["param1"])) {
                 $filter = Utils::url_safe_decode($_GET["param1"]);
@@ -89,15 +88,12 @@ class ControllerBook extends Controller {
         $author = '';
         $editor = '';
         $picture = '';
-
         if (isset($_POST['cancel'])) {
             $this->redirect("book", "index");
         }
 
-
         if (isset($_POST["edit"]) && $_POST["edit"] !== "") {
             $edit = Book::get_member_by_object_id($_POST["edit"]);
-
             $id = $edit->id;
             $isbn = $edit->isbn;
             $title = $edit->title;

@@ -109,6 +109,33 @@ class ControllerRental extends Controller {
         }
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
     }
+    
+     public function confirm_basket2() {
+     $user = $this->get_user_or_redirect();
+         if (isset($_POST['memberconfirmbasket'])) {
+            $smember = User::get_member_by_pseudo($_POST['memberconfirmbasket']);
+            $idsmember = $smember->id;
+            $username = $user->username;
+            $user = User::get_member_by_pseudo($username);
+            $user = $user->id;
+            var_dump($idsmember);
+            $rental = Rental::get_rental_by_user($idsmember);
+//            var_dump($rental);
+            
+             foreach ($rental as $rent) {
+                 var_dump($rent);
+                $rent->rent2();
+             }    
+                
+                
+            $books = Book::get_book_by_all();
+            $members = User::selection_member_by_all_not_selected($idsmember);
+            $selections = Rental::get_book_by_user($idsmember);
+            $user = $this->get_user_or_redirect();
+        }
+        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
+    }
+    
 
 //    public function confirm_basket_for_user() {
 //        $user = $this->get_user_or_redirect();
