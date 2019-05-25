@@ -229,8 +229,8 @@ class ControllerRental extends Controller {
 
     public function get_rental() {
         $rentaldate = null;
-        $title = "";
-        $author = "";
+        $book = "";
+        $user = "";
         $MyRadio = 1;
         if (isset($_POST['book'])) {
             $book = $_POST['book'];
@@ -244,10 +244,10 @@ class ControllerRental extends Controller {
         if (isset($_POST['MyRadio'])) {
             $selection = ($_POST['MyRadio']);
         }
-        if ($title == "" && $author == "" && $rentaldate == null) {
+        if ($book == "" && $user == "" && $rentaldate == null) {
             $rents = Rental::get_rental_all();
         }else{
-            $rents = Rental::filter_return();
+            $rents = Rental::get_rental_by_filter_all($book, $member, $rentaldate);
         }
         if ($rents != null) {
             foreach ($rents as $rent) {
