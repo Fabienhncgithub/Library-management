@@ -115,7 +115,7 @@
 
                         <td>
                             <?php if ($user->isAdmin($user->username)): ?>
-                                <form  action='book/edit' method='post'>
+                                <form  action='book/edit_prg' method='post'>
                                     <input type='hidden' name='edit' value='<?= $book->id ?>'>
                                     <input type='submit' value='edit'>
                                 </form>

@@ -38,7 +38,29 @@ class ControllerUser extends Controller {
         (new View("users"))->show(array("user" => $user, "member" => $member, "users" => $users));
     }
 
-    public function edit_user() {
+//    public function edit_user() {
+//        $id = null;
+//        $user = $this->get_user_or_redirect();
+//        $username = '';
+//        $fullname = '';
+//        $email = '';
+//        $birthdate = null;
+//        $role = '';
+//
+//        if (isset($_POST["id"]) && $_POST["id"] !== "") {
+//            $edit = User::get_member_by_id($_POST["id"]);
+//            $id = $edit->id;
+//            $username = $edit->username;
+//            $fullname = $edit->fullname;
+//            $email = $edit->email;
+//            $birthdate = $edit->birthdate;
+//            $role = $edit->role;
+//        }
+//        (new View("edit-user"))->show(array("id" => $id, "users" => $user, "username" => $username, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "role" => $role));
+//    }
+
+
+    public function edit_user_prg() {
         $id = null;
         $user = $this->get_user_or_redirect();
         $username = '';
@@ -46,9 +68,12 @@ class ControllerUser extends Controller {
         $email = '';
         $birthdate = null;
         $role = '';
+        if (isset($_POST['id'])) {
+            $this->redirect("user", "edit_user_prg", $_POST["id"]);
+        }
 
-        if (isset($_POST["id"]) && $_POST["id"] !== "") {
-            $edit = User::get_member_by_id($_POST["id"]);
+        if (isset($_GET['param1'])) {
+            $edit = User::get_member_by_id($_GET['param1']);
             $id = $edit->id;
             $username = $edit->username;
             $fullname = $edit->fullname;
@@ -64,7 +89,10 @@ class ControllerUser extends Controller {
         $username = $user->username;
         $user = User::get_member_by_pseudo($username);
         if (isset($_POST['id'])) {
-            $id = $_POST['id'];
+            $this->redirect("user", "delete_user", $_POST["id"]);
+        }
+        if (isset($_GET['param1'])) {
+            $id = ($_GET['param1']);
             $users = User::get_member_by_id($id);
         }
         (new View("confirm_delete_user"))->show(array("user" => $user, "users" => $users));
@@ -72,7 +100,6 @@ class ControllerUser extends Controller {
 
     public function confirm_delete_user() {
         $user = $this->get_user_or_redirect();
-
         if (isset($_POST['iduser']) && isset($_POST['confirm'])) {
             $confirm = $_POST['confirm'];
             $users = ($_POST["iduser"]);
@@ -100,7 +127,6 @@ class ControllerUser extends Controller {
             $fullname = $edit->fullname;
             $email = $edit->email;
             $birthdate = $edit->birthdate;
-            
         }
         (new View("add-user"))->show(array("users" => $user, "username" => $username, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "role" => $role));
     }
@@ -143,7 +169,7 @@ class ControllerUser extends Controller {
             $errors = User::validate_unicity($username);
             $errors = array_merge($errors, $user->validate());
             $errors = array_merge($errors, USer::validate_passwords($password, $password_confirm));
-            
+
             if (count($errors) == 0) {
                 $newuser->update(); //sauve l'utilisateur
                 $this->redirect("user", "users");
@@ -196,7 +222,7 @@ class ControllerUser extends Controller {
             $member = User::get_member_by_pseudo($_POST["username"]);
             $member2 = User::get_member_by_id(($_POST["iduser"]));
             if ($member) {
-                 $res = "false";
+                $res = "false";
                 if ($member->username === $member2->username) {
                     $res = "true";
                 }
@@ -226,16 +252,15 @@ class ControllerUser extends Controller {
         }
         echo $res;
     }
-    
-    
-        public function email_exists_service_edit() {
+
+    public function email_exists_service_edit() {
         $res = "true";
         if (isset($_POST["email"]) && isset($_POST["iduser"])) {
-            
+
             $member = User::get_member_by_email($_POST["email"]);
             $member2 = User::get_member_by_id(($_POST["iduser"]));
             if ($member) {
-                 $res = "false";
+                $res = "false";
                 if ($member->email === $member2->email) {
                     $res = "true";
                 }

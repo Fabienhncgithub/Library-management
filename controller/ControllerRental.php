@@ -309,8 +309,17 @@ class ControllerRental extends Controller {
         $username = $user->username;
         $user = User::get_member_by_pseudo($username);
         $users = $user->id;
-        if (isset($_POST["deleterental"])) {
-            $return = ($_POST["deleterental"]);
+        
+        
+               if (isset($_POST['deleterental'])) {
+            $this->redirect("rental", "delete_rental_return", $_POST["deleterental"]);
+        }
+        if (isset($_GET['param1'])) {
+        
+        
+        
+   
+            $return = ($_GET['param1']);
             $return = Rental::get_rental_by_id_objet($return);
         }
         (new View("confirm_delete_return"))->show(array("user" => $user, "return" => $return));

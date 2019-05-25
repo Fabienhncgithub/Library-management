@@ -11,11 +11,8 @@
         <div class="title">Confirmation page <?= $user->username ?></div>
         <br>Désirez vous vraiment supprimer cet élement de location?<br>
         <br><br>
-
-   Meber :  <td><?= User::get_user_by_id($return->user) ?></td>
+   Member :  <td><?= User::get_user_by_id($return->user) ?></td>
    Livre :  <td><?= Book::get_username_by_id($return->book) ?></td>   
-
-
     <br><br>
     <div class="confirm">
         <form action='rental/confirm_delete' method="POST">
