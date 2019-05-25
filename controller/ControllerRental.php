@@ -40,7 +40,7 @@ class ControllerRental extends Controller {
             $books = Book::get_book_not_rental_by_member($idsmember);
             $rentalbooks = Rental::get_rental_by_user($idsmember);
             $id = $rental->book;
-            $selections = Rental::get_book_by_user($idsmember);
+            $selections = Rental::get_book_by_user_without_rental($idsmember);
             $user = $this->get_user_or_redirect();
             $members = User::selection_member_by_all_not_selected($idsmember);
         }
@@ -62,7 +62,7 @@ class ControllerRental extends Controller {
             $rental->Deselect();
             $this->redirect("rental", "user_choice", $usernameidsmember);
             $books = Book::get_book_not_rental_by_member($idsmember);
-            $selections = Rental::get_book_by_user($idsmember);
+            $selections = Rental::get_book_by_user_without_rental($idsmember);
             $user = $this->get_user_or_redirect();
         }
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
@@ -81,9 +81,9 @@ class ControllerRental extends Controller {
                 $this->redirect("book", "index");
             } else
                 $rental->clear();
-            $books = Book::get_book_by_all();
+            $books = Book::get_book_not_rental_by_member($idmember);
             $members = User::selection_member_by_all_not_selected($idsmember);
-            $selections = Rental::get_book_by_user($idsmember);
+            $selections = Rental::get_book_by_user_without_rental($idsmember);
             $user = $this->get_user_or_redirect();
         }
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
@@ -102,9 +102,9 @@ class ControllerRental extends Controller {
                 $this->redirect("book", "index");
             } else
                 $rental->rent();
-            $books = Book::get_book_by_all();
+            $books = Book::get_book_not_rental_by_member($idmember);
             $members = User::selection_member_by_all_not_selected($idsmember);
-            $selections = Rental::get_book_by_user($idsmember);
+            $selections = Rental::get_book_by_user_without_rental($idsmember);
             $user = $this->get_user_or_redirect();
         }
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
@@ -128,9 +128,9 @@ class ControllerRental extends Controller {
              }    
                 
                 
-            $books = Book::get_book_by_all();
+            $books = Book::get_book_not_rental_by_member($idsmember);
             $members = User::selection_member_by_all_not_selected($idsmember);
-            $selections = Rental::get_book_by_user($idsmember);
+            $selections = Rental::get_book_by_user_without_rental($idsmember);
             $user = $this->get_user_or_redirect();
         }
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
@@ -199,8 +199,8 @@ class ControllerRental extends Controller {
             $member = ($_POST['member']);
         }
 
-        if (isset($_POST['rentaldate'])) {
-            $rentaldate = ($_POST['rentaldate']);
+        if (isset($_POST['rental_date'])) {
+            $rental_date = ($_POST['rental_date']);
         }
 
         if (isset($_POST['MyRadio'])) {
@@ -232,20 +232,22 @@ class ControllerRental extends Controller {
         $title = "";
         $author = "";
         $MyRadio = 1;
-        if (isset($_POST['title'])) {
-            $title = $_POST['title'];
+        if (isset($_POST['book'])) {
+            $book = $_POST['book'];
         }
-        if (isset($_POST['author'])) {
-            $author = $_POST['author'];
+        if (isset($_POST['member'])) {
+            $member = $_POST['member'];
         }
-        if (isset($_POST['rentaldate'])) {
-            $rentaldate = $_POST['rentaldate'];
+        if (isset($_POST['rental_date'])) {
+            $rentaldate = $_POST['rental_date'];
         }
         if (isset($_POST['MyRadio'])) {
             $selection = ($_POST['MyRadio']);
         }
         if ($title == "" && $author == "" && $rentaldate == null) {
             $rents = Rental::get_rental_all();
+        }else{
+            $rents = Rental::filter_return();
         }
         if ($rents != null) {
             foreach ($rents as $rent) {
@@ -345,7 +347,7 @@ class ControllerRental extends Controller {
         if ($user->isAdmin()) {
             if (isset($_POST['idrental']) && isset($_POST['confirm'])) {
                 $confirm = $_POST['confirm'];
-                $return = ($_POST["idrental"]);
+                $return = ($_POST["idrental"]); 
                 $return = Rental::get_rental_by_id_objet($return);
                 if ($confirm != 0) {
                     $return->delete_rental();

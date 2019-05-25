@@ -92,6 +92,24 @@ class Rental extends Model {
             $ex->getMessage();
         }
     }
+    
+    
+       public static function get_book_by_user_without_rental($user) {
+        $result = [];
+        try {
+            $query = self::execute("SELECT * "
+                                    . "FROM book join rental on book.id=rental.book join user on rental.user=user.id  "
+                                     ."WHERE user.id =:user and rental.rentaldate is NULL", array("user" => $user));
+
+            $datas = $query->fetchAll();
+            foreach ($datas as $data) {
+                $result[] = new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
+            }return $result;
+        } catch (Exception $ex) {
+            $ex->getMessage();
+        }
+    } 
+    
 
     public static function get_book_by_member_book($user) {
         $result = [];
@@ -320,10 +338,10 @@ class Rental extends Model {
         $result = [];
         try {
 
-            $query = self::execute("SELECT * FROM rental join book on rental.book=book.id join user on rental.user = user.id where (isbn LIKE :book OR title LIKE :book OR author LIKE :book OR editor LIKE :book and username like :member or username like :member and rental.rentaldate=:rentaldate and rentaldate is not null and returndate is not null", array(":book" => "%" . $book . "%", ":member" => "%" . $user . "%", ':rentaldate' => $rentaldate));
+            $query = self::execute("SELECT user.username,book.title,rental.rentaldate,rental.returndate FROM rental join book on rental.book=book.id join user on rental.user = user.id where (isbn LIKE :book OR title LIKE :book OR author LIKE :book OR editor LIKE :book and username like :member or username like :member and rental.rentaldate=:rentaldate and rentaldate is not null and returndate is not null", array(":book" => "%" . $book . "%", ":member" => "%" . $user . "%", ':rentaldate' => $rentaldate));
             $datas = $query->fetchAll();
             foreach ($datas as $data) {
-                $result[] = new Rental($data["id"], $data["user"], $data["book"], $data["rentaldate"], $data["returndate"]);
+                $result[] = new Rental($data["id"], $data["username"], $data["title"], $data["rentaldate"], $data["returndate"]);
             }return $result;
         } catch (Exception $ex) {
             $ex->getMessage();

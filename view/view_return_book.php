@@ -36,10 +36,6 @@
 //         resource = colonne
 //         event = rental mettre URL & METHOD
 
-//         view = ligne
-//         resource = colonne
-//         event = rental mettre URL & METHOD
-
             $('#calendar').focusout(function () {
                 $.get("rental/get_rental", function (data) {
                     console.log(JSON.parse(data));
@@ -49,7 +45,6 @@
 //            $.get("rental/get_rental", function (data) {
 //                console.log(JSON.parse(data));
 //            });
-//            //console.log("coucou");
             document.addEventListener('DOMContentLoaded', function () {
                 var calendarEl = document.getElementById('calendar');
                 $('#calendar').keyup(function () {
@@ -83,7 +78,6 @@
                             field: 'book'
                         }
                     ],
-
                     views: {
                         year: {
                             slotDuration: {month: 1}
@@ -113,12 +107,27 @@
 
                     resources: {
                         url: 'rental/get_rental',
-                        method: "post"
+                        method: 'POST',
+                        extraParams: function () {
+                            return {
+                                book: $("#book").val(),
+                                member: $("#member").val(),
+                                rental_date: $("#rental_date").val(),
+                                
+                            }
+                        }
                     },
 
                     events: {
                         url: "rental/get_events",
-                        method: "post"
+                      method: 'POST',
+                        extraParams: function () {
+                            return {
+                                book: $("#book").val(),
+                                member: $("#member").val(),
+                                rental_date: $("#rental_date").val(),
+                            }
+                        }
                     },
 
                     eventClick: function (data) {
@@ -170,7 +179,7 @@
 
         <div class="main">
             <form action="rental/filter_return" method="post">
-                <input type="hidden" name="book" value="book">
+                <input type="hidden" name="search" value="book" id="btnsearch" >
                 <table>
                     <thead>
                         <tr>
@@ -194,7 +203,6 @@
                         <th>Book</th>
                         <th>To be returned on</th>
                         <th>Actions</th>
-
                     </tr>
                     </thead>
                     <tbody>
@@ -223,9 +231,7 @@
                                         </form>
                                     <?php endif; ?>
                                 </td>
-
                             </tr>
-
                         <?php endforeach; ?>
                     </tbody>
                 </table>

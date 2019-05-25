@@ -16,7 +16,7 @@ class ControllerBook extends Controller {
         $user = User::get_member_by_pseudo($username);
         $users = $user->id;
         $books = Book::get_book_not_rental_by_member($users);
-        $selections = Rental::get_book_by_user($users);
+        $selections = Rental::get_book_by_user_without_rental($users);
         $id = $users;
         $members = User::selection_member_by_all_not_selected($id);
         $smember = $user;
@@ -31,7 +31,7 @@ class ControllerBook extends Controller {
             var_dump($idsmember);
             $user = User::get_member_by_pseudo($user->username);
             $users = $user->id;
-            $selections = Rental::get_book_by_user($smember->id);
+            $selections = Rental::get_book_by_user_without_rental($smember->id);
             $id = $users;
             $members = User::selection_member_by_all_not_selected($id);
             $search = ($_POST['critere']);
@@ -226,7 +226,7 @@ class ControllerBook extends Controller {
         $users = $user->id;
         $id = $users;
         $books = Book::get_book_by_all();
-        $selections = Rental::get_book_by_id($users);
+        $selections = Rental::get_book_by_user_without_rental($users);
         $members = User::selection_member_by_all_not_selected($id);
 
         (new View("return_book"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members));
