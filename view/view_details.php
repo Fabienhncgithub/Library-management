@@ -28,7 +28,6 @@
                             <th>Author</th>
                             <th>Editor</th>
                             <th>picture</th>
-                            <th>action</th>
                         </tr>
                     </thead>
                     <?php foreach ($books as $book) : ?>

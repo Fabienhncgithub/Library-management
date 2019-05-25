@@ -28,7 +28,6 @@ class ControllerBook extends Controller {
         if (isset($_POST['critere']) && isset($_POST['member'])) {
             $smember = User::get_member_by_pseudo($_POST['member']);
             $idsmember = $smember->id;
-            var_dump($idsmember);
             $user = User::get_member_by_pseudo($user->username);
             $users = $user->id;
             $selections = Rental::get_book_by_user_without_rental($smember->id);
@@ -46,6 +45,7 @@ class ControllerBook extends Controller {
                 $this->redirect("book", "index", Utils::url_safe_encode($filter));
             }
             $books = Book::get_book_by_filter($filter["critere"], $smember->id);
+                    $selections = Rental::get_book_by_user_without_rental($smember->id);
         }
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
     }
@@ -63,24 +63,13 @@ class ControllerBook extends Controller {
         $books = "";
         $user = Controller::get_user_or_redirect();
         if (isset($_POST["details"])) {
-//            echo $_POST["details"];
             $books = Book::get_book_by_id($_POST["details"]);
         }
         (new View("details"))->show(array("books" => $books, "user" => $user));
     }
 
-//    public function isSelected(){
-//        return true;
-//    }
 
     public function edit() {
-//        $user = $this->get_user_or_redirect();
-//        if (isset($_POST['edit'])) {
-//            $books = Book::get_book_by_id($_POST["edit"]);
-//            var_dump($books);
-//   
-//            (new View("editbook"))->show(array("user" => $user, "books" => $books));
-//        }
         $id = null;
         $user = $this->get_user_or_redirect();
         $isbn = '';
@@ -104,25 +93,52 @@ class ControllerBook extends Controller {
         (new View("editbook"))->show(array("id" => $id, "books" => $edit, "isbn" => $isbn, "title" => $title, "author" => $author, "editor" => $editor, "picture" => $picture));
     }
 
-    public function delete() {
+//    public function delete() {
+//
+//        $books = new Book();
+//        $user = $this->get_user_or_redirect();
+//        if ($user->isAdmin()) {
+//            if (isset($_POST['id_book'])) {
+//                $errors = user::validate_admin($user->username);
+//                if (empty($errors)) {
+//                    $books = $_POST['id_book'];
+//                    $books = Book::get_member_by_object_id($books);
+//                }
+//            }
+//        }
+//        (new View("confirm"))->show(array("user" => $user, "books" => $books));
+//    }
+    
+        public function delete_prg() {
 
         $books = new Book();
         $user = $this->get_user_or_redirect();
-        if ($user->isAdmin()) {
-            if (isset($_POST['id_book'])) {
+         if (isset($_POST['id_book'])) {
+            $this->redirect("book", "delete_prg", $_POST["id_book"]);
+         }
+      
+            if (isset($_GET['param1'])) {
+            $books = $_GET['param1'];
+            var_dump($books);
                 $errors = user::validate_admin($user->username);
-                if (empty($errors)) {
-                    $books = $_POST['id_book'];
+//                if (empty($errors)) {
+                 
                     $books = Book::get_member_by_object_id($books);
-                }
-            }
+                     var_dump($books);
+//                }
+            
         }
         (new View("confirm"))->show(array("user" => $user, "books" => $books));
     }
+    
+    
+    
+    
 
     public function confirm_delete() {
         $books = new Book();
         $user = $this->get_user_or_redirect();
+        
 
         if ($user->isAdmin()) {
             if (isset($_POST['idbook']) && isset($_POST['confirm'])) {
@@ -140,10 +156,7 @@ class ControllerBook extends Controller {
 
     public function edit_book() {
         $user = $this->get_user_or_redirect();
-
         $errors = [];
-
-
         if (isset($_POST['cancel'])) {
             $this->redirect("book", "index");
         }

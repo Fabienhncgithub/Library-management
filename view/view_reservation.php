@@ -124,7 +124,7 @@
 
                         <td>
                             <?php if ($user->isAdmin($user->username)): ?>
-                                <form  action='book/delete' method='post'>
+                                <form  action='book/delete_prg' method='post'>
                                     <input type='hidden' name='id_book' value='<?= $book->id ?>'>
                                     <input type='submit' value='delete'>
                                 </form>

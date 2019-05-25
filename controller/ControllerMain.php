@@ -42,8 +42,6 @@ class ControllerMain extends Controller {
         $email = '';
         $birthdate = '';
         $errors = [];
-
-
         if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['password_confirm']) && isset($_POST['fullname']) && isset($_POST['email']) && isset($_POST['birthdate'])) {
             $username = $_POST['username'];
             $password = $_POST['password'];
@@ -52,12 +50,10 @@ class ControllerMain extends Controller {
             $email = $_POST['email'];
             $birthdate = $_POST['birthdate'];
             $role = 'member';
-
             $user = new User('',$username, Tools::my_hash($password),$fullname,$email,$birthdate,$role);
             $errors = User::validate_unicity($username);
             $errors = array_merge($errors, $user->validate());
             $errors = array_merge($errors, USer::validate_passwords($password, $password_confirm));
-
             if (count($errors) == 0) {
                 $user->update(); //sauve l'utilisateur
                 $user = User::get_member_by_pseudo($username);
