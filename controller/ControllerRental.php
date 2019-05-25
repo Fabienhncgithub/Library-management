@@ -21,61 +21,29 @@ class ControllerRental extends Controller {
 
     public function selection() {
         $user = $this->get_user_or_redirect();
-        $filter = [];
-        
-        if (isset($_GET['param1'])){
-            $filter= Utils::url_safe_decode($_GET['param1']);
-            if(!$filter){
-                Tools::abort("Bad url");
-            }
-        }
         if (isset($_POST['selection']) && (isset($_POST['selections']))) {
-            $filter['selection'] = $_POST['selection'];
-            $filter['selections'] = $_POST['selections'];
-            $this->redirect("rental/selection", Utils::url_safe_encode($filter));
+            $smember = User::get_member_by_id($_POST['selections']);
+            $idsmember = ($_POST['selections']);
+            $usernameidsmember = User::get_member_by_id($idsmember);
+            $usernameidsmember = $usernameidsmember->username;
+            $username = $user->username;
+            $user = User::get_member_by_pseudo($username);
+            $user = $user->id;
+            $members = User::selection_member_by_all_not_selected($idsmember);
+            $rentaldate = '';
+            $returndate = '';
+            $books = Book::get_book_not_rental_by_member($idsmember);
+            $book = $_POST["selection"];
+            $rental = new Rental('', $idsmember, $book, $rentaldate, $returndate);
+            $rental->Select();
+            $this->redirect("rental", "user_choice", $usernameidsmember);
+            $books = Book::get_book_not_rental_by_member($idsmember);
+            $rentalbooks = Rental::get_rental_by_user($idsmember);
+            $id = $rental->book;
+            $selections = Rental::get_book_by_user($idsmember);
+            $user = $this->get_user_or_redirect();
+            $members = User::selection_member_by_all_not_selected($idsmember);
         }
-        $smember = User::get_member_by_id($filter['selections']);
-        $idsmember = ($filter['selections']);
-        $username = $user->username;
-        $user = User::get_member_by_pseudo($username);
-        $user = $user->id;
-        $members = User::selection_member_by_all_not_selected($idsmember);
-        $rentaldate = '';
-        $returndate = '';
-        $books = Book::get_book_not_rental_by_member($idsmember);
-        $book = $filter["selection"];
-        $rental = new Rental('', $idsmember, $book, $rentaldate, $returndate);
-        $rental->Select();
-
-        var_dump($user);
-        var_dump($idsmember);
-
-
-//            if ($user !== $idsmember) {
-//                $rental = new Rental('', $idsmember, $book, $rentaldate, $returndate);
-//                var_dump($rental);
-//                $rental->Select();
-//                $this->redirect("rental", "user_choice", $idsmember);
-//                
-//                
-//            } else {
-//                $rental = new Rental('', $user, $book, $rentaldate, $returndate);
-//                var_dump($rental);
-//                $rental->Select();
-//                $this->redirect("rental", "user_choice", $user);
-//            }
-
-
-
-
-
-        $books = Book::get_book_not_rental_by_member($idsmember);
-        $rentalbooks = Rental::get_rental_by_user($idsmember);
-        $id = $rental->book;
-        $selections = Rental::get_book_by_user($idsmember);
-        $user = $this->get_user_or_redirect();
-        $members = User::selection_member_by_all_not_selected($idsmember);
-
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
     }
 
@@ -84,6 +52,7 @@ class ControllerRental extends Controller {
         if (isset($_POST['deselection']) && ($_POST['sdeselection'])) {
             $smember = User::get_member_by_pseudo($_POST['sdeselection']);
             $idsmember = $smember->id;
+            $usernameidsmember = $smember->username;
             $book = Book::get_member_by_object_title($_POST['deselection']);
             $book = $book->id;
             $rental = Rental::get_rental_by_user_book($idsmember, $book);
@@ -91,6 +60,7 @@ class ControllerRental extends Controller {
             $user = User::get_member_by_pseudo($username);
             $members = User::selection_member_by_all_not_selected($idsmember);
             $rental->Deselect();
+            $this->redirect("rental", "user_choice", $usernameidsmember);
             $books = Book::get_book_not_rental_by_member($idsmember);
             $selections = Rental::get_book_by_user($idsmember);
             $user = $this->get_user_or_redirect();
@@ -161,8 +131,6 @@ class ControllerRental extends Controller {
             $username = $_GET['param1'];
             $smember = User::get_member_by_pseudo($username);
             $idmember = $smember->id;
-
-
             $books = Book::get_book_not_rental_by_member($idmember);
             $selections = Rental::get_book_by_user($idmember);
             $members = User::selection_member_by_all_not_selected($idmember);
