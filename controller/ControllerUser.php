@@ -100,6 +100,7 @@ class ControllerUser extends Controller {
             $fullname = $edit->fullname;
             $email = $edit->email;
             $birthdate = $edit->birthdate;
+            
         }
         (new View("add-user"))->show(array("users" => $user, "username" => $username, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "role" => $role));
     }
@@ -127,11 +128,9 @@ class ControllerUser extends Controller {
             $email = $_POST['email'];
             $birthdate = $_POST['birthdate'];
             $role = $_POST['role'];
-
             if (empty($username)) {
                 $errors[] = "User Name is required.";
             }
-
             if ($username == '')
                 $errors[] = "rentrez votre pseudo";
             if (($fullname) == '')
@@ -140,13 +139,11 @@ class ControllerUser extends Controller {
                 $errors[] = "rentrez votre password";
             if (($email) == '')
                 $errors[] = "rentrez votre email";
-
             $newuser = new User('', $username, Tools::my_hash($password), $fullname, $email, $birthdate, $role);
-
             $errors = User::validate_unicity($username);
             $errors = array_merge($errors, $user->validate());
             $errors = array_merge($errors, USer::validate_passwords($password, $password_confirm));
-//       
+            
             if (count($errors) == 0) {
                 $newuser->update(); //sauve l'utilisateur
                 $this->redirect("user", "users");

@@ -25,7 +25,7 @@
             $(function () {
                 $('#btnsearch').hide();
                 $('#search').focus();
-                
+
 
                 list = $('.list').val();
                 actual = $('#memberz').val();
@@ -37,7 +37,7 @@
                         var DN = JSON.parse(data);
                         displayTable(DN);
                         console.log(actual);
-               
+
                     });
                 });
             });
@@ -58,7 +58,7 @@
                     html += "<td>" + datas[m].title + "</td>";
                     html += "<td>" + datas[m].author + "</td>";
                     html += "<td>" + datas[m].editor + "</td>";
-                    
+
                     html += "<td> <form action='book/edit' method='post'><input name='edit' value=' " + datas[m].id + "' hidden><input class='submit' type='submit' value='" + "edit" + "'></form> </td>";
                     html += "<td> <form action='book/delete' method='post'><input name='edit' value=' " + datas[m].id + "' hidden><input class='submit' type='submit' value='" + "delete" + "'></form> </td>";
                     html += "<td> <form action='rental/selection' method='post'><input name='selection' value=' " + datas[m].id + "' hidden><input name='selections' value='" + actual + "' hidden><input class='submit' type='submit' value='" + "selection" + "'></form> </td>";
@@ -110,8 +110,8 @@
                         <td><?= $book->title ?></td>
                         <td><?= $book->author ?></td>
                         <td><?= $book->editor ?></td>
-                        
-                         <!--<td><img src="upload/<?= $book->picture ?>" style="width:30%; " /></td>-->
+
+     <!--<td><img src="upload/<?= $book->picture ?>" style="width:30%; " /></td>-->
 
                         <td>
                             <?php if ($user->isAdmin($user->username)): ?>
