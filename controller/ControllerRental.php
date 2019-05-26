@@ -176,12 +176,7 @@ class ControllerRental extends Controller {
             }
         }
         
-            var_dump($book);
-        var_dump($member);
-        var_dump($rentaldate);
-        
         if ($selection == "all") {
-                 var_dump($selection);
             $returns = Rental::get_rental_by_filter_all($book, $member, $rentaldate);
             var_dump($returns);
         } else if ($selection == 'open') {
