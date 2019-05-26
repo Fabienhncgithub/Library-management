@@ -206,7 +206,6 @@
                     </tr>
                     </thead>
                     <tbody>
-
                         <?php foreach ($returns as $return): ?>
                             <tr>
                                 <td><?= $return->rentaldate ?></td>

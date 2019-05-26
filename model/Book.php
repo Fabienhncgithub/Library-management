@@ -287,6 +287,25 @@ class Book extends Model {
             $ex->getMessage();
         }
     }
+    
+    
+    
+    
+        public static function get_book_not_rental() {
+        $result = [];
+        try {
+            $query = self::execute("SELECT * FROM book where book.id not in (select rental.book from rental where rental.returndate is NULL)", array());
+
+            $datas = $query->fetchAll();
+            foreach ($datas as $data) {
+                $result[] = new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
+            }return $result;
+        } catch (Exception $ex) {
+            $ex->getMessage();
+        }
+    }
+    
+    
 
 //    public static function get_book_by_only_id($id) {
 //        $query = self::execute("SELECT * FROM book where id = :id", array("id" => $id));

@@ -378,7 +378,9 @@ class Rental extends Model {
     }
     
         
-        
+         public function rental_returndate($returndate) {
+        self::execute("UPDATE rental SET returndate = :returndate where id=:id  ", array("returndate" => $returndate, "id" => $this->id));
+    }
         
         
         

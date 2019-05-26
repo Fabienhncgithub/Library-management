@@ -101,8 +101,12 @@
                     </tr>
                 </table>
                 <input type="submit" name="save" value="Save">
-                <input type="submit" name="cancel" value="Cancel">
             </form>
+            
+                    <form method="post" action="book/add_book">
+            <input type="submit" name="cancel" value="Cancel">
+            </form>
+            
             <?php if (count($errors) != 0): ?>
                 <div class='errors'>
                     <br><br><p>Please correct the following error(s) :</p>

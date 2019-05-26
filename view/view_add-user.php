@@ -155,13 +155,11 @@
                         </td>
                     </tr>
                 </table>                    
-
                 <input type="submit" name="save" value="Save">
             </form>
                 <form action="user/adduser" method="post">
            <input type="submit" name="cancel" value="cancel">
             </form>
-      
             <?php
             if (isset($errors) && count($errors) > 0) {
                 echo "<div class='errors'>

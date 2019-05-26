@@ -89,26 +89,7 @@ class ControllerRental extends Controller {
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
     }
 
-//    public function confirm_basket() {
-//        $user = $this->get_user_or_redirect();
-//        if (isset($_POST['memberconfirmbasket'])) {
-//            $smember = User::get_member_by_pseudo($_POST['memberconfirmbasket']);
-//            $idsmember = $smember->id;
-//            $username = $user->username;
-//            $user = User::get_member_by_pseudo($username);
-//            $user = $user->id;
-//            $rental = Rental::get_rental_by_user_objet($idsmember);
-//            if ($rental == 'false') {
-//                $this->redirect("book", "index");
-//            } else
-//                $rental->rent();
-//            $books = Book::get_book_not_rental_by_member($idmember);
-//            $members = User::selection_member_by_all_not_selected($idsmember);
-//            $selections = Rental::get_book_by_user_without_rental($idsmember);
-//            $user = $this->get_user_or_redirect();
-//        }
-//        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
-//    }
+
 
     public function confirm_basket2() {
         $user = $this->get_user_or_redirect();
@@ -129,7 +110,6 @@ class ControllerRental extends Controller {
         }
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
     }
-
 
     public function user_choice() {
         $user = Controller::get_user_or_redirect();
@@ -198,7 +178,7 @@ class ControllerRental extends Controller {
         }
 
         if ($selection == 'all') {
-           $returns = Rental::get_rental_by_filter_all($book, $member, $rentaldate);
+           // $returns = Rental::get_rental_by_filter_all($book, $member, $rentaldate);
         } else if ($selection == 'open') {
             $returns = Rental::get_rental_by_filter_open($book, $member, $rentaldate);
         } else if ($selection == 'return') {
@@ -260,8 +240,11 @@ class ControllerRental extends Controller {
         $username = $user->username;
         $user = User::get_member_by_pseudo($username);
         $users = $user->id;
-        if (isset($_POST["return"])) {
-            $returns = ($_POST["return"]);
+        if (isset($_POST['return'])) {
+            $this->redirect("rental", "return_rental", $_POST["return"]);
+        }
+        if (isset($_GET['param1'])) {
+            $returns = ($_GET['param1']);
             $returns = Rental::get_rental_by_id_objet($returns);
             $idreturns = $returns->id;
             $book = Book::get_book_by_id_rental($idreturns);
@@ -304,21 +287,30 @@ class ControllerRental extends Controller {
         echo json_encode($events);
     }
 
+    
+        public function return_date() {
+        if (isset($_POST['retour'])) {
+            $rent = Rental::get_rental_by_id($_POST['retour']);
+            $rent[0]->rental_returndate(date('Y-m-d h:i:s'));
+        }
+    }
+    
+    
     public function delete_rental_return() {
         $user = Controller::get_user_or_redirect();
         $username = $user->username;
         $user = User::get_member_by_pseudo($username);
         $users = $user->id;
-        
-        
-               if (isset($_POST['deleterental'])) {
+
+
+        if (isset($_POST['deleterental'])) {
             $this->redirect("rental", "delete_rental_return", $_POST["deleterental"]);
         }
         if (isset($_GET['param1'])) {
-        
-        
-        
-   
+
+
+
+
             $return = ($_GET['param1']);
             $return = Rental::get_rental_by_id_objet($return);
         }
@@ -348,11 +340,6 @@ class ControllerRental extends Controller {
         }
     }
 
-    public function return_date() {
-        if (isset($_POST['retour'])) {
-            $rent = Rental::get_rental_by_id($_POST['retour']);
-            $rent[0]->returndate(date('Y-m-d h:i:s'));
-        }
-    }
+
 
 }

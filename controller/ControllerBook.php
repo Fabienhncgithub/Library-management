@@ -62,37 +62,17 @@ class ControllerBook extends Controller {
     public function details() {
         $books = "";
         $user = Controller::get_user_or_redirect();
-        if (isset($_POST["details"])) {
-            $books = Book::get_book_by_id($_POST["details"]);
+
+        if (isset($_POST['details'])) {
+            $this->redirect("book", "details", $_POST["details"]);
+        }
+        if (isset($_GET['param1'])) {
+            $books = Book::get_book_by_id($_GET['param1']);
         }
         (new View("details"))->show(array("books" => $books, "user" => $user));
     }
 
-//    public function edit() {
-//        $id = null;
-//        $user = $this->get_user_or_redirect();
-//        $isbn = '';
-//        $title = '';
-//        $author = '';
-//        $editor = '';
-//        $picture = '';
-//        if (isset($_POST['cancel'])) {
-//            $this->redirect("book", "index");
-//        }
-//
-//        if (isset($_POST["edit"]) && $_POST["edit"] !== "") {
-//            $edit = Book::get_member_by_object_id($_POST["edit"]);
-//            $id = $edit->id;
-//            $isbn = $edit->isbn;
-//            $title = $edit->title;
-//            $author = $edit->author;
-//            $editor = $edit->editor;
-//            $picture = $edit->picture;
-//        }
-//        (new View("editbook"))->show(array("id" => $id, "books" => $edit, "isbn" => $isbn, "title" => $title, "author" => $author, "editor" => $editor, "picture" => $picture));
-//    }
-
-    public function edit_prg() {
+    public function edit() {
         $id = null;
         $user = $this->get_user_or_redirect();
         $isbn = '';
@@ -102,7 +82,7 @@ class ControllerBook extends Controller {
         $picture = '';
 
         if (isset($_POST['edit'])) {
-            $this->redirect("book", "edit_prg", $_POST["edit"]);
+            $this->redirect("book", "edit", $_POST["edit"]);
         }
 
         if (isset($_GET['param1'])) {
@@ -118,19 +98,18 @@ class ControllerBook extends Controller {
         (new View("editbook"))->show(array("id" => $id, "books" => $edit, "isbn" => $isbn, "title" => $title, "author" => $author, "editor" => $editor, "picture" => $picture));
     }
 
-    public function delete_prg() {
+    public function delete() {
         $books = new Book();
         $user = $this->get_user_or_redirect();
         if (isset($_POST['id_book'])) {
-            $this->redirect("book", "delete_prg", $_POST["id_book"]);
+            $this->redirect("book", "delete", $_POST["id_book"]);
         }
         if (isset($_GET['param1'])) {
             $books = $_GET['param1'];
             $errors = user::validate_admin($user->username);
 //                if (empty($errors)) {
             $books = Book::get_member_by_object_id($books);
-            var_dump($books);
-//                }
+            //                }
         }
         (new View("confirm"))->show(array("user" => $user, "books" => $books));
     }

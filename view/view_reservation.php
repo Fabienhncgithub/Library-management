@@ -58,10 +58,12 @@
                     html += "<td>" + datas[m].title + "</td>";
                     html += "<td>" + datas[m].author + "</td>";
                     html += "<td>" + datas[m].editor + "</td>";
+                    
+                    
 
-                    html += "<td> <form action='book/edit' method='post'><input name='edit' value=' " + datas[m].id + "' hidden><input class='submit' type='submit' value='" + "edit" + "'></form> </td>";
-                    html += "<td> <form action='book/delete' method='post'><input name='edit' value=' " + datas[m].id + "' hidden><input class='submit' type='submit' value='" + "delete" + "'></form> </td>";
-                    html += "<td> <form action='rental/selection' method='post'><input name='selection' value=' " + datas[m].id + "' hidden><input name='selections' value='" + actual + "' hidden><input class='submit' type='submit' value='" + "selection" + "'></form> </td>";
+                    html += "<td> <form action='book/edit' method='post'><input name='edit' value='"+datas[m].id+"' hidden><input class='submit' type='submit' value='" + "edit" + "'></form> </td>";
+                    html += "<td> <form action='book/delete' method='post'><input name='id_book' value='"+datas[m].id+"' hidden><input  type='submit' value='" + "delete" + "'></form></td>";
+                    html += "<td> <form action='rental/selection' method='post'><input name='selection' value='"+datas[m].id+"' hidden><input name='selections' value='" + actual + "' hidden><input class='submit' type='submit' value='" + "selection" + "'></form> </td>";
                     html += "</tr>";
                 }
                 $('#list').html(html);
@@ -69,8 +71,6 @@
 
         </script>
         <div class="title">Welcome <?= $user->username ?></div>
-
-
 
         <?php
         if ($user->isAdmin($user->username)) {
@@ -115,7 +115,7 @@
 
                         <td>
                             <?php if ($user->isAdmin($user->username)): ?>
-                                <form  action='book/edit_prg' method='post'>
+                                <form  action='book/edit' method='post'>
                                     <input type='hidden' name='edit' value='<?= $book->id ?>'>
                                     <input type='submit' value='edit'>
                                 </form>
@@ -124,7 +124,7 @@
 
                         <td>
                             <?php if ($user->isAdmin($user->username)): ?>
-                                <form  action='book/delete_prg' method='post'>
+                                <form  action='book/delete' method='post'>
                                     <input type='hidden' name='id_book' value='<?= $book->id ?>'>
                                     <input type='submit' value='delete'>
                                 </form>
