@@ -221,7 +221,6 @@
                                         </form>
                                     <?php endif; ?>
                                 </td>
-
                                 <td>
                                     <?php if ($user->isAdmin() || $user->isManager()): ?>
                                         <form  action='rental/return_rental' method='post'>

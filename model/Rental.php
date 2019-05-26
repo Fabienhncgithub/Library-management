@@ -44,6 +44,9 @@ class Rental extends Model {
             $ex->getMessage();
         }
     }
+    
+    
+
 
     public static function get_rental_all() {
         $result = [];
@@ -290,12 +293,6 @@ class Rental extends Model {
         self::execute("UPDATE rental SET user=:user, rentaldate=:rentaldate WHERE user=:user and rentaldate is null", array("user" => $this->user,"rentaldate" => $this->rentaldate));
     }
 
-    
-    
-    
-    
-
-
     public static function get_rental_by_filter($book) {
         $result = [];
         try {
@@ -308,24 +305,31 @@ class Rental extends Model {
             $ex->getMessage();
         }
     }
+    
+    
+    
+    
 
-    public static function get_rental_by_filter_all($book, $member, $rentaldate) {
+    
+    
+
+    public static function get_rental_by_filter_all($book, $user, $rentaldate) {
         $result = [];
         try {
-            $query = self::execute("SELECT rental.id, user.username, book.title, rental.rentaldate, rental.returndate"
-                    . "FROM rental join book on rental.book = book.id join user on user.id =rental.user"
-                    . "where (isbn LIKE :book OR title LIKE :book OR author LIKE :book OR editor LIKE :book)"
-                    . "and (username like :member or username like :member) and rental.rentaldate is NOT NULL", 
-                    array(":book" => "%" . $book . "%", ":member" => "%" . $member . "%", ':rentaldate' => $rentaldate));
+
+            $query = self::execute("SELECT rental.id, user.username,book.title,rental.rentaldate,rental.returndate FROM rental join book on rental.book=book.id join user on rental.user = user.id where ( rentaldate IS NOT NULL  OR returndate IS NOT NULL) and (isbn LIKE :book OR title LIKE :book OR author LIKE :book OR editor LIKE :book) and username like :member or username like :member and rental.rentaldate=:rentaldate", array(":book" => "%" . $book . "%", ":member" => "%" . $user . "%", ':rentaldate' => $rentaldate));
             $datas = $query->fetchAll();
             foreach ($datas as $data) {
-                $result[] = new Rental($data["id"], $data["username"], $data["title"], $data["rentaldate"], $data["returndate"]);
+                            $result[] = new Rental($data["id"], $data["username"], $data["title"], $data["rentaldate"], $data["returndate"]);
             }return $result;
         } catch (Exception $ex) {
             $ex->getMessage();
         }
     }
 
+
+    
+    
     public static function get_rental_by_filter_open($book, $user, $rentaldate) {
         $result = [];
         try {

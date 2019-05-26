@@ -152,7 +152,6 @@ class ControllerRental extends Controller {
         $rentaldate = null;
         $selection = "all";
 
-
         if (isset($_POST['book'])) {
             $book = ($_POST['book']);
         }
@@ -161,8 +160,8 @@ class ControllerRental extends Controller {
             $member = ($_POST['member']);
         }
 
-        if (isset($_POST['rental_date'])) {
-            $rentaldate = ($_POST['rental_date']);
+        if (isset($_POST['rentaldate'])) {
+            $rentaldate = ($_POST['rentaldate']);
         }
 
         if (isset($_POST['MyRadio'])) {
@@ -176,13 +175,21 @@ class ControllerRental extends Controller {
                 $selection = "return";
             }
         }
-
-        if ($selection == 'all') {
-           // $returns = Rental::get_rental_by_filter_all($book, $member, $rentaldate);
+        
+            var_dump($book);
+        var_dump($member);
+        var_dump($rentaldate);
+        
+        if ($selection == "all") {
+                 var_dump($selection);
+            $returns = Rental::get_rental_by_filter_all($book, $member, $rentaldate);
+            var_dump($returns);
         } else if ($selection == 'open') {
             $returns = Rental::get_rental_by_filter_open($book, $member, $rentaldate);
+               var_dump($returns);
         } else if ($selection == 'return') {
             $returns = Rental::get_rental_by_filter_return($book, $member, $rentaldate);
+               var_dump($returns);
         }
         (new View("return_book"))->show(array("user" => $user, "returns" => $returns));
     }
