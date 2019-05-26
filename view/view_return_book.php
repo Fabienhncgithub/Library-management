@@ -216,7 +216,7 @@
                                 <td><?= $return->returndate ?></td>
 
                                 <td>
-                                    <?php if ($user->isAdmin()): ?>
+                                    <?php if (($user->isAdmin($user->username))): ?>
                                         <form  action='rental/delete_rental_return' method='post'>
                                             <input type='hidden' name='deleterental' value='<?= $return->id ?>'>
                                             <input type='submit' value='delete rental'>
@@ -224,7 +224,7 @@
                                     <?php endif; ?>
                                 </td>
                                 <td>
-                                    <?php if ($user->isAdmin() || $user->isManager()): ?>
+                                   <?php if (($user->isAdmin($user->username))|| ($user->isManager($user->username))): ?>
                                         <form  action='rental/return_rental' method='post'>
                                             <input type='hidden' name='return' value='<?= $return->id ?>'>
                                             <input type='submit' value='return'>

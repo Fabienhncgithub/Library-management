@@ -49,7 +49,7 @@
                             required: "ISBN required",
                             number: "Only numbers",
                             minlength: "ISBN is composed by 13 numbers",
-                            remote: "This isbn exists",
+                           
                         },
                         password: {
                             required: 'required',

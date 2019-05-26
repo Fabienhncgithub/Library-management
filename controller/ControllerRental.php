@@ -21,7 +21,7 @@ class ControllerRental extends Controller {
 
     public function selection() {
         $user = $this->get_user_or_redirect();
-             $role = User::get_member_by_role($user->username);
+        $role = User::get_member_by_role($user->username);
         if (isset($_POST['selection']) && (isset($_POST['selections']))) {
             $smember = User::get_member_by_id($_POST['selections']);
             $idsmember = ($_POST['selections']);
@@ -45,12 +45,12 @@ class ControllerRental extends Controller {
             $user = $this->get_user_or_redirect();
             $members = User::selection_member_by_all_not_selected($idsmember);
         }
-        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember,"role" =>$role));
+        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember, "role" => $role));
     }
 
     public function deselection() {
         $user = $this->get_user_or_redirect();
-             $role = User::get_member_by_role($user->username);
+        $role = User::get_member_by_role($user->username);
         if (isset($_POST['deselection']) && ($_POST['sdeselection'])) {
             $smember = User::get_member_by_pseudo($_POST['sdeselection']);
             $idsmember = $smember->id;
@@ -160,26 +160,26 @@ class ControllerRental extends Controller {
         }
 
 
-    if (isset($_POST["book"]) || isset($_POST["member"]) || isset($_POST["rentaldate"]) || isset($_POST["MyRadio"])) {
-               $filters["book"] = $_POST["book"];
-                $filters["member"] = $_POST["member"];
-                $filters["rentaldate"] = $_POST["rentaldate"];
-                $filters["MyRadio"] = $_POST["MyRadio"];
-                $this->redirect("rental", "filter_return", Utils::url_safe_encode($filters));
-    }
-            $book = $filters["book"];
-            $member = $filters["member"];
-            $rentaldate = $filters["rentaldate"];
-            $selection = $filters["MyRadio"];  
-                
-            if ($selection == 1) {
-                $selection = "all";
-            } else if ($selection == 2) {
-                $selection = "open";
-            } else if ($selection == 3) {
-                $selection = "return";
-            }
-        
+        if (isset($_POST["book"]) || isset($_POST["member"]) || isset($_POST["rentaldate"]) || isset($_POST["MyRadio"])) {
+            $filters["book"] = $_POST["book"];
+            $filters["member"] = $_POST["member"];
+            $filters["rentaldate"] = $_POST["rentaldate"];
+            $filters["MyRadio"] = $_POST["MyRadio"];
+            $this->redirect("rental", "filter_return", Utils::url_safe_encode($filters));
+        }
+        $book = $filters["book"];
+        $member = $filters["member"];
+        $rentaldate = $filters["rentaldate"];
+        $selection = $filters["MyRadio"];
+
+        if ($selection == 1) {
+            $selection = "all";
+        } else if ($selection == 2) {
+            $selection = "open";
+        } else if ($selection == 3) {
+            $selection = "return";
+        }
+
         if ($selection == "all") {
             $returns = Rental::get_rental_by_filter_all($book, $member, $rentaldate);
         } else if ($selection == 'open') {
@@ -210,13 +210,12 @@ class ControllerRental extends Controller {
         if ($book == "" && $member == "" && $rentaldate == null) {
             $rents = Rental::get_rental_all();
         } else {
-                
             if ($selection == 1) {
-                      $rents = Rental::get_rental_by_filter_all($book, $member, $rentaldate);
+                $rents = Rental::get_rental_by_filter_all($book, $member, $rentaldate);
             } else if ($selection == 2) {
-                    $rents = Rental::get_rental_by_filter_open($book, $member, $rentaldate);
+                $rents = Rental::get_rental_by_filter_open($book, $member, $rentaldate);
             } else if ($selection == 3) {
-                  $rents = Rental::get_rental_by_filter_return($book, $member, $rentaldate);
+                $rents = Rental::get_rental_by_filter_return($book, $member, $rentaldate);
             }
         }
         if ($rents != null) {
@@ -314,9 +313,6 @@ class ControllerRental extends Controller {
             $this->redirect("rental", "delete_rental_return", $_POST["deleterental"]);
         }
         if (isset($_GET['param1'])) {
-
-
-
 
             $return = ($_GET['param1']);
             $return = Rental::get_rental_by_id_objet($return);

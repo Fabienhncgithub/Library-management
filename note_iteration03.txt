@@ -1,0 +1,23 @@
+Admin:
+User:Administateur1
+mdp:Administateur1.
+
+Admin:
+User:Administateur2
+mdp:Administateur2.
+
+Manager:
+user: Manager1
+mdp: Manager1.
+
+Member:
+user: Manager2
+mdp: Manager2.
+
+Member:
+user: Member1
+mdp: Member1.
+
+Member:
+user: Member2
+mdp: Member2.

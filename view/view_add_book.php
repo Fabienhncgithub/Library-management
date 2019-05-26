@@ -49,9 +49,6 @@
                             minlength: "ISBN is composed by 13 numbers",
                             remote: "This isbn exists",
                         },
-                        password: {
-                            required: 'required',
-                        },
                         title: {
                             required: 'required',
                         },
