@@ -29,6 +29,7 @@
 
                 list = $('.list').val();
                 actual = $('#memberz').val();
+                role = $('#userrole').val();
 
                 $('#search').keyup(function () {
 
@@ -44,6 +45,8 @@
 
             function displayTable(datas) {
 
+
+
                 var html = "<tr>\n\
                         <th id='isbn' >ISBN</th>" +
                         "<th id='title'>Title</th>" +
@@ -58,14 +61,26 @@
                     html += "<td>" + datas[m].title + "</td>";
                     html += "<td>" + datas[m].author + "</td>";
                     html += "<td>" + datas[m].editor + "</td>";
-                    
-                    
-
-                    html += "<td> <form action='book/edit' method='post'><input name='edit' value='"+datas[m].id+"' hidden><input class='submit' type='submit' value='" + "edit" + "'></form> </td>";
-                    html += "<td> <form action='book/delete' method='post'><input name='id_book' value='"+datas[m].id+"' hidden><input  type='submit' value='" + "delete" + "'></form></td>";
-                    html += "<td> <form action='rental/selection' method='post'><input name='selection' value='"+datas[m].id+"' hidden><input name='selections' value='" + actual + "' hidden><input class='submit' type='submit' value='" + "selection" + "'></form> </td>";
+                    if (role === 'admin') {
+                        html += "<td> <form action='book/edit' method='post'><input name='edit' value='" + datas[m].id + "' hidden><input class='submit' type='submit' value='" + "edit" + "'></form> </td>";
+                        html += "<td> <form action='book/delete' method='post'><input name='id_book' value='" + datas[m].id + "' hidden><input  type='submit' value='" + "delete" + "'></form></td>";
+                    }
+                      if (role != 'admin') {
+                    html += "<td> <form action='book/details' method='post'><input name='details' value='" + datas[m].id + "' hidden><input  type='submit' value='" + "details" + "'></form></td>";
+                }
+                    html += "<td> <form action='rental/selection' method='post'><input name='selection' value='" + datas[m].id + "' hidden><input name='selections' value='" + actual + "' hidden><input class='submit' type='submit' value='" + "selection" + "'></form> </td>";
                     html += "</tr>";
                 }
+
+
+
+
+
+
+
+
+
+
                 $('#list').html(html);
             }
 
@@ -87,6 +102,7 @@
                             <td>Filters</td>
                             <td><input  name="critere" type="text" id="search"  placeholder="text"></td>
                     <input type='hidden' id ="userconnect" name='member' value='<?= $smember->username ?>' >
+                    <input type='hidden' id ="userrole" name='userrole' value='<?= $user->role ?>' >
                     <td ><input type="submit" name="search" id="btnsearch"></td>
 
                     </tr>
@@ -111,7 +127,7 @@
                         <td><?= $book->author ?></td>
                         <td><?= $book->editor ?></td>
 
-     <!--<td><img src="upload/<?= $book->picture ?>" style="width:30%; " /></td>-->
+             <!--<td><img src="upload/<?= $book->picture ?>" style="width:30%; " /></td>-->
 
                         <td>
                             <?php if ($user->isAdmin($user->username)): ?>
@@ -188,41 +204,6 @@
                             <td><?= $selection->author ?></td>
                             <td><?= $selection->editor ?></td>
                             <td>
-<!--                                <?php if ($user->isAdmin($user->username)): ?>
-                                    <form  action='book/edit' method='post'>
-                                        <input type='hidden' name='edit' value='<?= $selection->id ?>'>
-                                        <input type='submit' value='edit'>
-                                    </form>
-                                <?php endif; ?>
-                            </td>
-
-                            <td>
-                                <?php if ($user->isAdmin($user->username)): ?>
-                                    <form  action='book/delete' method='post'>
-                                        <input type='hidden' name='id_book' value='<?= $selection->id ?>'>
-                                        <input type='submit' value='delete'>
-                                    </form>
-                                    </form>
-                                <?php endif; ?>
-                            </td>
-
-                            <td>
-                                <?php if ($user->isManager($user->username)): ?>
-                                    <form  action='book/details' method='post'>
-                                        <input type='hidden' name='details' value='<?= $selection->id ?>'>
-                                        <input type='submit' value='details'>
-                                    </form>
-                                <?php endif; ?>
-                            </td>
-
-                            <td>
-                                <?php if ($user->isManager($user->username)): ?>
-                                    <form  action='book/details' method='post'>
-                                        <input type='hidden' name='details' value='<?= $selection->id ?>'>
-                                        <input type='submit' value='details'>
-                                    </form>
-                                <?php endif; ?>
-                            </td>-->
                             <td>
                                 <form   action='rental/deselection' method='post'>
                                     <input type='hidden' name='deselection' value='<?= $selection->title ?>' >

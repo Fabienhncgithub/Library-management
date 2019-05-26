@@ -35,19 +35,21 @@
 //         view = ligne
 //         resource = colonne
 //         event = rental mettre URL & METHOD
-
-            $('#calendar').focusout(function () {
-                $.get("rental/get_rental", function (data) {
-                    console.log(JSON.parse(data));
-                });
-            });
+//
+//            $('#calendar').focusout(function () {
+//                $.get("rental/get_rental", function (data) {
+//                    console.log(JSON.parse(data));
+//                });
+//            });
 //            $('#calendar').hide();
 //            $.get("rental/get_rental", function (data) {
 //                console.log(JSON.parse(data));
 //            });
             document.addEventListener('DOMContentLoaded', function () {
+               $('#btnsearch').hide();
                 var calendarEl = document.getElementById('calendar');
                 $('#calendar').keyup(function () {
+                     
                     $.get("rental/get_rental", function (data) {
                         console.log(JSON.parse(data));
                     });

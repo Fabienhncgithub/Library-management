@@ -30,6 +30,11 @@ class ControllerBook extends Controller {
             $idsmember = $smember->id;
             $user = User::get_member_by_pseudo($user->username);
             $users = $user->id;
+            
+            $role = User::get_member_by_role($user->username);
+            var_dump($role);
+            
+                    
             $selections = Rental::get_book_by_user_without_rental($smember->id);
             $id = $users;
             $members = User::selection_member_by_all_not_selected($id);
@@ -47,7 +52,7 @@ class ControllerBook extends Controller {
             $books = Book::get_book_by_filter($filter["critere"], $smember->id);
             $selections = Rental::get_book_by_user_without_rental($smember->id);
         }
-        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
+        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember,"role" => $role));
     }
 
     public function search_rental() {
@@ -62,6 +67,7 @@ class ControllerBook extends Controller {
     public function details() {
         $books = "";
         $user = Controller::get_user_or_redirect();
+             $role = User::get_member_by_role($user->username);
 
         if (isset($_POST['details'])) {
             $this->redirect("book", "details", $_POST["details"]);
@@ -69,12 +75,14 @@ class ControllerBook extends Controller {
         if (isset($_GET['param1'])) {
             $books = Book::get_book_by_id($_GET['param1']);
         }
-        (new View("details"))->show(array("books" => $books, "user" => $user));
+        (new View("details"))->show(array("books" => $books, "user" => $user, "role" =>$role));
     }
 
     public function edit() {
         $id = null;
         $user = $this->get_user_or_redirect();
+        $role = User::get_member_by_role($user->username);
+            
         $isbn = '';
         $title = '';
         $author = '';
@@ -95,12 +103,13 @@ class ControllerBook extends Controller {
             $editor = $edit->editor;
             $picture = $edit->picture;
         }
-        (new View("editbook"))->show(array("id" => $id, "books" => $edit, "isbn" => $isbn, "title" => $title, "author" => $author, "editor" => $editor, "picture" => $picture));
+        (new View("editbook"))->show(array("id" => $id, "books" => $edit, "isbn" => $isbn, "title" => $title, "author" => $author, "editor" => $editor, "picture" => $picture, "role" => $role));
     }
 
     public function delete() {
         $books = new Book();
         $user = $this->get_user_or_redirect();
+             $role = User::get_member_by_role($user->username);
         if (isset($_POST['id_book'])) {
             $this->redirect("book", "delete", $_POST["id_book"]);
         }
@@ -111,7 +120,7 @@ class ControllerBook extends Controller {
             $books = Book::get_member_by_object_id($books);
             //                }
         }
-        (new View("confirm"))->show(array("user" => $user, "books" => $books));
+        (new View("confirm"))->show(array("user" => $user, "books" => $books, "role" => $role));
     }
 
     public function confirm_delete() {
@@ -180,6 +189,7 @@ class ControllerBook extends Controller {
     public function add_book() {
         $book = new Book();
         $user = $this->get_user_or_redirect();
+             $role = User::get_member_by_role($user->username);
         $id = '';
         $isbn = '';
         $title = '';
@@ -208,7 +218,7 @@ class ControllerBook extends Controller {
                 $this->redirect("book", "index");
             }
         }
-        (new View("add_book"))->show(array("isbn" => $isbn, "title" => $title, "author" => $author, "editor" => $editor, "picture" => $picture, "errors" => $errors));
+        (new View("add_book"))->show(array("isbn" => $isbn, "title" => $title, "author" => $author, "editor" => $editor, "picture" => $picture, "errors" => $errors, "role" => $role));
     }
 
     public function return_book() {
