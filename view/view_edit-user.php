@@ -117,13 +117,15 @@
                         <td class="errors" id="errBirthdate"></td>
                     </tr>
                     <tr>
+                                <?php if ($users->isAdmin($users->username)): ?>
                         <td>Role:</td>
                         <td>                      
                             <select id="role" name="role" >                  
                                 <option value="admin" <?= $role === 'admin' ? 'selected' : '' ?>>admin</option>
                                 <option value="manager" <?= $role === 'manager' ? 'selected' : '' ?>>manager</option>
                                 <option value="member" <?= $role === 'member' ? 'selected' : '' ?>>member</option>
-                        </td>
+                            </td>
+                              <?php endif; ?>
                     </tr>
                 </table>
                 <input id="id" type="hidden" name="id" value="<?php echo $id ?>" >

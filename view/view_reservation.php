@@ -21,40 +21,28 @@
         <script>
             var list;
             var actual;
-
             $(function () {
                 $('#btnsearch').hide();
                 $('#search').focus();
-
-
                 list = $('.list').val();
                 actual = $('#memberz').val();
                 role = $('#userrole').val();
-
                 $('#search').keyup(function () {
-
                     console.log($('#memberz').val());
                     $.get("book/find_book/" + $('#search').val() + "/" + $('#memberz').val(), function (data) {
                         var DN = JSON.parse(data);
                         displayTable(DN);
                         console.log(actual);
-
                     });
                 });
             });
-
             function displayTable(datas) {
-
-
-
                 var html = "<tr>\n\
                         <th id='isbn' >ISBN</th>" +
                         "<th id='title'>Title</th>" +
                         "<th id='author' >Athor</th>" +
                         "<th id='editor' >Editor</th>" +
                         "<th id='action' >Action</th>\</tr>";
-
-
                 for (var m = 0; m < datas.length; ++m) {
                     html += "<tr>";
                     html += "<td>" + datas[m].isbn + "</td>";
@@ -71,22 +59,10 @@
                     html += "<td> <form action='rental/selection' method='post'><input name='selection' value='" + datas[m].id + "' hidden><input name='selections' value='" + actual + "' hidden><input class='submit' type='submit' value='" + "selection" + "'></form> </td>";
                     html += "</tr>";
                 }
-
-
-
-
-
-
-
-
-
-
                 $('#list').html(html);
             }
-
         </script>
         <div class="title">Welcome <?= $user->username ?></div>
-
         <?php
         if ($user->isAdmin($user->username)) {
             include('menuAdmin.html');
@@ -148,7 +124,7 @@
                         </td>
 
                         <td>
-                            <?php if ($user->isManager($user->username)): ?>
+                            <?php if (($user->isManager($user->username))|| ($user->isMember($user->username))): ?>
                                 <form  action='book/details' method='post'>
                                     <input type='hidden' name='details' value='<?= $book->id ?>'>
                                     <input type='submit' value='details'>
@@ -162,9 +138,7 @@
                                 <input type='submit' value='selection'>
                             </form>
                         </td>
-
                     </tr>
-
                 <?php endforeach; ?>
             </table>
 
@@ -172,13 +146,8 @@
                 <form class="button" action="book/add_book" method="POST">
                     <input type="submit" value="Add Book"  name="new">
                 </form>
-
             <?php endif; ?>
-
             <div class="title">Basket of  <?= $smember->username ?></div>
-
-
-
             Basket of books to rent
             <br>
             <table >
@@ -215,11 +184,8 @@
                     <?php endforeach; ?>
                 </tbody>
             </table>
-
-            <?php if ($user->isAdmin($user->username)): ?>
-
+              <?php if (($user->isManager($user->username))|| ($user->isAdmin($user->username))): ?>
                 <form class="button" action="rental/user_choice" method="POST">
-
                     <td>The basket is for:</td>
                     <td>                      
                         <select id="member" name="rental_select" value="rental_select" > 
@@ -231,11 +197,7 @@
                     </select>
                     <input type="submit" value="Valider user"   name="new">
                 </form>    
-
-
             <?php endif; ?><?php ?>
-
-
             <form class="button" action="rental/clear_basket" method="POST">
                 <input type='hidden' name='memberclearbasket' value='<?= $smember->username ?>' >
                 <input type="submit" value="Effacer rental"   name="new">
@@ -244,9 +206,6 @@
                 <input type='hidden' name='memberconfirmbasket' value='<?= $smember->username ?>' >
                 <input type="submit" name="Save rental" value="Save rental" >
             </form> 
-
-
-
         </div>
     </body>
 </html>
