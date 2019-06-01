@@ -16,8 +16,6 @@
 
     </head>
     <body id="body">
-
-
         <script>
             var list;
             var actual;

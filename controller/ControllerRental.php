@@ -79,7 +79,7 @@ class ControllerRental extends Controller {
             $user = User::get_member_by_pseudo($username);
             $user = $user->id;
             $rental = Rental::get_rental_by_user_objet($idsmember);
-            if ($rental == 'false') {
+            if (!$rental) {
                 $this->redirect("book", "index");
             } else
                 $rental->clear();

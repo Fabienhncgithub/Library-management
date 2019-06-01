@@ -114,12 +114,11 @@
                             return {
                                 book: $("#book").val(),
                                 member: $("#member").val(),
-                                rental_date: $("#rental_date").val(),
+                                rentaldate: $("#rental_date").val(),
                                 
                             }
                         }
                     },
-
                     events: {
                         url: "rental/get_events",
                       method: 'POST',
@@ -127,7 +126,7 @@
                             return {
                                 book: $("#book").val(),
                                 member: $("#member").val(),
-                                rental_date: $("#rental_date").val(),
+                                rentaldate: $("#rental_date").val(),
                             }
                         }
                     },
