@@ -30,11 +30,11 @@ class ControllerBook extends Controller {
             $idsmember = $smember->id;
             $user = User::get_member_by_pseudo($user->username);
             $users = $user->id;
-            
+
             $role = User::get_member_by_role($user->username);
             var_dump($role);
-            
-                    
+
+
             $selections = Rental::get_book_by_user_without_rental($smember->id);
             $id = $users;
             $members = User::selection_member_by_all_not_selected($id);
@@ -52,7 +52,7 @@ class ControllerBook extends Controller {
             $books = Book::get_book_by_filter($filter["critere"], $smember->id);
             $selections = Rental::get_book_by_user_without_rental($smember->id);
         }
-        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember,"role" => $role));
+        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember, "role" => $role));
     }
 
     public function search_rental() {
@@ -67,7 +67,7 @@ class ControllerBook extends Controller {
     public function details() {
         $books = "";
         $user = Controller::get_user_or_redirect();
-             $role = User::get_member_by_role($user->username);
+        $role = User::get_member_by_role($user->username);
 
         if (isset($_POST['details'])) {
             $this->redirect("book", "details", $_POST["details"]);
@@ -75,14 +75,14 @@ class ControllerBook extends Controller {
         if (isset($_GET['param1'])) {
             $books = Book::get_book_by_id($_GET['param1']);
         }
-        (new View("details"))->show(array("books" => $books, "user" => $user, "role" =>$role));
+        (new View("details"))->show(array("books" => $books, "user" => $user, "role" => $role));
     }
 
     public function edit() {
         $id = null;
         $user = $this->get_user_or_redirect();
         $role = User::get_member_by_role($user->username);
-            
+
         $isbn = '';
         $title = '';
         $author = '';
@@ -109,7 +109,7 @@ class ControllerBook extends Controller {
     public function delete() {
         $books = new Book();
         $user = $this->get_user_or_redirect();
-             $role = User::get_member_by_role($user->username);
+        $role = User::get_member_by_role($user->username);
         if (isset($_POST['id_book'])) {
             $this->redirect("book", "delete", $_POST["id_book"]);
         }
@@ -189,7 +189,7 @@ class ControllerBook extends Controller {
     public function add_book() {
         $book = new Book();
         $user = $this->get_user_or_redirect();
-             $role = User::get_member_by_role($user->username);
+        $role = User::get_member_by_role($user->username);
         $id = '';
         $isbn = '';
         $title = '';
@@ -212,7 +212,13 @@ class ControllerBook extends Controller {
             $errors = Book::validate_unicity_isbn($isbn);
             $errors = Book::validate_author($author);
             $errors = Book::validate_title($title);
-
+            $errors = Book::validate_isbn($isbn);
+//            $errors = Book::validate_title($author);
+            
+            if(Book::validate_unicity_isbn($isbn))
+                $errors[] = "L'ISBN est déjà utilisé!";
+            
+            
             if (count($errors) == 0) {
                 $newbook->updateBook(); //sauve le livre
                 $this->redirect("book", "index");
@@ -273,5 +279,27 @@ class ControllerBook extends Controller {
         }
         echo $res;
     }
+
+    public function confirm() {
+
+        if (isset($_POST['idbook']) && isset($_POST['confirm'])) {
+            $idbook = $_POST['idbook'];
+            $confirm = $_POST['confirm'];
+            if ($confirm != 0) {
+                $books->id = $_POST['idbook'];
+                $books->delete_Book();
+            }
+        }
+    }
+    
+    
+    
+    public function deletebookJS(){
+            if(isset($_POST['delete'])){
+                $idbook = Book::get_member_by_object_id($id);
+                $idbook->delete_Book();
+            }
+    }
+    
 
 }

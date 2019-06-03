@@ -244,7 +244,7 @@ class Rental extends Model {
 
     public static function get_rental_user_id_by_username_objet($username) {
         $query = self::execute("SELECT * FROM rental join user on user.id=rental.user where user.username = :username", array("username" => $username));
-        $data = $query->fetch(); // un seul résultat au maximum
+        $data = $query->fetchAll(); // un seul résultat au maximum
         if ($query->rowCount() == 0) {
             return false;
         } else {
@@ -312,7 +312,7 @@ class Rental extends Model {
         $result = [];
         try {
 
-            $query = self::execute("SELECT rental.id, user.username,book.title,rental.rentaldate,rental.returndate FROM rental join book on rental.book=book.id join user on rental.user = user.id where ( rentaldate IS NOT NULL  OR returndate IS NOT NULL) and (isbn LIKE :book OR title LIKE :book OR author LIKE :book OR editor LIKE :book) and username like :member or username like :member and rental.rentaldate=:rentaldate", array(":book" => "%" . $book . "%", ":member" => "%" . $user . "%", ':rentaldate' => $rentaldate));
+            $query = self::execute("SELECT rental.id, user.username,book.title,rental.rentaldate,rental.returndate FROM rental join book on rental.book=book.id join user on rental.user = user.id where ( rentaldate IS NOT NULL  OR returndate IS NOT NULL) and (isbn LIKE :book OR title LIKE :book OR author LIKE :book OR editor LIKE :book) and username like :member or username like :member and rental.rentaldate=:rentaldate", array("book" => "%" . $book . "%", "member" => "%" . $user . "%", 'rentaldate' => $rentaldate));
             $datas = $query->fetchAll();
             foreach ($datas as $data) {
                             $result[] = new Rental($data["id"], $data["username"], $data["title"], $data["rentaldate"], $data["returndate"]);
@@ -329,7 +329,7 @@ class Rental extends Model {
         $result = [];
         try {
 
-            $query = self::execute("SELECT rental.id, user.username,book.title,rental.rentaldate,rental.returndate FROM rental join book on rental.book=book.id join user on rental.user = user.id where ( rentaldate IS NOT NULL and returndate is NULL) and (isbn LIKE :book OR title LIKE :book OR author LIKE :book OR editor LIKE :book) and username like :member or username like :member and rental.rentaldate=:rentaldate", array(":book" => "%" . $book . "%", ":member" => "%" . $user . "%", ':rentaldate' => $rentaldate));
+            $query = self::execute("SELECT rental.id, user.username,book.title,rental.rentaldate,rental.returndate FROM rental join book on rental.book=book.id join user on rental.user = user.id where ( rentaldate IS NOT NULL and returndate is NULL) and (isbn LIKE :book OR title LIKE :book OR author LIKE :book OR editor LIKE :book)and (isbn LIKE :book OR title LIKE :book OR author LIKE :book OR editor LIKE :book) and username like :member or username like :member and rental.rentaldate=:rentaldate", array("book" => "%" . $book . "%", "member" => "%" . $user . "%", 'rentaldate' => $rentaldate));
             $datas = $query->fetchAll();
             foreach ($datas as $data) {
                             $result[] = new Rental($data["id"], $data["username"], $data["title"], $data["rentaldate"], $data["returndate"]);
@@ -344,7 +344,7 @@ class Rental extends Model {
           $result = [];
         try {
 
-            $query = self::execute("SELECT rental.id, user.username,book.title,rental.rentaldate,rental.returndate FROM rental join book on rental.book=book.id join user on rental.user = user.id where ( rentaldate IS NOT NULL  AND returndate IS NOT NULL) and (isbn LIKE :book OR title LIKE :book OR author LIKE :book OR editor LIKE :book) and username like :member or username like :member and rental.rentaldate=:rentaldate", array(":book" => "%" . $book . "%", ":member" => "%" . $user . "%", ':rentaldate' => $rentaldate));
+            $query = self::execute("SELECT rental.id, user.username,book.title,rental.rentaldate,rental.returndate FROM rental join book on rental.book=book.id join user on rental.user = user.id where ( rentaldate IS NOT NULL  AND returndate IS NOT NULL) and (isbn LIKE :book OR title LIKE :book OR author LIKE :book OR editor LIKE :book) and username like :member or username like :member and rental.rentaldate=:rentaldate", array("book" => "%" . $book . "%", "member" => "%" . $user . "%", 'rentaldate' => $rentaldate));
             $datas = $query->fetchAll();
             foreach ($datas as $data) {
                             $result[] = new Rental($data["id"], $data["username"], $data["title"], $data["rentaldate"], $data["returndate"]);

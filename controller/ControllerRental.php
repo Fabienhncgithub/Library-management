@@ -191,10 +191,13 @@ class ControllerRental extends Controller {
     }
 
     public function get_rental() {
+        
         $rentaldate = null;
         $book = "";
         $member = "";
         $MyRadio = 1;
+        
+        
         if (isset($_POST['book'])) {
             $book = $_POST['book'];
         }
@@ -209,15 +212,25 @@ class ControllerRental extends Controller {
         }
         if ($book == "" && $member == "" && $rentaldate == null) {
             $rents = Rental::get_rental_all();
-        } else {
-            if ($selection == 1) {
-                $rents = Rental::get_rental_by_filter_all($book, $member, $rentaldate);
-            } else if ($selection == 2) {
-                $rents = Rental::get_rental_by_filter_open($book, $member, $rentaldate);
-            } else if ($selection == 3) {
-                $rents = Rental::get_rental_by_filter_return($book, $member, $rentaldate);
-            }
-        }
+            
+            
+//        } else {  //verification si il passe dedans
+//            if ($selection == 1) {
+//                $rents = Rental::get_rental_by_filter_all($book, $member, $rentaldate);
+//            } else if ($selection == 2) {
+//                $rents = Rental::get_rental_by_filter_open($book, $member, $rentaldate);
+//            } else if ($selection == 3) {
+//                $rents = Rental::get_rental_by_filter_return($book, $member, $rentaldate);
+//     
+//                
+//            }
+//            
+//            
+      }
+                 
+
+    $rents = Rental::get_rental_by_filter_return($book, $member, $rentaldate);
+        
         if ($rents != null) {
             foreach ($rents as $rent) {
                 if ($rent->returndate == null) {
@@ -308,7 +321,6 @@ class ControllerRental extends Controller {
         $user = User::get_member_by_pseudo($username);
         $users = $user->id;
 
-
         if (isset($_POST['deleterental'])) {
             $this->redirect("rental", "delete_rental_return", $_POST["deleterental"]);
         }
@@ -343,4 +355,28 @@ class ControllerRental extends Controller {
         }
     }
 
+    
+    public function deleteAllJS() {
+        if(isset($_GET["param1"])){
+            
+           $rent= Rental::get_rental_by_user($_GET["param1"]);
+           foreach ($rent as $r){
+               $r->clear();
+//               $this->redirect("book","index");
+//                echo 'true';
+           }
+        }
+    }
+    
+    
+    public function createJS(){
+           if(isset($_POST["createid"])){
+               $create =  Rental::get_rental_by_user($_POST["createid"]);
+                foreach($create as $cr){
+                        $cr->rent2();
+                }
+           } 
+    }
+    
+    
 }

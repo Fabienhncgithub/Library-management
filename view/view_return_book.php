@@ -8,25 +8,29 @@
         <title>Books</title>
 
         <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
+        
         <script src="lib/jquery-validation-1.19.0/jquery.validate.min.js" type="text/javascript"></script>
-        <script src='lib/fullcalendar-scheduler-4.1.0/packages/moment/main.js'></script>
+        <!--<script src='lib/fullcalendar-scheduler-4.1.0/packages/moment/main.js'></script>-->
         <script src='lib/fullcalendar-scheduler-4.1.0/packages/core/main.js'></script>
         <script src='lib/fullcalendar-scheduler-4.1.0/packages/interaction/main.js'></script>
         <script src='lib/fullcalendar-scheduler-4.1.0/packages/timeline/main.js'></script>
         <script src='lib/fullcalendar-scheduler-4.1.0/packages/resource-common/main.js'></script>
         <script src='lib/fullcalendar-scheduler-4.1.0/packages/resource-timeline/main.js'></script>
+        
         <link href='lib/fullcalendar-scheduler-4.1.0/packages/core/main.css' rel='stylesheet' />
         <link href='lib/fullcalendar-scheduler-4.1.0/packages/timeline/main.css' rel='stylesheet' />
         <link href='lib/fullcalendar-scheduler-4.1.0/packages/resource-timeline/main.css' rel='stylesheet' />
+        
         <link href="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
         <link href="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.theme.min.css" rel="stylesheet" type="text/css"/>
         <link href="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.structure.min.css" rel="stylesheet" type="text/css"/>
-        <script src='lib/fullcalendar-scheduler-4.1.0/packages/core/main.js'></script>
-        <script src='lib/fullcalendar-scheduler-4.1.0/packages/timeline/main.js'></script>
-        <script src='lib/fullcalendar-scheduler-4.1.0/packages/resource-common/main.js'></script>
+        
+<!--        <script src='lib/fullcalendar-scheduler-4.1.0/packages/core/main.js'></script>
+        <script src='lib/fullcalendar-scheduler-4.1.0/packages/timeline/main.js'></script>-->
+<!--        <script src='lib/fullcalendar-scheduler-4.1.0/packages/resource-common/main.js'></script>
         <script src='lib/fullcalendar-scheduler-4.1.0/packages/resource-timeline/main.js'></script>
         <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
-        <script src="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.min.js" type="text/javascript"></script>
+        <script src="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.min.js" type="text/javascript"></script>-->
 
     </head>
     <body>
@@ -45,8 +49,12 @@
 //            $.get("rental/get_rental", function (data) {
 //                console.log(JSON.parse(data));
 //            });
+
+        
+
             document.addEventListener('DOMContentLoaded', function () {
                $('#btnsearch').hide();
+               $('#tab').hide();
                 var calendarEl = document.getElementById('calendar');
                 $('#calendar').keyup(function () {
                      
@@ -114,7 +122,7 @@
                             return {
                                 book: $("#book").val(),
                                 member: $("#member").val(),
-                                rentaldate: $("#rental_date").val(),
+                                rental_date: $("#rental_date").val(),
                                 
                             }
                         }
@@ -159,7 +167,9 @@
 //                    events: 'https://fullcalendar.io/demo-events.json?single-day&for-resource-timeline'
                 });
                 calendar.render();
-                $("#title, #author, #rentaldate, select, #rentalid").on("input", function () {
+                
+                $("#book, #member, #rental_date").on("input", function () {
+                    console.log("ehllo");
                     refetch();
                 });
                 function refetch() {
@@ -178,7 +188,7 @@
         }
         ?>
 
-        <div class="main">
+        <div  class="main">
             <form action="rental/filter_return" method="post">
                 <input type="hidden" name="search" value="book" id="btnsearch" >
                 <table>
@@ -196,8 +206,10 @@
                         <input type="radio" name="MyRadio" value="3">Return
                     </td>
                 </table>
+                
+                
                 <th><input type="submit" name="search"></th>
-                <table id="calendar">
+                <table id="tab">
                     <tr>
                         <th>Rental Date/Time</th>
                         <th>User</th>
@@ -234,6 +246,9 @@
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+                
+                <div id="calendar">
+                
                 <div id="confirmDialog" hidden>
                     <p hidden>id: <strong id="id"></strong></p>
                     <p>Membre: <strong id="user"></strong></p>
@@ -241,6 +256,8 @@
                     <p>Date de location: <strong id="start"></strong></p>
                     <p>Date de Retour:<strong id="end"></strong></p>
                 </div>
+                    
+                    </div>
         </div>
     </body>
 </html>
