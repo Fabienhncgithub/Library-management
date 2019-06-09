@@ -25,12 +25,12 @@
         <link href="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.theme.min.css" rel="stylesheet" type="text/css"/>
         <link href="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.structure.min.css" rel="stylesheet" type="text/css"/>
         
-<!--        <script src='lib/fullcalendar-scheduler-4.1.0/packages/core/main.js'></script>
-        <script src='lib/fullcalendar-scheduler-4.1.0/packages/timeline/main.js'></script>-->
-<!--        <script src='lib/fullcalendar-scheduler-4.1.0/packages/resource-common/main.js'></script>
+        <script src='lib/fullcalendar-scheduler-4.1.0/packages/core/main.js'></script>
+        <script src='lib/fullcalendar-scheduler-4.1.0/packages/timeline/main.js'></script>
+        <script src='lib/fullcalendar-scheduler-4.1.0/packages/resource-common/main.js'></script>
         <script src='lib/fullcalendar-scheduler-4.1.0/packages/resource-timeline/main.js'></script>
         <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
-        <script src="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.min.js" type="text/javascript"></script>-->
+        <script src="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.min.js" type="text/javascript"></script>
 
     </head>
     <body>
@@ -55,6 +55,9 @@
             document.addEventListener('DOMContentLoaded', function () {
                $('#btnsearch').hide();
                $('#tab').hide();
+               $("#rentaldate").change(function(){
+                   console.log( $("#rentaldate").val());
+               });
                 var calendarEl = document.getElementById('calendar');
                 $('#calendar').keyup(function () {
                      
@@ -116,13 +119,13 @@
                     },
 
                     resources: {
-                        url: 'rental/get_rental',
+                        url: 'rental/calendar',
                         method: 'POST',
                         extraParams: function () {
                             return {
                                 book: $("#book").val(),
                                 member: $("#member").val(),
-                                rental_date: $("#rental_date").val(),
+                                rentaldate: $("#rentaldate").val(),
                                 
                             }
                         }
@@ -134,7 +137,7 @@
                             return {
                                 book: $("#book").val(),
                                 member: $("#member").val(),
-                                rentaldate: $("#rental_date").val(),
+                                rentaldate: $("#rentaldate").val(),
                             }
                         }
                     },
@@ -168,8 +171,7 @@
                 });
                 calendar.render();
                 
-                $("#book, #member, #rental_date").on("input", function () {
-                    console.log("ehllo");
+                $("#book, #member, #rentaldate").on("input", function () {
                     refetch();
                 });
                 function refetch() {
@@ -197,7 +199,7 @@
                             <td>Filters: </td>
                             <td>Member: <input id="member" name="member" type="text" ></td>
                             <td>Book: <input id="book" name="book" type="text"></td>
-                            <td>Rental date: <input id="rental_date" name="rentaldate" type="date"></td>
+                            <td>Rental date: <input id="rentaldate" name="rentaldate" type="date"></td>
                         </tr>
 
                     <td>State:

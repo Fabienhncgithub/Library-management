@@ -199,15 +199,25 @@ class ControllerUser extends Controller {
             if (($email) == '')
                 $errors[] = "rentrez votre email";
             //$newuser = new User('', $username, Tools::my_hash($password), $fullname, $email, $birthdate, $role);
-            // $errors = User::validate_unicity($username);
+            //$errors = User::validate_unicity($username);
+            
+            
+         
+            
             $errors = array_merge($errors, $user->validate());
             $edit = User::get_member_by_id($_POST["id"]);
+            
+            if ($username != $user->username) {
+                $errors[] = User::validate_unicity($username);
+            }
+            
+            
             $edit->username = $username;
             $edit->fullname = $fullname;
             $edit->email = $email;
             $edit->birthdate = $birthdate;
             $edit->role = $role;
-
+            
             if (count($errors) == 0) {
                 $edit->update_User(); //update l'utilisateur
                 $this->redirect("user", "users");

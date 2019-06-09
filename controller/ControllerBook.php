@@ -25,33 +25,38 @@ class ControllerBook extends Controller {
 
     public function search() {
         $user = Controller::get_user_or_redirect();
-        if (isset($_POST['critere']) && isset($_POST['member'])) {
-            $smember = User::get_member_by_pseudo($_POST['member']);
-            $idsmember = $smember->id;
-            $user = User::get_member_by_pseudo($user->username);
-            $users = $user->id;
-
-            $role = User::get_member_by_role($user->username);
-            var_dump($role);
 
 
-            $selections = Rental::get_book_by_user_without_rental($smember->id);
-            $id = $users;
-            $members = User::selection_member_by_all_not_selected($id);
-            $search = ($_POST['critere']);
-            $filter = [];
-            if (isset($_GET["param1"])) {
-                $filter = Utils::url_safe_decode($_GET["param1"]);
-                if (!$filter)
-                    Utils::abort("bad url parameter");
-            }
-            if (isset($_POST["critere"])) {
-                $filter["critere"] = $_POST["critere"];
-                $this->redirect("book", "index", Utils::url_safe_encode($filter));
-            }
-            $books = Book::get_book_by_filter($filter["critere"], $smember->id);
-            $selections = Rental::get_book_by_user_without_rental($smember->id);
+        $filter = [];
+        if (isset($_GET["param1"])) {
+            $filter = Utils::url_safe_decode($_GET["param1"]);
+            if (!$filter)
+                Utils::abort("bad url parameter");
         }
+        if (isset($_POST["critere"]) && isset($_POST['member'])) {
+            $filter["critere"] = $_POST["critere"];
+            $filter["member"] = $_POST["member"];
+            $this->redirect("book", "search", Utils::url_safe_encode($filter));
+        }
+
+
+        $smember = User::get_member_by_pseudo($filter['member']);
+        $idsmember = $smember->id;
+        $user = User::get_member_by_pseudo($user->username);
+        $users = $user->id;
+
+        $role = User::get_member_by_role($user->username);
+
+
+        $selections = Rental::get_book_by_user_without_rental($smember->id);
+        $id = $users;
+        $members = User::selection_member_by_all_not_selected($id);
+        $search = ($filter['critere']);
+
+        ////////////////////////////////////////////////////
+        $books = Book::get_book_by_filter($filter["critere"], $smember->id);
+
+
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember, "role" => $role));
     }
 
@@ -79,48 +84,58 @@ class ControllerBook extends Controller {
     }
 
     public function edit() {
+
         $id = null;
         $user = $this->get_user_or_redirect();
-        $role = User::get_member_by_role($user->username);
+        if ($user->isAdmin()) {
+            $role = User::get_member_by_role($user->username);
 
-        $isbn = '';
-        $title = '';
-        $author = '';
-        $editor = '';
-        $picture = '';
+            $isbn = '';
+            $title = '';
+            $author = '';
+            $editor = '';
+            $picture = '';
 
-        if (isset($_POST['edit'])) {
-            $this->redirect("book", "edit", $_POST["edit"]);
+            if (isset($_POST['edit'])) {
+                $this->redirect("book", "edit", $_POST["edit"]);
+            }
+
+            if (isset($_GET['param1'])) {
+                $edit = $_GET['param1'];
+                $edit = Book::get_member_by_object_id($edit);
+                $id = $edit->id;
+                $isbn = $edit->isbn;
+                $title = $edit->title;
+                $author = $edit->author;
+                $editor = $edit->editor;
+                $picture = $edit->picture;
+            }
+
+            (new View("editbook"))->show(array("id" => $id, "books" => $edit, "isbn" => $isbn, "title" => $title, "author" => $author, "editor" => $editor, "picture" => $picture, "role" => $role));
+        } else {
+            $this->redirect("book", "index");
         }
-
-        if (isset($_GET['param1'])) {
-            $edit = $_GET['param1'];
-            $edit = Book::get_member_by_object_id($edit);
-            $id = $edit->id;
-            $isbn = $edit->isbn;
-            $title = $edit->title;
-            $author = $edit->author;
-            $editor = $edit->editor;
-            $picture = $edit->picture;
-        }
-        (new View("editbook"))->show(array("id" => $id, "books" => $edit, "isbn" => $isbn, "title" => $title, "author" => $author, "editor" => $editor, "picture" => $picture, "role" => $role));
     }
 
     public function delete() {
         $books = new Book();
         $user = $this->get_user_or_redirect();
-        $role = User::get_member_by_role($user->username);
-        if (isset($_POST['id_book'])) {
-            $this->redirect("book", "delete", $_POST["id_book"]);
-        }
-        if (isset($_GET['param1'])) {
-            $books = $_GET['param1'];
-            $errors = user::validate_admin($user->username);
+        if ($user->isAdmin()) {
+            $role = User::get_member_by_role($user->username);
+            if (isset($_POST['id_book'])) {
+                $this->redirect("book", "delete", $_POST["id_book"]);
+            }
+            if (isset($_GET['param1'])) {
+                $books = $_GET['param1'];
+                $errors = user::validate_admin($user->username);
 //                if (empty($errors)) {
-            $books = Book::get_member_by_object_id($books);
-            //                }
+                $books = Book::get_member_by_object_id($books);
+                //                }
+            }
+            (new View("confirm"))->show(array("user" => $user, "books" => $books, "role" => $role));
+        } else {
+            $this->redirect("book", "index");
         }
-        (new View("confirm"))->show(array("user" => $user, "books" => $books, "role" => $role));
     }
 
     public function confirm_delete() {
@@ -144,19 +159,24 @@ class ControllerBook extends Controller {
 
     public function edit_book() {
         $user = $this->get_user_or_redirect();
-        $errors = [];
-        if (isset($_POST['cancel'])) {
-            $this->redirect("book", "index");
-        }
-
-        if (isset($_POST['id']) && isset($_POST['isbn']) && isset($_POST['title']) && isset($_POST['author']) && isset($_POST['editor']) && isset($_POST['picture'])) {
-
-            $id = $_POST['id'];
-            $isbn = $_POST['isbn'];
-            $title = $_POST['title'];
-            $author = $_POST['author'];
-            $editor = $_POST['editor'];
-            $picture = $_POST['picture'];
+        if ($user->isAdmin()) {
+            $errors = [];
+            $books = "";
+            if (isset($_POST['cancel'])) {
+                $this->redirect("book", "index");
+            }
+            if (isset($_POST['edit'])) {
+                echo "shjkdfh";
+                $books = Book::get_member_by_object_id($_POST['edit']);
+                (new View("editbook"))->show(array("books" => $books));
+            }
+            if (isset($_POST['id']) && isset($_POST['isbn']) && isset($_POST['title']) && isset($_POST['author']) && isset($_POST['editor']) && isset($_POST['picture'])) {
+                $books = Book::get_member_by_object_id($_POST['id']);
+                $isbn = $_POST['isbn'];
+                $title = $_POST['title'];
+                $author = $_POST['author'];
+                $editor = $_POST['editor'];
+                $picture = $_POST['picture'];
 
 //                $errors = Book::validate_photo($_FILES['image']);
 //                if (empty($errors)) {
@@ -170,19 +190,23 @@ class ControllerBook extends Controller {
 //                        $book->updateBook();
 //                        $success = "Your book has been successfully updated.";
 //                        $this->redirect("book", "index");
-
-            $edit = Book::get_member_by_object_id($_POST["id"]);
-            $edit->isbn = $isbn;
-            $edit->title = $title;
-            $edit->editor = $editor;
-            $edit->author = $author;
-            $edit->picture = $picture;
-
-            if (count($errors) == 0) {
-                $edit->updateBook();
+                $edit = Book::get_member_by_object_id($_POST["id"]);
+                if ($isbn != $books->isbn) {
+                    $errors[] = Book::validate_unicity_isbn($isbn);
+                }
+                $edit->isbn = $isbn;
+                $edit->title = $title;
+                $edit->editor = $editor;
+                $edit->author = $author;
+                $edit->picture = $picture;
+                if (empty($errors)) {
+                    $edit->updateBook();
+                    $this->redirect("book", "index");
+                }
+                (new View("editbook"))->show(array("user" => $user, "books" => $books, "errors" => $errors));
+            } else {
                 $this->redirect("book", "index");
             }
-            (new View("reservation"))->show(array("user" => $user, "books" => $books));
         }
     }
 
@@ -208,18 +232,15 @@ class ControllerBook extends Controller {
             $editor = $_POST['editor'];
             $picture = $_POST['picture'];
 
-            $newbook = new Book('', $isbn, $title, $author, $editor, $picture);
+            // $this->find_Isbn($isbn);
+
+            $newbook = new Book('', $this->get_isbn_format($isbn), $title, $author, $editor, $picture);
             $errors = Book::validate_unicity_isbn($isbn);
             $errors = Book::validate_author($author);
             $errors = Book::validate_title($title);
-            $errors = Book::validate_isbn($isbn);
-//            $errors = Book::validate_title($author);
-            
-            if(Book::validate_unicity_isbn($isbn))
-                $errors[] = "L'ISBN est déjà utilisé!";
-            
-            
+
             if (count($errors) == 0) {
+
                 $newbook->updateBook(); //sauve le livre
                 $this->redirect("book", "index");
             }
@@ -236,7 +257,6 @@ class ControllerBook extends Controller {
         $books = Book::get_book_by_all();
         $selections = Rental::get_book_by_user_without_rental($users);
         $members = User::selection_member_by_all_not_selected($id);
-
         (new View("return_book"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members));
     }
 
@@ -280,26 +300,44 @@ class ControllerBook extends Controller {
         echo $res;
     }
 
-    public function confirm() {
+    public function find_Isbn($isbn) {
+        $res = 0;
+        $arrayphp = [];
+        $res2 = 0;
 
-        if (isset($_POST['idbook']) && isset($_POST['confirm'])) {
-            $idbook = $_POST['idbook'];
-            $confirm = $_POST['confirm'];
-            if ($confirm != 0) {
-                $books->id = $_POST['idbook'];
-                $books->delete_Book();
+        for ($i = 0; $i < strlen($isbn); ++$i) {
+            $arrayphp[$i] = (int) $isbn[$i];
+        }
+        for ($j = 1; $j <= sizeof($arrayphp); ++$j) {
+            if ($j % 2 === 0) {
+                $arrayphp[$j - 1] *= 3;
             }
         }
+        foreach ($arrayphp as $a) {
+            $res += $a;
+        }
+        if ($res % 10 != 0) {
+            $res2 = (int) 10 - (int) ($res % 10);
+        }
+        return $res2;
     }
-    
-    
-    
-    public function deletebookJS(){
-            if(isset($_POST['delete'])){
-                $idbook = Book::get_member_by_object_id($id);
-                $idbook->delete_Book();
-            }
+
+    public function get_isbn_format($isbn) {
+        return $isbn . $this->find_Isbn($isbn);
     }
-    
+
+    public function JSIsbn() {
+        if (isset($_GET['param1'])) {
+            $isbn = $this->find_Isbn($_GET['param1']);
+            echo json_encode($isbn);
+        }
+    }
+
+    public function JSIsbnformat() {
+        if (isset($_GET['param1'])) {
+            $isbn = $this->get_isbn_format($_GET['param1']);
+            echo json_encode($isbn);
+        }
+    }
 
 }

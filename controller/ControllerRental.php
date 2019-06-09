@@ -191,46 +191,50 @@ class ControllerRental extends Controller {
     }
 
     public function get_rental() {
-        
+
         $rentaldate = null;
         $book = "";
         $member = "";
         $MyRadio = 1;
-        
-        
+        $rents = "";
+        $rents = Rental::get_all_rental();
+
         if (isset($_POST['book'])) {
             $book = $_POST['book'];
         }
         if (isset($_POST['member'])) {
             $member = $_POST['member'];
         }
-        if (isset($_POST['rental_date'])) {
-            $rentaldate = $_POST['rental_date'];
+        if (isset($_POST['rentaldate'])) {
+            $rentaldate = $_POST['rentaldate'];
         }
-        if (isset($_POST['MyRadio'])) {
-            $selection = ($_POST['MyRadio']);
-        }
-        if ($book == "" && $member == "" && $rentaldate == null) {
-            $rents = Rental::get_rental_all();
-            
-            
-//        } else {  //verification si il passe dedans
-//            if ($selection == 1) {
-//                $rents = Rental::get_rental_by_filter_all($book, $member, $rentaldate);
-//            } else if ($selection == 2) {
-//                $rents = Rental::get_rental_by_filter_open($book, $member, $rentaldate);
-//            } else if ($selection == 3) {
-//                $rents = Rental::get_rental_by_filter_return($book, $member, $rentaldate);
-//     
-//                
-//            }
-//            
-//            
-      }
-                 
+//        if (isset($_POST['MyRadio'])) {
+//            $selection = ($_POST['MyRadio']);
+//        }
+//        if ($book == "" && $member == "" && $rentaldate == null) {
+//
+//            $rents = Rental::get_rental_all();
+//
+//
+////        } else {  //verification si il passe dedans
+////            if ($selection == 1) {
+////                $rents = Rental::get_rental_by_filter_all($book, $member, $rentaldate);
+////            } else if ($selection == 2) {
+////                $rents = Rental::get_rental_by_filter_open($book, $member, $rentaldate);
+////            } else if ($selection == 3) {
+////                $rents = Rental::get_rental_by_filter_return($book, $member, $rentaldate);
+////     
+////                
+////            }
+////            
+////            
+//        } else {
+        $rents = Rental::get_rental_by_filter_all($book, $member, $rentaldate);
+        var_dump($rents);
+        var_dump($rentaldate);
 
-    $rents = Rental::get_rental_by_filter_return($book, $member, $rentaldate);
-        
+
+
         if ($rents != null) {
             foreach ($rents as $rent) {
                 if ($rent->returndate == null) {
@@ -355,28 +359,70 @@ class ControllerRental extends Controller {
         }
     }
 
-    
     public function deleteAllJS() {
-        if(isset($_GET["param1"])){
-            
-           $rent= Rental::get_rental_by_user($_GET["param1"]);
-           foreach ($rent as $r){
-               $r->clear();
+        if (isset($_GET["param1"])) {
+
+            $rent = Rental::get_rental_by_user($_GET["param1"]);
+            foreach ($rent as $r) {
+                $r->clear();
 //               $this->redirect("book","index");
 //                echo 'true';
-           }
+            }
         }
     }
-    
-    
-    public function createJS(){
-           if(isset($_POST["createid"])){
-               $create =  Rental::get_rental_by_user($_POST["createid"]);
-                foreach($create as $cr){
-                        $cr->rent2();
-                }
-           } 
+
+    public function createJS() {
+        if (isset($_POST["createid"])) {
+            $create = Rental::get_rental_by_user($_POST["createid"]);
+            foreach ($create as $cr) {
+                $cr->rent2();
+            }
+        }
     }
-    
-    
+
+    public function calendar() {
+        $book = "";
+        $member = "";
+        $date = "";
+        $rents = "";
+
+        if (isset($_POST['book'])) {
+            $book = $_POST['book'];
+        }
+        if (isset($_POST['member'])) {
+            $member = $_POST['member'];
+        }
+
+
+        if (isset($_POST['rentaldate'])) {
+            $date = $_POST['rentaldate'];
+        }
+
+        $rents = Rental::get_rental_by_filter_all($book, $member, $date);
+
+        if ($rents != null) {
+            foreach ($rents as $rent) {
+                if ($rent->returndate == null) {
+                    if (date('Y-m-d', strtotime('1 month', strtotime($rent->rentaldate))) >= date('Y-m-d')) {
+                        $rent->eventColor = 'green';
+                    } else {
+                        $rent->eventColor = 'red';
+                    }
+                } else {
+                    if (date('Y-m-d', strtotime('1 month', strtotime($rent->rentaldate))) >= $rent->returndate) {
+                        $rent->eventColor = 'blue';
+                    } else {
+                        $rent->eventColor = 'yellow';
+                    }
+                }
+                if ($rent->returndate == null) {
+                    $rent->end = "/";
+                } else {
+                    $rent->end = $rent->returndate;
+                }
+            }
+        }
+        echo json_encode($rents);
+    }
+
 }

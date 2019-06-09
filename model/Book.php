@@ -24,12 +24,6 @@ class Book extends Model {
         $this->editor = $editor;
         $this->picture = $picture;
     }
-    
-    
-    
-
-    
-    
 
     public static function get_book_by_title($title) {
         $query = self::execute("SELECT * FROM book where title = :title", array("title" => $title));
@@ -93,7 +87,7 @@ class Book extends Model {
     public static function get_book_by_filter($search,$user) {
         $result = [];
         try {
-            $query = self::execute("SELECT * FROM book where( isbn LIKE :search OR title LIKE :search OR author LIKE :search OR editor LIKE :search )AND book.id NOT IN (select rental.book from rental where rental.user=:user)", array(":search" => "%" . $search . "%","user" => $user));
+            $query = self::execute("SELECT * FROM book where(isbn LIKE :search OR title LIKE :search OR author LIKE :search OR editor LIKE :search )AND book.id NOT IN (select rental.book from rental where rental.user=:user)", array(":search" => "%" . $search . "%","user" => $user));
             $datas = $query->fetchAll();
             foreach ($datas as $data) {
                 $result[] = new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
@@ -176,10 +170,8 @@ class Book extends Model {
         $result = [];
         try {
             $query = self::execute("SELECT * FROM book where isbn = :isbn", array("isbn" => $isbn));
-            $datas = $query->fetchAll();
-            foreach ($datas as $data) {
-                $result[] = new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);
-            }return $result;
+            $datas = $query->fetch();
+              return $datas;
         } catch (Exception $ex) {
             $ex->getMessage();
         }
@@ -220,7 +212,7 @@ class Book extends Model {
         if (empty($this->picture))
             $this->picture = null;
         if (self::get_book_by_id($this->id))
-            self::execute("UPDATE book SET isbn=:isbn, title=:title, author=:author , editor=:editor, picture=:picture WHERE title=:title ", array("isbn" => $this->isbn, "title" => $this->title, "author" => $this->author, "editor" => $this->editor, "picture" => $this->picture));
+            self::execute("UPDATE book SET isbn=:isbn, title=:title, author=:author , editor=:editor, picture=:picture WHERE id=:id ", array("id" =>$this->id, "isbn" => $this->isbn, "title" => $this->title, "author" => $this->author, "editor" => $this->editor, "picture" => $this->picture));
         else
             self::execute("INSERT INTO book (isbn,title,author,editor,picture) VALUES(:isbn,:title,:author,:editor,:picture)", array("isbn" => $this->isbn, "title" => $this->title, "author" => $this->author, "editor" => $this->editor, "picture" => $this->picture));
         return $this;
@@ -241,14 +233,12 @@ class Book extends Model {
         return $saveTo;
     }
 
-    
-    
-    
     public static function validate_unicity_isbn($isbn) {
-        $errors = [];
+        $errors ="";
         $user = self::get_book_by_ISBN($isbn);
+       
         if ($user) {
-            $errors[] = "This ISBN already exists.";
+            $errors = "This ISBN already exists.";
         }
         return $errors;
     }
@@ -268,20 +258,7 @@ class Book extends Model {
         }
         return $errors;
     }
-    
-    
-    public static function validate_isbn($isbn) {
-        $errors = [];
-        if ($isbn == "") {
-            $errors[] = "Isbn is required.";
-        }
-        return $errors;
-    }
-    
-    
-    
-    
-    
+
     public static function get_book_not_rental_by_user($user) {
         $result = [];
         try {

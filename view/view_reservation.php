@@ -22,10 +22,22 @@
         <link href="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
         <link href="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.theme.min.css" rel="stylesheet" type="text/css"/>
         <link href="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.structure.min.css" rel="stylesheet" type="text/css"/>
-                                
+         
+        
+        <style>
+            #list,td{
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+        </style>
+        
+        
+        
+        
     </head>
     <body id="body">
         <script>
+            
             var list;
             var actual;
             $(function () {
@@ -153,39 +165,28 @@
 
                  <!--<td><img src="upload/<?= $book->picture ?>" style="width:30%; " /></td>-->
 
-                        <td>
+                      			<td>
                             <?php if ($user->isAdmin($user->username)): ?>
-                                <form  action='book/edit' method='post'>
+                                <form  action='book/edit' method='post' style="float:left;">
                                     <input type='hidden' name='edit' value='<?= $book->id ?>'>
                                     <input type='submit' value='edit'>
                                 </form>
                             <?php endif; ?>
-                        </td>
-
-                        <td>
+                      
+                      
                             <?php if ($user->isAdmin($user->username)): ?>
-                                <form  action='book/delete' method='post'>
+                                <form  action='book/delete' method='post' style="display: inline-block;">
                                     <input type='hidden' name='id_book' value='<?= $book->id ?>'>
                                     <input type='submit' value='delete'>
                                 </form>
-
-<!--                                <input id="ibook" type='hidden' name='id_book' value='<?= $book->id ?>'>
-                                <input type='submit' value='deletepopup' onclick="popupdelete('<?= $book->id ?>', '<?= $book->title ?>', '<?= $book->author ?>')">
--->
-
                             <?php endif; ?>
-                        </td>
-
-                        <td>
                             <?php if (($user->isManager($user->username)) || ($user->isMember($user->username))): ?>
-                                <form  action='book/details' method='post'>
+                                <form  action='book/details' method='post' style="display: inline-block;">
                                     <input type='hidden' name='details' value='<?= $book->id ?>'>
                                     <input type='submit' value='details'>
                                 </form>
                             <?php endif; ?>
-                        </td>
-                        <td>
-                            <form   action='rental/selection' method='post'>
+                            <form   action='rental/selection' method='post' style="display: inline-block;">
                                 <input type='hidden' name='selection' value='<?= $book->id ?>' >
                                 <input type='hidden' name='selections' value='<?= $smember->id ?>' >
                                 <input type='submit' value='selection'>
@@ -265,14 +266,14 @@
 
 
 
-            <input id="idToDelete" type='hidden' name='memberclearbasket' value='<?= $smember->id ?>' >
+<!--            <input id="idToDelete" type='hidden' name='memberclearbasket' value='<?= $smember->id ?>' >
             <input type="submit" value="Effacer JS"   name="new" onclick="functionjs()">
 
 
             <input id="idToSave" type='hidden' name='memberconfirmbasket' value='<?= $smember->id ?>' >
             <input type="submit" name="create sv" value="create JS" onclick="createjs()" >
 
-
+-->
 
 
             <form class="button" action="rental/confirm_basket2" method="POST">

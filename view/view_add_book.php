@@ -19,7 +19,8 @@
                         isbn: {
                             required: true,
                             number: true,
-                            minlength: 13,
+                            minlength: 12,
+                            maxlength: 14,
                             remote: {
                                 url: 'book/isbn_available_service',
                                 type: 'post',
@@ -61,8 +62,21 @@
 
                     }
                 });
-                     $("input:text:first").focus();
+                $("input:text:first").focus();
+                $('#isbn13').show();
+                $('#isbn').keyup(function () {
+                    $.get("book/JSIsbn/" + $('#isbn').val(), function (data) {
+                        $('#isbn13').val(JSON.parse(data));
+                    });
+                });
+                $('#isbn').focusout(function () {
+                    $.get("book/JSIsbnformat/" + $('#isbn').val(), function (data) {
+                        $('#isbn').val($('#isbn').val() + $('#isbn13').val());
+                        $('#isbn13').hide();
+                    });
+                });
             });
+
         </script>
         <div class="title">Create Book</div>
 
@@ -74,8 +88,9 @@
                 <table>
                     <tr>
                         <td>ISBN:</td>
-                        <td><input id="isbn" name="isbn" type="text" value="<?php $isbn; ?>"></td>
-                        <td class="errors" id="errPseudo"></td>
+                        <td><input id="isbn" name="isbn" type="text" value="<?php $isbn; ?>">
+                            <input id="isbn13" name="isbn13" type="text" size="1" value="<?php $isbn13; ?>" hidden></td>
+                        <td class="errors" id="errPseudo"></td> 
                     </tr>
                     <tr>
                         <td>Title:</td>
@@ -99,11 +114,10 @@
                 </table>
                 <input type="submit" name="save" value="Save">
             </form>
-            
-                    <form method="post" action="book/add_book">
-            <input type="submit" name="cancel" value="Cancel">
+            <form method="post" action="book/add_book">
+                <input type="submit" name="cancel" value="Cancel">
             </form>
-            
+
             <?php if (count($errors) != 0): ?>
                 <div class='errors'>
                     <br><br><p>Please correct the following error(s) :</p>
