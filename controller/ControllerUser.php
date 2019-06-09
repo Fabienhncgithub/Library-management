@@ -157,11 +157,12 @@ class ControllerUser extends Controller {
       
             $newuser = new User('', $username, Tools::my_hash($password), $fullname, $email, $birthdate, $role);
 
-            $errors = User::validate_email($email);
-            $errors = User::validate_unicity($username);
-            $errors = array_merge($errors, $user->validate());
-            $errors = array_merge($errors, User::validate_passwords($password, $password_confirm));
-
+//            $errors = User::validate_email($email);
+//            $errors = User::validate_unicity($username);
+//            $errors = array_merge($errors, $user->validate());
+//            $errors = array_merge($errors, User::validate_passwords($password, $password_confirm));
+          $errors = User::validate_unicity_adduser($username,$fullname,$password,$password_confirm,$email);
+            
             
             if (count($errors) == 0) {
                 $newuser->update(); //sauve l'utilisateur
@@ -178,6 +179,7 @@ class ControllerUser extends Controller {
             $this->redirect("user", "users");
         }
         if (isset($_POST['id']) && isset($_POST['username']) && isset($_POST['fullname']) && isset($_POST['email']) && isset($_POST['birthdate']) && isset($_POST['role'])) {
+             $users = User::get_member_by_id($_POST["id"]);
             $id = $_POST['id'];
             $username = $_POST['username'];
             $fullname = $_POST['fullname'];
@@ -201,7 +203,7 @@ class ControllerUser extends Controller {
 //            
 //              if ($email != $edit->email)
 //                $errors = User::validate_email($email);
-//              
+//           
              $edit = User::get_member_by_id($_POST["id"]);
             
             $edit->username = $username;
@@ -210,7 +212,7 @@ class ControllerUser extends Controller {
             $edit->birthdate = $birthdate;
             $edit->role = $role;
             
-            $errors = User::unicity_edit_user($edit,$username,$fullname,$email,$birthdate,$role); 
+            $errors = User::unicity_edit_user($users,$username,$fullname,$email,$birthdate,$role); 
                
             if (count($errors) == 0) {
                 $edit->update_User(); //update l'utilisateur

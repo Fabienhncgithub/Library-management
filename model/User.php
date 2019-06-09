@@ -112,52 +112,82 @@ class User extends Model {
     //ne s'occupe que de la validation "métier" des champs obligatoires (le pseudo)
     //les autres champs (mot de passe, description et image) sont gérés par d'autres
     //méthodes.
-    
-    
-    
-    
-    
-    
-    
-    public function validate() {
-        $errors = array();
-        if (!(isset($this->username) && is_string($this->username) && strlen($this->username) > 0)) {
-            $errors[] = "Username is required.";
-        }
-//        if (!(isset($this->username) && is_string($this->username) && strlen($this->username) >= 1 && strlen($this->username) <= 16)) {
-//            $errors[] = "Pseudo length must be between 3 and 16.";
-//        }
-        if (!(isset($this->username) && is_string($this->username) && preg_match("/^[a-zA-Z][a-zA-Z0-9]*$/", $this->username))) {
-            $errors[] = "Username must start by a letter and must contain only letters and numbers.";
-        }
-        return $errors;
-    }
 
-    private static function validate_password($password) {
+//    public function validate() {
+//        $errors = array();
+//        if (!(isset($this->username) && is_string($this->username) && strlen($this->username) > 0)) {
+//            $errors[] = "Username is required.";
+//        }
+////        if (!(isset($this->username) && is_string($this->username) && strlen($this->username) >= 1 && strlen($this->username) <= 16)) {
+////            $errors[] = "Pseudo length must be between 3 and 16.";
+////        }
+//        if (!(isset($this->username) && is_string($this->username) && preg_match("/^[a-zA-Z][a-zA-Z0-9]*$/", $this->username))) {
+//            $errors[] = "Username must start by a letter and must contain only letters and numbers.";
+//        }
+//        return $errors;
+//    }
+//
+//    private static function validate_password($password) {
+//        $errors = [];
+//        if (strlen($password) < 8 || strlen($password) > 16) {
+//            $errors[] = "Password length must be between 8 and 16!";
+//        }if (!((preg_match("/[A-Z]/", $password)) && preg_match("/\d/", $password) && preg_match("/['\";:,.\/?\\-]/", $password))) {
+//            $errors[] = "Password must contain one uppercase letter, one number and one punctuation mark.";
+//        }
+//        return $errors;
+//    }
+//
+//    public static function validate_passwords($password, $password_confirm) {
+//        $errors = user::validate_password($password);
+//        if ($password != $password_confirm) {
+//            $errors[] = "You have to enter twice the same password.";
+//        }
+//        return $errors;
+//    }
+//
+//    public static function validate_unicity($username) {
+//        $errors = [];
+//        $user = self::get_member_by_pseudo($username);
+//        if ($user) {
+//            $errors[] = "This user already exists.";
+//        }
+//        return $errors;
+//    }
+
+    public static function validate_unicity_adduser($username, $fullname, $password, $password_confirm, $email) {
         $errors = [];
-        if (strlen($password) < 8 || strlen($password) > 16) {
+        if (($username) == "")
+            $errors[] = "Mettre un username";
+        if (($fullname) == "")
+            $errors[] = "Mettre un fullname";
+        if (($password) == "")
+            $errors[] = "Mettre un password";
+        if (($password_confirm) == "")
+            $errors[] = "Confirmez votre password";
+        if (($email) == "")
+            $errors[] = "Mettre un email";
+        if (!self::validate_unicity_edit_username($username)) {
+            $errors[] = "username existe déjà pour un autre user";
+        }
+        if (!self::validate_unicity_edit_email($email)) {
+            $errors[] = "email existe déjà pour un autre user";
+        }
+              if ($password != $password_confirm) 
+            $errors[] = "You have to enter twice the same password.";
+               if (strlen($password) < 8 || strlen($password) > 16) {
             $errors[] = "Password length must be between 8 and 16!";
         }if (!((preg_match("/[A-Z]/", $password)) && preg_match("/\d/", $password) && preg_match("/['\";:,.\/?\\-]/", $password))) {
             $errors[] = "Password must contain one uppercase letter, one number and one punctuation mark.";
-        }
+        }      
         return $errors;
     }
 
-    public static function validate_passwords($password, $password_confirm) {
-        $errors = user::validate_password($password);
-        if ($password != $password_confirm) {
-            $errors[] = "You have to enter twice the same password.";
-        }
-        return $errors;
-    }
-
-    public static function validate_unicity($username) {
-        $errors = [];
+    public static function validate_unicity_edit_username($username) {
         $user = self::get_member_by_pseudo($username);
         if ($user) {
-            $errors[] = "This user already exists.";
+            return false;
         }
-        return $errors;
+        return true;
     }
 
     public static function validate_email($email) {
@@ -168,25 +198,38 @@ class User extends Model {
         }
         return $errors;
     }
-    
-    
-    public static function unicity_edit_user($edit,$username,$fullname,$email,$birthdate,$role){
-                $errors = [];
-      
+
+    public static function validate_unicity_edit_email($email) {
+        $user = self::get_member_by_email($email);
+        if ($user) {
+            return false;
+        }
+        return true;
+    }
+
+    public static function unicity_edit_user($users, $username, $fullname, $email, $birthdate, $role) {
+        $errors = [];
         if (($username) == "")
             $errors[] = "Mettre un username";
+
         if (($fullname) == "")
             $errors[] = "Mettre un fullname";
         if (($email) == "")
             $errors[] = "Mettre un email";
+
+        if ($username != $users->username) {
+            if (!self::validate_unicity_edit_username($username)) {
+                $errors[] = "username existe déjà pour un autre user";
+            }
+        }
+        if ($email != $users->email) {
+            if (!self::validate_unicity_edit_email($email)) {
+                $errors[] = "email existe déjà pour un autre user";
+            }
+        }
+
         return $errors;
     }
-        
-        
-    
-    
-    
-    
 
     //indique si un mot de passe correspond à son hash
     private static function check_password($clear_password, $hash) {
@@ -297,24 +340,20 @@ class User extends Model {
             echo $exc->getMessage();
         }
     }
-    
-        public function deleteuser() {
-         self::execute("delete from rental where rental.user=:id",  array("id" => $this->id));
-         self::execute("delete from user where user.id=:id",  array("id" => $this->id));
-         
 
+    public function deleteuser() {
+        self::execute("delete from rental where rental.user=:id", array("id" => $this->id));
+        self::execute("delete from user where user.id=:id", array("id" => $this->id));
     }
-    
-    
-        public static function validate_unicity_username($username) {
-        $errors ="";
+
+    public static function validate_unicity_username($username) {
+        $errors = "";
         $user = self::get_member_by_pseudo($username);
-       
+
         if ($user) {
             $errors = "This Username already exists.";
         }
         return $errors;
     }
-    
 
 }
