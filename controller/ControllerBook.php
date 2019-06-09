@@ -189,10 +189,10 @@ class ControllerBook extends Controller {
                 $edit->author = $author;
                 $edit->picture = $picture;
 
-                $errors = Book::unicity_edit_book($books,$isbn,$title,$editor,$author);
+                $errors = Book::unicity_edit_book($books, $isbn, $title, $editor, $author);
 
                 if (empty($errors)) {
-                   $edit->isbn = $this->get_isbn_format($isbn);
+                    $edit->isbn = $this->get_isbn_format($isbn);
                     $edit->updateBook();
                     $this->redirect("book", "index");
                 }
@@ -225,22 +225,12 @@ class ControllerBook extends Controller {
             $editor = $_POST['editor'];
             $picture = $_POST['picture'];
 
-            // $this->find_Isbn($isbn);
-
             $newbook = new Book('', $this->get_isbn_format($isbn), $title, $author, $editor, $picture);
-
-
-
-            $errors[] = Book::validate_unicity_isbn($isbn);
-            //$errors = Book::validate_author($author);
-            //$errors = Book::validate_title($title);
-
-            var_dump($errors);
-
+            $errors = Book::validate_unicity_addbook($isbn, $title, $author, $editor);
             if (count($errors) == 0) {
 
                 $newbook->updateBook(); //sauve le livre
-                //  $this->redirect("book", "index");
+                $this->redirect("book", "index");
             }
         }
         (new View("add_book"))->show(array("isbn" => $isbn, "title" => $title, "author" => $author, "editor" => $editor, "picture" => $picture, "errors" => $errors, "role" => $role));

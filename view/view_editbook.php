@@ -68,6 +68,22 @@
                     }
                 });
                 $("input:text:first").focus();
+                
+                
+                        $('#isbn13').show();
+                $('#isbn').keyup(function () {
+                    $.get("book/JSIsbn/" + $('#isbn').val(), function (data) {
+                        $('#isbn13').val(JSON.parse(data));
+                    });
+                });
+                $('#isbn').focusout(function () {
+                    $.get("book/JSIsbnformat/" + $('#isbn').val(), function (data) {
+                        $('#isbn').val($('#isbn').val() + $('#isbn13').val());
+                        $('#isbn13').hide();
+                    });
+                });
+                
+                
             });
         </script>
         <div class="title">Edit Book</div>
@@ -80,7 +96,8 @@
                 <table> 
                     <tr>
                         <td>isbn:</td>
-                        <td><input id="isbn" name="isbn" type="text" value="<?php echo $books->isbn; ?>"></td>
+                        <td><input id="isbn" name="isbn" type="text" value="<?php echo $books->isbn; ?>">
+                           <input id="isbn13" name="isbn13" type="text" size="1" value="<?php echo $books->isbn; ?>" hidden></td>
                         <td class="errors" id="errPseudo"></td>
                     </tr>
                     <tr>

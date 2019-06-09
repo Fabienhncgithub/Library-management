@@ -248,6 +248,24 @@ class Book extends Model {
         return true;
     }
 
+    public static function validate_unicity_addbook($isbn, $title, $author, $editor) {
+        $errors = [];
+        if (strlen($isbn) !== 12)
+            $errors[] = "Mettre isbn de 12 chiffres";
+        if (($title) == "")
+            $errors[] = "Mettre titre";
+        if (($editor) == "")
+            $errors[] = "Mettre editeur";
+        if (($author) == "")
+            $errors[] = "Mettre auteur";
+
+        if (self::validate_unicity_edit_isbn($isbn)) {
+            $errors[] = "ISBN existe déjà pour un autre livre";
+        }
+
+        return $errors;
+    }
+
     public static function unicity_edit_book($books, $isbn, $title, $editor, $author) {
         $errors = [];
         if (strlen($isbn) !== 12)
@@ -258,7 +276,7 @@ class Book extends Model {
             $errors[] = "Mettre editeur";
         if (($author) == "")
             $errors[] = "Mettre auteur";
-        
+
         $isbnb = substr($books->isbn, 0, 12);
         if ($isbnb != $isbn) {
             if (Book::validate_unicity_edit_isbn($isbn)) {
