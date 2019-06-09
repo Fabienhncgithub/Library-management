@@ -112,6 +112,13 @@ class User extends Model {
     //ne s'occupe que de la validation "métier" des champs obligatoires (le pseudo)
     //les autres champs (mot de passe, description et image) sont gérés par d'autres
     //méthodes.
+    
+    
+    
+    
+    
+    
+    
     public function validate() {
         $errors = array();
         if (!(isset($this->username) && is_string($this->username) && strlen($this->username) > 0)) {
@@ -155,12 +162,31 @@ class User extends Model {
 
     public static function validate_email($email) {
         $errors = [];
-        $user = self::get_member_by_pseudo($email);
+        $user = self::get_member_by_email($email);
         if ($user) {
             $errors[] = "This email already exists.";
         }
         return $errors;
     }
+    
+    
+    public static function unicity_edit_user($edit,$username,$fullname,$email,$birthdate,$role){
+                $errors = [];
+      
+        if (($username) == "")
+            $errors[] = "Mettre un username";
+        if (($fullname) == "")
+            $errors[] = "Mettre un fullname";
+        if (($email) == "")
+            $errors[] = "Mettre un email";
+        return $errors;
+    }
+        
+        
+    
+    
+    
+    
 
     //indique si un mot de passe correspond à son hash
     private static function check_password($clear_password, $hash) {

@@ -385,7 +385,6 @@ class ControllerRental extends Controller {
         $member = "";
         $date = "";
         $rents = "";
-
         if (isset($_POST['book'])) {
             $book = $_POST['book'];
         }

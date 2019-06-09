@@ -154,26 +154,18 @@ class ControllerUser extends Controller {
             $email = $_POST['email'];
             $birthdate = $_POST['birthdate'];
             $role = $_POST['role'];
-            if (empty($username)) {
-                $errors[] = "User Name is required.";
-            }
-            if ($username == '')
-                $errors[] = "rentrez votre pseudo";
-            if (($fullname) == '')
-                $errors[] = "rentrez votre nom";
-            if (($password) == '')
-                $errors[] = "rentrez votre password";
-            if (($email) == '')
-                $errors[] = "rentrez votre email";
+      
             $newuser = new User('', $username, Tools::my_hash($password), $fullname, $email, $birthdate, $role);
+
+            $errors = User::validate_email($email);
             $errors = User::validate_unicity($username);
             $errors = array_merge($errors, $user->validate());
-            $errors = array_merge($errors, USer::validate_passwords($password, $password_confirm));
+            $errors = array_merge($errors, User::validate_passwords($password, $password_confirm));
 
+            
             if (count($errors) == 0) {
                 $newuser->update(); //sauve l'utilisateur
                 $this->redirect("user", "users");
-                echo 'sauvé';
             }
         }
         (new View("add-user"))->show(array("username" => $username, "password" => $password, "password_confirm " => $password_confirm, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "errors" => $errors));
@@ -192,25 +184,25 @@ class ControllerUser extends Controller {
             $email = $_POST['email'];
             $birthdate = $_POST['birthdate'];
             $role = $_POST['role'];
-            if (trim($username) == '')
-                $errors[] = "rentrez votre pseudo";
-            if (($fullname) == '')
-                $errors[] = "rentrez votre nom";
-            if (($email) == '')
-                $errors[] = "rentrez votre email";
+//            if (trim($username) == '')
+//                $errors[] = "rentrez votre pseudo";
+//            if (($fullname) == '')
+//                $errors[] = "rentrez votre nom";
+//            if (($email) == '')
+//                $errors[] = "rentrez votre email";
             //$newuser = new User('', $username, Tools::my_hash($password), $fullname, $email, $birthdate, $role);
             //$errors = User::validate_unicity($username);
-            
-            
-         
-            
-            $errors = array_merge($errors, $user->validate());
-            $edit = User::get_member_by_id($_POST["id"]);
-            
-            if ($username != $user->username) {
-                $errors[] = User::validate_unicity($username);
-            }
-            
+            // $errors = User::validate_unicity($username);
+//            $errors = User::validate_email($email);
+//            $errors = array_merge($errors, $user->validate());
+
+//            if ($username != $edit->username)
+//                $errors = User::validate_unicity($username);
+//            
+//              if ($email != $edit->email)
+//                $errors = User::validate_email($email);
+//              
+             $edit = User::get_member_by_id($_POST["id"]);
             
             $edit->username = $username;
             $edit->fullname = $fullname;
@@ -218,12 +210,14 @@ class ControllerUser extends Controller {
             $edit->birthdate = $birthdate;
             $edit->role = $role;
             
+            $errors = User::unicity_edit_user($edit,$username,$fullname,$email,$birthdate,$role); 
+               
             if (count($errors) == 0) {
                 $edit->update_User(); //update l'utilisateur
-                $this->redirect("user", "users");
+               $this->redirect("user", "users");
             }
         }
-        (new View("edit-user"))->show(array("username" => $username, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "role" => $role, "errors" => $errors));
+        (new View("edit-user"))->show(array("id" => $id, "users" => $user, "username" => $username, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "role" => $role, "errors" => $errors));
     }
 
     public function user_exists_service_edit() {

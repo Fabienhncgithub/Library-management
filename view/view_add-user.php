@@ -160,17 +160,18 @@
                 <form action="user/adduser" method="post">
            <input type="submit" name="cancel" value="cancel">
             </form>
-            <?php
-            if (isset($errors) && count($errors) > 0) {
-                echo "<div class='errors'>
-                          <p>Please correct the following error(s) :</p>
-                          <ul>";
-                foreach ($errors as $error) {
-                    echo "<li>" . $error . "</li>";
-                }
-                echo '</ul></div>';
-            }
-            ?>
+            
+            
+              <?php if (!empty($errors)): ?>
+                <div class='errors'>
+                    <br><br><p>Please correct the following error(s) :</p>
+                    <ul>
+                        <?php foreach ($errors as $error): ?>
+                            <li><?= $error ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
         </div>
     </body>
 </html>
