@@ -9,13 +9,9 @@
         <title>filter</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
+             <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
         <script src="lib/jquery-validation-1.19.0/jquery.validate.min.js" type="text/javascript"></script>
 
-        <script src="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.min.js" type="text/javascript"></script>
-        <link href="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
-        <link href="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.theme.min.css" rel="stylesheet" type="text/css"/>
-        <link href="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.structure.min.css" rel="stylesheet" type="text/css"/>
          
        <style>
             #list,td{
@@ -203,9 +199,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!--            selection est un ensemble de pré-réservation
-                                    en appuyant sur selection on ajoute au panier de l'utilisateur courant/séléctionné
-                                    une pré-réservation pour un livre dont la date de début est null-->
                     <?php foreach ($selections as $selection): ?>
 
                         <tr>

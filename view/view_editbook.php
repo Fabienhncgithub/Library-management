@@ -50,7 +50,7 @@
                             required: "ISBN required",
                             number: "Only numbers",
                             minlength: "ISBN is composed by 13 numbers",
-                             maxlength:"ISBN is composed by 13 numbers",
+                            maxlength:"ISBN is composed by 13 numbers",
                         },
                         password: {
                             required: 'required',
@@ -67,8 +67,7 @@
                     }
                 });
                 $("input:text:first").focus();
-
-                $('#isbn13').show();
+                 $('#isbn13').show();
                 $('#isbn').keyup(function () {
                     $.get("book/JSIsbn/" + $('#isbn').val(), function (data) {
                         $('#isbn13').val(JSON.parse(data));
@@ -76,7 +75,7 @@
                 });
                 $('#isbn').focusout(function () {
                     $.get("book/JSIsbnformat/" + $('#isbn').val(), function (data) {
-                        $('#isbn').val($('#isbn').val() + $('#isbn13').val());
+                        $('#isbn').val($('#isbn').val());
                         $('#isbn13').hide();
                     });
                 });
@@ -87,13 +86,14 @@
             Please enter the book details :
             <br><br>
             <form id="editbookForm" action='book/edit_book' method="post">
+                
                 <input id ="idbook" type="hidden" name="id" value=<?= $books->id ?>>
 
                 <table> 
                     <tr>
                         <td>isbn:</td>
                         <td><input id="isbn" name="isbn" type="text" value="<?php echo $books->isbn; ?>">
-                            <input id="isbn13" name="isbn13" type="text" size="1" value="<?php echo $isbn13; ?>" hidden></td>
+                           <input id="isbn13" name="isbn13" type="text" size="1" value="<?php  $isbn13; ?>" hidden></td>
                         <td class="errors" id="errPseudo"></td>
                     </tr>
                     <tr>

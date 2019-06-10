@@ -91,32 +91,24 @@
                             field: 'book'
                         }
                     ],
-                    views: {
+             views: {
                         year: {
-                            slotDuration: {month: 1}
+                        slotDuration: {month: 1}
                         },
-                        month: {
-                            slotDuration: {day: 1},
-                            slotLabelFormat: [
-                                {day: 'numeric'}
-                            ]
+                                month: {
+                                slotDuration: {day: 1},
+                                        slotLabelFormat: [
+                                        {day: 'numeric'}
+                                        ]
+                                },
+                                week: {
+                                slotDuration: {day: 1},
+                                        slotLabelFormat: [
+                                        {day: 'numeric'}
+                                        ]
+                                }
+
                         },
-                        week: {
-                            slotDuration: {day: 1},
-                            slotLabelFormat: [
-                                {day: 'numeric'}
-                            ]
-                        },
-                        resourceTimelineDay: {
-                            buttonText: ':today',
-                            slotDuration: {days: 1}
-                        },
-                        resourceTimelineTenDay: {
-                            type: 'resourceTimeline',
-                            duration: {days: 7},
-                            buttonText: 'week'
-                        }
-                    },
 
                     resources: {
                         url: 'rental/calendar',

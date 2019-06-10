@@ -123,7 +123,6 @@ class ControllerBook extends Controller {
         if ($user->isAdmin()) {
             $role = User::get_member_by_role($user->username);
             $isbn = '';
-            $isbn13 = '';
             $title = '';
             $author = '';
             $editor = '';
@@ -136,14 +135,13 @@ class ControllerBook extends Controller {
                 $edit = Book::get_member_by_object_id($edit);
                 $id = $edit->id;
                 $edit->isbn = substr($edit->isbn, 0, 12);
-                $ibn13 = self::find_Isbn($edit->isbn);
                 //$edit->isbn == find_Isbn($isbn);
                 $title = $edit->title;
                 $author = $edit->author;
                 $editor = $edit->editor;
                 $picture = $edit->picture;
             }
-            (new View("editbook"))->show(array("id" => $id, "books" => $edit, "isbn" => $isbn,"isbn13" => $isbn13, "title" => $title, "author" => $author, "editor" => $editor, "picture" => $picture, "role" => $role));
+            (new View("editbook"))->show(array("id" => $id, "books" => $edit, "isbn" => $isbn, "title" => $title, "author" => $author, "editor" => $editor, "picture" => $picture, "role" => $role));
         } else {
             $this->redirect("book", "index");
         }
@@ -161,10 +159,9 @@ class ControllerBook extends Controller {
                 $books = Book::get_member_by_object_id($_POST['edit']);
                 (new View("editbook"))->show(array("books" => $books));
             }
-            if (isset($_POST['id']) && isset($_POST['isbn'])&& isset($_POST['isbn13']) && isset($_POST['title']) && isset($_POST['author']) && isset($_POST['editor']) && isset($_POST['picture'])) {
+            if (isset($_POST['id']) && isset($_POST['isbn']) && isset($_POST['title']) && isset($_POST['author']) && isset($_POST['editor']) && isset($_POST['picture'])) {
                 $books = Book::get_member_by_object_id($_POST['id']);
                 $isbn = $_POST['isbn'];
-                $isbn13 = $_POST['isbn13'];
                 $title = $_POST['title'];
                 $author = $_POST['author'];
                 $editor = $_POST['editor'];
@@ -183,18 +180,17 @@ class ControllerBook extends Controller {
 //                        $this->redirect("book", "index");
                 $edit = Book::get_member_by_object_id($_POST["id"]);
                 $edit->isbn = $isbn;
-                $ibn13 = self::find_Isbn($edit->isbn);
                 $edit->title = $title;
                 $edit->editor = $editor;
                 $edit->author = $author;
                 $edit->picture = $picture;
-                $errors = Book::unicity_edit_book($books, $isbn, $title, $editor, $author);
+                $errors = Book::unicity_edit_book($books, $this->get_isbn_format($isbn), $title, $editor, $author);
                 if (empty($errors)) {
                     $edit->isbn = $this->get_isbn_format($isbn);
                     $edit->updateBook();
                     $this->redirect("book", "index");
                 }
-                (new View("editbook"))->show(array("user" => $user, "books" => $books,"isbn13" => $isbn13, "errors" => $errors));
+                (new View("editbook"))->show(array("user" => $user, "books" => $books, "errors" => $errors));
             } else {
                 $this->redirect("book", "index");
             }
@@ -224,7 +220,7 @@ class ControllerBook extends Controller {
                 $editor = $_POST['editor'];
                 $picture = $_POST['picture'];
                 $newbook = new Book('', $this->get_isbn_format($isbn), $title, $author, $editor, $picture);
-                $errors = Book::validate_unicity_addbook($isbn, $title, $author, $editor);
+                $errors = Book::validate_unicity_addbook($this->get_isbn_format($isbn), $title, $author, $editor);
                 if (count($errors) == 0) {
 
                     $newbook->updateBook(); //sauve le livre

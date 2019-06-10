@@ -67,7 +67,7 @@
                 });
                 $('#isbn').focusout(function () {
                     $.get("book/JSIsbnformat/" + $('#isbn').val(), function (data) {
-                        $('#isbn').val($('#isbn').val() + $('#isbn13').val());
+                        $('#isbn').val($('#isbn').val());
                         $('#isbn13').hide();
                     });
                 });
