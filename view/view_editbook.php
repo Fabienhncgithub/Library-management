@@ -8,7 +8,6 @@
         <link href="css/styles.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-
         <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
         <script src="lib/jquery-validation-1.19.0/jquery.validate.min.js" type="text/javascript"></script> 
         <script>
@@ -129,10 +128,6 @@
                 <!--<input id="idbook" type="hidden" name = "id" value="< ?= $books->id ?>" >-->
                 <input id="" type='submit' value='edit'>
             </form>
-               
-            
-            
-            
             <form action='book/edit_book' method="POST">
                 <input type="submit" name="cancel" value="cancel">
             </form>

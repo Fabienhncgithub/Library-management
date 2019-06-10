@@ -67,15 +67,18 @@ class ControllerBook extends Controller {
     public function details() {
         $books = "";
         $user = Controller::get_user_or_redirect();
-        $role = User::get_member_by_role($user->username);
-
-        if (isset($_POST['details'])) {
-            $this->redirect("book", "details", $_POST["details"]);
+        if ($user->isAdmin() || $user->isManager()) {
+            $role = User::get_member_by_role($user->username);
+            if (isset($_POST['details'])) {
+                $this->redirect("book", "details", $_POST["details"]);
+            }
+            if (isset($_GET['param1'])) {
+                $books = Book::get_book_by_id($_GET['param1']);
+            }
+            (new View("details"))->show(array("books" => $books, "user" => $user, "role" => $role));
+        } else {
+            $this->redirect("book", "index");
         }
-        if (isset($_GET['param1'])) {
-            $books = Book::get_book_by_id($_GET['param1']);
-        }
-        (new View("details"))->show(array("books" => $books, "user" => $user, "role" => $role));
     }
 
     public function delete() {
@@ -89,9 +92,7 @@ class ControllerBook extends Controller {
             if (isset($_GET['param1'])) {
                 $books = $_GET['param1'];
                 $errors = user::validate_admin($user->username);
-//                if (empty($errors)) {
                 $books = Book::get_member_by_object_id($books);
-                //                }
             }
             (new View("confirm"))->show(array("user" => $user, "books" => $books, "role" => $role));
         } else {
@@ -168,7 +169,6 @@ class ControllerBook extends Controller {
                 $author = $_POST['author'];
                 $editor = $_POST['editor'];
                 $picture = $_POST['picture'];
-
 //                $errors = Book::validate_photo($_FILES['image']);
 //                if (empty($errors)) {
 //                    $saveTo = $book->generate_photo_name($_FILES['image']);
@@ -182,15 +182,12 @@ class ControllerBook extends Controller {
 //                        $success = "Your book has been successfully updated.";
 //                        $this->redirect("book", "index");
                 $edit = Book::get_member_by_object_id($_POST["id"]);
-
                 $edit->isbn = $isbn;
                 $edit->title = $title;
                 $edit->editor = $editor;
                 $edit->author = $author;
                 $edit->picture = $picture;
-
                 $errors = Book::unicity_edit_book($books, $isbn, $title, $editor, $author);
-
                 if (empty($errors)) {
                     $edit->isbn = $this->get_isbn_format($isbn);
                     $edit->updateBook();
@@ -206,34 +203,37 @@ class ControllerBook extends Controller {
     public function add_book() {
         $book = new Book();
         $user = $this->get_user_or_redirect();
-        $role = User::get_member_by_role($user->username);
-        $id = '';
-        $isbn = '';
-        $title = '';
-        $author = '';
-        $editor = '';
-        $picture = '';
-        $errors = [];
+        if ($user->isAdmin() || $user->isManager()) {
+            $role = User::get_member_by_role($user->username);
+            $id = '';
+            $isbn = '';
+            $title = '';
+            $author = '';
+            $editor = '';
+            $picture = '';
+            $errors = [];
 
-        if (isset($_POST['cancel'])) {
-            $this->redirect("book", "index");
-        }
-        if (isset($_POST['isbn']) && isset($_POST['title']) && isset($_POST['author']) && isset($_POST['editor']) && isset($_POST['picture'])) {
-            $isbn = $_POST['isbn'];
-            $title = $_POST['title'];
-            $author = $_POST['author'];
-            $editor = $_POST['editor'];
-            $picture = $_POST['picture'];
-
-            $newbook = new Book('', $this->get_isbn_format($isbn), $title, $author, $editor, $picture);
-            $errors = Book::validate_unicity_addbook($isbn, $title, $author, $editor);
-            if (count($errors) == 0) {
-
-                $newbook->updateBook(); //sauve le livre
+            if (isset($_POST['cancel'])) {
                 $this->redirect("book", "index");
             }
+            if (isset($_POST['isbn']) && isset($_POST['title']) && isset($_POST['author']) && isset($_POST['editor']) && isset($_POST['picture'])) {
+                $isbn = $_POST['isbn'];
+                $title = $_POST['title'];
+                $author = $_POST['author'];
+                $editor = $_POST['editor'];
+                $picture = $_POST['picture'];
+                $newbook = new Book('', $this->get_isbn_format($isbn), $title, $author, $editor, $picture);
+                $errors = Book::validate_unicity_addbook($isbn, $title, $author, $editor);
+                if (count($errors) == 0) {
+
+                    $newbook->updateBook(); //sauve le livre
+                    $this->redirect("book", "index");
+                }
+            }
+            (new View("add_book"))->show(array("isbn" => $isbn, "title" => $title, "author" => $author, "editor" => $editor, "picture" => $picture, "errors" => $errors, "role" => $role));
+        } else {
+            $this->redirect("rental", "return_book");
         }
-        (new View("add_book"))->show(array("isbn" => $isbn, "title" => $title, "author" => $author, "editor" => $editor, "picture" => $picture, "errors" => $errors, "role" => $role));
     }
 
     public function return_book() {

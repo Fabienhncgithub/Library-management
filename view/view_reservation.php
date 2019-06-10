@@ -222,7 +222,6 @@
                     <!--            selection est un ensemble de pré-réservation
                                     en appuyant sur selection on ajoute au panier de l'utilisateur courant/séléctionné
                                     une pré-réservation pour un livre dont la date de début est null-->
-
                     <?php foreach ($selections as $selection): ?>
 
                         <tr>
@@ -263,9 +262,6 @@
                 <input type="submit" value="Effacer rental"   name="new">
             </form>
 
-
-
-
 <!--            <input id="idToDelete" type='hidden' name='memberclearbasket' value='<?= $smember->id ?>' >
             <input type="submit" value="Effacer JS"   name="new" onclick="functionjs()">
 
@@ -274,14 +270,11 @@
             <input type="submit" name="create sv" value="create JS" onclick="createjs()" >
 
 -->
-
-
             <form class="button" action="rental/confirm_basket2" method="POST">
                 <input type='hidden' name='memberconfirmbasket' value='<?= $smember->username ?>' >
                 <input type="submit" name="Save rental" value="Save rental" >
             </form> 
         </div>
-
         <div id="confirmDialog" hidden>
             <p hidden>id: <strong id="id"></strong></p>
             <p>author: <strong id="athor"></strong></p>
@@ -289,6 +282,5 @@
             <p>Date de location: <strong id="start"></strong></p>
             <p>Date de Retour:<strong id="end"></strong></p>
         </div>
-
     </body>
 </html>

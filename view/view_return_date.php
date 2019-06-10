@@ -11,9 +11,6 @@
     </head>
     <body>
         <div class="title"><?php echo $user->fullname; ?>!</div>
-
-
-
         <?php
         if ($user->isAdmin($user->username)) {
             include('menuAdmin.html');
@@ -21,28 +18,19 @@
             include('menu.html');
         }
         ?>
-
         <div class="main">
-            
-            
-            
            <br>choisir une date de retour pour le livre:<br>
             <br><br>
         <?php echo $book->title; ?>
-            
                <br><br>
                   <br><br>
-            
             <form action="rental/insert_return_date" method="post">
                 <input type="hidden" name="book" value="book">
                 <table>
-                    
                             <td>Rental date: <input id="return_date" name="return_date" type="date"></td>
                                  <input type='hidden' name='return' value='<?= $returns->id ?>'>
-
                 </table>
                 <th><input type="submit" name="insert_return_date"></th>
-    
                 </tbody>
             </table>
         </div>

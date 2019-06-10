@@ -93,7 +93,6 @@
             <br><br>
             <form id="edituserForm"action='user/save_user' method="POST">
                 <input id ='iduser'type="text" name="id" value="<?php echo $users->id ?>" hidden>
-
                 <table>
                     <tr>
                         <td>User Name:</td>
@@ -127,6 +126,17 @@
                             </td>
                               <?php endif; ?>
                     </tr>
+                                <tr>
+                                <?php if ($users->isManager($users->username)): ?>
+                        <td>Role:</td>
+                        <td>                      
+                            <select id="role" name="role" >                  
+                                <option value="manager" <?= $role === 'manager' ? 'selected' : '' ?>>manager</option>
+                                <option value="member" <?= $role === 'member' ? 'selected' : '' ?>>member</option>
+                            </td>
+                              <?php endif; ?>
+                    </tr>
+                    
                 </table>
                 <input id="id" type="hidden" name="id" value="<?php echo $id ?>" >
                 <input type='submit' value='edit'>
@@ -134,7 +144,6 @@
             <form action='user/save_user' method="POST">
            <input type="submit" name="cancel" value="cancel">
             </form>
-        
         </div>
             <?php if (!empty($errors)): ?>
             
