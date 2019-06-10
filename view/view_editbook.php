@@ -19,9 +19,10 @@
                         isbn: {
                             required: true,
                             number: true,
-                            minlength: 13,
+                            minlength: 12,
+                            maxlength: 14,
                             remote: {
-                                    url: 'book/isbn_available_service_edit',
+                                url: 'book/isbn_available_service_edit',
                                 type: 'post',
                                 data: {
                                     isbn: function () {
@@ -32,7 +33,6 @@
                                     }
                                 }
                             },
-                           
                         },
                         title: {
                             required: true,
@@ -50,7 +50,7 @@
                             required: "ISBN required",
                             number: "Only numbers",
                             minlength: "ISBN is composed by 13 numbers",
-                           
+                             maxlength:"ISBN is composed by 13 numbers",
                         },
                         password: {
                             required: 'required',
@@ -67,9 +67,8 @@
                     }
                 });
                 $("input:text:first").focus();
-                
-                
-                        $('#isbn13').show();
+
+                $('#isbn13').show();
                 $('#isbn').keyup(function () {
                     $.get("book/JSIsbn/" + $('#isbn').val(), function (data) {
                         $('#isbn13').val(JSON.parse(data));
@@ -81,8 +80,6 @@
                         $('#isbn13').hide();
                     });
                 });
-                
-                
             });
         </script>
         <div class="title">Edit Book</div>
@@ -96,7 +93,7 @@
                     <tr>
                         <td>isbn:</td>
                         <td><input id="isbn" name="isbn" type="text" value="<?php echo $books->isbn; ?>">
-                           <input id="isbn13" name="isbn13" type="text" size="1" value="<?php echo $books->isbn; ?>" hidden></td>
+                            <input id="isbn13" name="isbn13" type="text" size="1" value="<?php echo $isbn13; ?>" hidden></td>
                         <td class="errors" id="errPseudo"></td>
                     </tr>
                     <tr>
@@ -131,19 +128,19 @@
             <form action='book/edit_book' method="POST">
                 <input type="submit" name="cancel" value="cancel">
             </form>
-            
+
         </div>
-            <?php if (!empty($errors)): ?>
-            
-                <div class='errors'>
-                    <br><br><p>Please correct the following error(s) :</p>
-                    <ul>
-                        <?php foreach ($errors as $error): ?>
-                            <li><?= $error ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            <?php endif; ?>
-        
+        <?php if (!empty($errors)): ?>
+
+            <div class='errors'>
+                <br><br><p>Please correct the following error(s) :</p>
+                <ul>
+                    <?php foreach ($errors as $error): ?>
+                        <li><?= $error ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
+
     </body>
 </html>

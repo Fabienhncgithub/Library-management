@@ -8,8 +8,6 @@
         <link href="css/styles.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-
-
         <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
         <script src="lib/jquery-validation-1.19.0/jquery.validate.min.js" type="text/javascript"></script> 
         <script>
@@ -41,7 +39,6 @@
                         editor: {
                             required: true,
                         }
-
                     },
                     messages: {
                         isbn: {
@@ -59,7 +56,6 @@
                         editor: {
                             required: 'required',
                         }
-
                     }
                 });
                 $("input:text:first").focus();
@@ -84,7 +80,6 @@
 
         <div class="main">
             <form id="createbookForm" method="post" action="book/add_book">
-
                 <table>
                     <tr>
                         <td>ISBN:</td>

@@ -9,31 +9,21 @@
         <title>filter</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
-        <!-- Optional theme -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" crossorigin="anonymous">
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
         <script src="lib/jquery-validation-1.19.0/jquery.validate.min.js" type="text/javascript"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
 
         <script src="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.min.js" type="text/javascript"></script>
         <link href="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
         <link href="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.theme.min.css" rel="stylesheet" type="text/css"/>
         <link href="lib/jquery-ui-1.12.1.ui-lightness/jquery-ui.structure.min.css" rel="stylesheet" type="text/css"/>
          
-        
-        <style>
+       <style>
             #list,td{
                 border: 1px solid black;
                 border-collapse: collapse;
             }
         </style>
-        
-        
-        
-        
+
     </head>
     <body id="body">
         <script>
@@ -48,7 +38,7 @@
                 role = $('#userrole').val();
                 $('#search').keyup(function () {
                     console.log($('#memberz').val());
-                    $.get("book/find_book/" + $('#search').val() + "/" + $('#memberz').val(), function (data) {
+                    $.get("book/find_book/"+$('#search').val()+"/"+$('#memberz').val(),function(data) {
                         var DN = JSON.parse(data);
                         displayTable(DN);
                         console.log(actual);
@@ -83,7 +73,6 @@
 
             function functionjs() {
                 console.log($('#idToDelete').val());
-
                 $.get("rental/deleteAllJS/" + $('#idToDelete').val(), function (data) {
                     console.log(data);
                     location.reload()
@@ -92,27 +81,23 @@
 
             function createjs() {
                 console.log($('#idToSave').val());
-
                 $.post("rental/createJS/", {createid: $('#idToSave').val()}, function (data) {
                     console.log(data);
                     location.reload()
                 });
             }
 
-
             function popupdelete(id, author, title) {
                 $("#id").text(id);
                 $("#author").text(author);
                 $("#title").text(title);
-
                 $('#confirmDialog').dialog({
-
                     buttons: {
                         retour: function () {
                             $(this).dialog("close");
                         },
                         delete: function () {
-                            $.post("book/deletebookJS", {delete: $('#ibook').val()}, function (data) {
+                            $.post("book/deletebookJS", {delete: $('#ibook').val()}, function(data) {
                                 location.relaod();
                             });
                             $(this).dialog("close");
@@ -120,7 +105,6 @@
                     }
                 });
             }
-
         </script>
         <div class="title">Welcome <?= $user->username ?></div>
         <?php
