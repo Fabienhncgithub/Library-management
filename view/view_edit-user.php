@@ -116,46 +116,46 @@
                         <td class="errors" id="errBirthdate"></td>
                     </tr>
                     <tr>
-                                <?php if ($users->isAdmin($users->username)): ?>
-                        <td>Role:</td>
-                        <td>                      
-                            <select id="role" name="role" >                  
-                                <option value="admin" <?= $role === 'admin' ? 'selected' : '' ?>>admin</option>
-                                <option value="manager" <?= $role === 'manager' ? 'selected' : '' ?>>manager</option>
-                                <option value="member" <?= $role === 'member' ? 'selected' : '' ?>>member</option>
+                        <?php if ($users->isAdmin($users->username)): ?>
+                            <td>Role:</td>
+                            <td>                      
+                                <select id="role" name="role" >                  
+                                    <option value="admin" <?= $role === 'admin' ? 'selected' : '' ?>>admin</option>
+                                    <option value="manager" <?= $role === 'manager' ? 'selected' : '' ?>>manager</option>
+                                    <option value="member" <?= $role === 'member' ? 'selected' : '' ?>>member</option>
                             </td>
-                              <?php endif; ?>
+                        <?php endif; ?>
                     </tr>
-                                <tr>
-                                <?php if ($users->isManager($users->username)): ?>
-                        <td>Role:</td>
-                        <td>                      
-                            <select id="role" name="role" >                  
-                                <option value="manager" <?= $role === 'manager' ? 'selected' : '' ?>>manager</option>
-                                <option value="member" <?= $role === 'member' ? 'selected' : '' ?>>member</option>
+                    <tr>
+                        <?php if ($users->isManager($users->username)): ?>
+                            <td>Role:</td>
+                            <td>                      
+                                <select id="role" name="role" >                  
+                                    <option value="manager" <?= $role === 'manager' ? 'selected' : '' ?>>manager</option>
+                                    <option value="member" <?= $role === 'member' ? 'selected' : '' ?>>member</option>
                             </td>
-                              <?php endif; ?>
+                        <?php endif; ?>
                     </tr>
-                    
+
                 </table>
                 <input id="id" type="hidden" name="id" value="<?php echo $id ?>" >
                 <input type='submit' value='edit'>
             </form>
             <form action='user/save_user' method="POST">
-           <input type="submit" name="cancel" value="cancel">
+                <input type="submit" name="cancel" value="cancel">
             </form>
         </div>
-            <?php if (!empty($errors)): ?>
-            
-                <div class='errors'>
-                    <br><br><p>Please correct the following error(s) :</p>
-                    <ul>
-                        <?php foreach ($errors as $error): ?>
-                            <li><?= $error ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            <?php endif; ?>
-        </div>
-    </body>
+        <?php if (!empty($errors)): ?>
+
+            <div class='errors'>
+                <br><br><p>Please correct the following error(s) :</p>
+                <ul>
+                    <?php foreach ($errors as $error): ?>
+                        <li><?= $error ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
+    </div>
+</body>
 </html>

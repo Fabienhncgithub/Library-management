@@ -256,27 +256,50 @@ class ControllerRental extends Controller {
         echo json_encode($rents);
     }
 
-    public function return_rental() {
+//    public function return_rental() {
+//        $user = Controller::get_user_or_redirect();
+//        if ($user->isAdmin() || $user->isManager()) {
+//            $username = $user->username;
+//            $user = User::get_member_by_pseudo($username);
+//            $users = $user->id;
+//            if (isset($_POST['return'])) {
+//                $this->redirect("rental", "return_rental", $_POST["return"]);
+//            }
+//            if (isset($_GET['param1'])) {
+//                $returns = ($_GET['param1']);
+//                $returns = Rental::get_rental_by_id_objet($returns);
+//                $idreturns = $returns->id;
+//                $book = Book::get_book_by_id_rental($idreturns);
+//            }
+//            (new View("return_date"))->show(array("user" => $user, "returns" => $returns, "book" => $book));
+//        } else {
+//            $this->redirect("rental", "return_book");
+//        }
+//    }
+
+    
+    
+    public function returndate() {
         $user = Controller::get_user_or_redirect();
         if ($user->isAdmin() || $user->isManager()) {
             $username = $user->username;
             $user = User::get_member_by_pseudo($username);
             $users = $user->id;
-            if (isset($_POST['return'])) {
-                $this->redirect("rental", "return_rental", $_POST["return"]);
-            }
-            if (isset($_GET['param1'])) {
-                $returns = ($_GET['param1']);
-                $returns = Rental::get_rental_by_id_objet($returns);
-                $idreturns = $returns->id;
-                $book = Book::get_book_by_id_rental($idreturns);
-            }
-            (new View("return_date"))->show(array("user" => $user, "returns" => $returns, "book" => $book));
+            $id = ($_POST["return"]);
+            $returndate = date("Y-m-d H:i:s");
+                
+             $rental = Rental::get_rental_by_id_objet($_POST["return"]);
+             $rental->returnbook($id,$returndate);
+                
+            $book = Book::get_book_by_id_rental($id);
+             $returns = Rental::get_rental_all();
+            (new View("return_book"))->show(array("user" => $user, "returns" => $returns));
         } else {
             $this->redirect("rental", "return_book");
         }
     }
-
+    
+    
     public function insert_return_date() {
         $user = Controller::get_user_or_redirect();
         if ($user->isAdmin() || $user->isManager()) {
@@ -333,7 +356,6 @@ class ControllerRental extends Controller {
             $username = $user->username;
             $user = User::get_member_by_pseudo($username);
             $users = $user->id;
-
             if (isset($_POST['deleterental'])) {
                 $this->redirect("rental", "delete_rental_return", $_POST["deleterental"]);
             }
@@ -399,7 +421,8 @@ class ControllerRental extends Controller {
         $member = "";
         $date = "";
         $rents = "";
-        
+        $selection = "";
+
         if (isset($_POST['book'])) {
             $book = $_POST['book'];
         }
@@ -409,9 +432,27 @@ class ControllerRental extends Controller {
         if (isset($_POST['rentaldate'])) {
             $date = $_POST['rentaldate'];
         }
+        if (isset($_POST['MyRadio'])) {
+            $selection = $_POST['MyRadio'];
+        }
 
-        $rents = Rental::get_rental_by_filter_all($book, $member, $date);
 
+
+        if ($selection = "selection1") {
+            $rents = Rental::get_rental_by_filter_all($book, $member, $date);
+        } else if ($selection = "selection2") {
+            $rents = Rental::get_rental_by_filter_open($book, $member, $date);
+        } else if ($selection = "selection3") {
+            $rents = Rental::get_rental_by_filter_return($book, $member, $date);
+        } 
+        
+
+
+        //    $rents = Rental::get_rental_by_filter_all($book, $member, $date);
+     
+        
+        
+        
         if ($rents != null) {
             foreach ($rents as $rent) {
                 if ($rent->returndate == null) {

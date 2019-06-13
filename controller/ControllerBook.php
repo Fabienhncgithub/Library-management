@@ -23,38 +23,6 @@ class ControllerBook extends Controller {
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
     }
 
-    public function search() {
-        $user = Controller::get_user_or_redirect();
-
-        $filter = [];
-        if (isset($_GET["param1"])) {
-            $filter = Utils::url_safe_decode($_GET["param1"]);
-            if (!$filter)
-                Utils::abort("bad url parameter");
-        }
-        if (isset($_POST["critere"]) && isset($_POST['member'])) {
-            $filter["critere"] = $_POST["critere"];
-            $filter["member"] = $_POST["member"];
-            $this->redirect("book", "search", Utils::url_safe_encode($filter));
-        }
-
-        $smember = User::get_member_by_pseudo($filter['member']);
-        $idsmember = $smember->id;
-        $user = User::get_member_by_pseudo($user->username);
-        $users = $user->id;
-
-        $role = User::get_member_by_role($user->username);
-
-        $selections = Rental::get_book_by_user_without_rental($smember->id);
-        $id = $users;
-        $members = User::selection_member_by_all_not_selected($id);
-        $search = ($filter['critere']);
-        $books = Book::get_book_by_filter($filter["critere"], $smember->id);
-
-
-        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember, "role" => $role));
-    }
-
     public function search_rental() {
         $books = Book::get_book_by_all();
         $user = Controller::get_user_or_redirect();
@@ -246,7 +214,24 @@ class ControllerBook extends Controller {
     }
 
     public function find_book() {
+        $user = Controller::get_user_or_redirect();
+//        if (isset($_GET["param1"]) && isset($_GET["param2"])) {
+//            $filter = Utils::url_safe_decode($_GET["param1"], ($_GET["param2"]));
+//            if (!$filter)
+//                Tools::abort("Bad url parameter");
+//        }
+//        if (isset($filter['param1']) && !$filter['param1'] == "" && isset($filter['param2'])) {
+//
+//            if ($filter['param1'] !== " ") {
+//                $result = Book::get_book_by_filter($filter['param1'], $filter['param2']);
+//                echo json_encode($result);
+//            } else {
+//                $result = Book::get_book_by_all($filter['param2']);
+//                echo json_encode($result);
+//            }
+//        }
         if (isset($_GET['param1']) && !$_GET['param1'] == "" && isset($_GET['param2'])) {
+
             if ($_GET['param1'] !== " ") {
                 $result = Book::get_book_by_filter($_GET['param1'], $_GET['param2']);
                 echo json_encode($result);
@@ -255,6 +240,32 @@ class ControllerBook extends Controller {
                 echo json_encode($result);
             }
         }
+    }
+
+    public function search() {
+        $user = Controller::get_user_or_redirect();
+        $filter = [];
+        if (isset($_GET["param1"])) {
+            $filter = Utils::url_safe_decode($_GET["param1"]);
+            if (!$filter)
+                Utils::abort("bad url parameter");
+        }
+        if (isset($_POST["critere"]) && isset($_POST['member'])) {
+            $filter["critere"] = $_POST["critere"];
+            $filter["member"] = $_POST["member"];
+            $this->redirect("book", "search", Utils::url_safe_encode($filter));
+        }
+        $smember = User::get_member_by_pseudo($filter['member']);
+        $idsmember = $smember->id;
+        $user = User::get_member_by_pseudo($user->username);
+        $users = $user->id;
+        $role = User::get_member_by_role($user->username);
+        $selections = Rental::get_book_by_user_without_rental($smember->id);
+        $id = $users;
+        $members = User::selection_member_by_all_not_selected($id);
+        $search = ($filter['critere']);
+        $books = Book::get_book_by_filter($filter["critere"], $smember->id);
+        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember, "role" => $role));
     }
 
     public function isbn_available_service() {

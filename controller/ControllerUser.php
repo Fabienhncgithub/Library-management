@@ -175,7 +175,7 @@ class ControllerUser extends Controller {
                     $this->redirect("user", "users");
                 }
             }
-            (new View("add-user"))->show(array("username" => $username, "password" => $password, "password_confirm " => $password_confirm, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "errors" => $errors));
+            (new View("add-user"))->show(array("users" => $user, "username" => $username, "password" => $password, "password_confirm " => $password_confirm, "fullname" => $fullname, "email" => $email, "birthdate" => $birthdate, "errors" => $errors));
         } else {
             $this->redirect("book", "index");
         }

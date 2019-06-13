@@ -8,13 +8,13 @@
         <link href="css/styles.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-          
-  <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
+
+        <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
         <script src="lib/jquery-validation-1.19.0/jquery.validate.min.js" type="text/javascript"></script>
         <script>
             $.validator.addMethod("regex", function (value, element, pattern) {
                 if (pattern instanceof Array) {
-                    for(p of pattern) {
+                    for (p of pattern) {
                         if (!p.test(value))
                             return false;
                     }
@@ -23,15 +23,15 @@
                     return pattern.test(value);
                 }
             }, "Please enter a valid input.");
-            $(function(){
+            $(function () {
                 $('#adduserForm').validate({
                     rules: {
                         username: {
                             remote: {
                                 url: 'user/user_exists_service',
                                 type: 'post',
-                                data:  {
-                                    username: function() { 
+                                data: {
+                                    username: function () {
                                         return $("#username").val();
                                     }
                                 }
@@ -55,19 +55,19 @@
                             regex: [/[A-Z]/, /\d/, /['";:,.\/?\\-]/],
                         },
                         fullname: {
-                             required: true,
+                            required: true,
                         },
                         email: {
-                               remote: {
+                            remote: {
                                 url: 'user/email_exists_service',
                                 type: 'post',
-                                data:  {
-                                    username: function() { 
+                                data: {
+                                    username: function () {
                                         return $("#email").val();
                                     }
                                 }
                             },
-                             required: true,
+                            required: true,
                         }
                     },
                     messages: {
@@ -91,12 +91,12 @@
                             equalTo: 'must be identical to password above',
                             regex: 'bad password format',
                         },
-                          fullname: {
-                               required: 'required', 
+                        fullname: {
+                            required: 'required',
                         },
-                        email:{
+                        email: {
                             remote: 'this email is already taken',
-                            required: 'required', 
+                            required: 'required',
                         }
                     }
                 });
@@ -104,11 +104,11 @@
             });
         </script>
         <div class="title">Add User</div>
-       
-        
-             
-       <?php include('menuAdmin.html');?>
-    
+
+
+
+        <?php include('menuAdmin.html'); ?>
+
         <div class="main">
             Please enter the user details :
             <br><br>
@@ -122,7 +122,7 @@
                     <tr>
                         <td>Full Name:</td>
                         <td><input id="fullname" name="fullname" type="text" value="<?php echo $fullname; ?>"></td>
-                          <td class="errors" id="errPassword"></td>
+                        <td class="errors" id="errPassword"></td>
                     </tr>
                     <tr>
                         <td>Password:</td>
@@ -137,44 +137,51 @@
                     <tr>
                         <td>Email:</td>
                         <td><input id="email" name="email" type="email" value="<?php echo $email; ?>"></td>
-                             <td class="errors" id="errEmail"></td>
+                        <td class="errors" id="errEmail"></td>
                     </tr>
                     <tr>
                         <td>Birth Date:</td>
                         <td><input id="birthdate" name="birthdate" type="date" value="<?php echo $birthdate; ?>"></td>
-                            <td class="errors" id="errBirthdate"></td>
+                        <td class="errors" id="errBirthdate"></td>
                     </tr>
-                    
-                             <tr>
+
+                    <tr>
                         <td>Role:</td>
-                        <td>                      
-                            <select id="role" name="role" >                  
-                                <option value="admin" >admin</option>
-                                <option value="manager" >manager</option>
-                                <option value="member" >member</option>
-                        </td>
-                    </tr>
-                </table>                    
-                <input type="submit" name="save" value="Save">
-            </form>
-                <form action="user/adduser" method="post">
-           <input type="submit" name="cancel" value="cancel">
-            </form>
-            
-            
-              <?php if (!empty($errors)): ?>
-                <div class='errors'>
-                    <br><br><p>Please correct the following error(s) :</p>
-                    <ul>
-                        <?php foreach ($errors as $error): ?>
-                            <li><?= $error ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            <?php endif; ?>
-        </div>
-    </body>
-</html>
+                        <td> 
+                            <?php if ($users->isAdmin($users->username)): ?>
+                                <select id="role" name="role" >
+                                    <option value="member" >member</option>
+                                    <option value="manager" >manager</option>
+                                    <option value="admin" >admin</option>
+                                <?php endif; ?> 
+                                <?php if ($users->isManager($users->username)): ?>
+                                    <select id="role" name="role" >
+                                        <option value="member" >member</option>
+                                        <option value="manager" >manager</option>
+                                    <?php endif; ?> 
+                                    </td>
+                                    </tr>
+                                    </table>                    
+                                    <input type="submit" name="save" value="Save">
+                                    </form>
+                                    <form action="user/adduser" method="post">
+                                        <input type="submit" name="cancel" value="cancel">
+                                    </form>
+
+
+                                    <?php if (!empty($errors)): ?>
+                                        <div class='errors'>
+                                            <br><br><p>Please correct the following error(s) :</p>
+                                            <ul>
+                                                <?php foreach ($errors as $error): ?>
+                                                    <li><?= $error ?></li>
+                                                <?php endforeach; ?>
+                                            </ul>
+                                        </div>
+                                    <?php endif; ?>
+                                    </div>
+                                    </body>
+                                    </html>
 
 
 

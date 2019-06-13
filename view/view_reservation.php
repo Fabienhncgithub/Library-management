@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
     <head>        
@@ -41,6 +42,7 @@
                     });
                 });
             });
+            
             function displayTable(datas) {
                 var html = "<tr>\n\
                         <th id='isbn' >ISBN</th>" +
