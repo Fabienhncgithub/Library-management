@@ -88,22 +88,22 @@
                             field: 'book'
                     }
                     ],
-                    views: {
-                    year: {
-                    slotDuration: {month: 1}
-                    },
-                            month: {
+                 views: {
+                        year: {
+                            slotDuration: {month: 1}
+                        },
+                        month: {
                             slotDuration: {day: 1},
-                                    slotLabelFormat: [
-                                    {day: 'numeric'}
-                                    ]
-                            },
-                            week: {
+                            slotLabelFormat: [
+                                {day: 'numeric'}
+                            ]
+                        },
+                        week: {
                             slotDuration: {day: 1},
-                                    slotLabelFormat: [
-                                    {day: 'numeric'}
-                                    ]
-                            }
+                            slotLabelFormat: [
+                                {day: 'numeric'}
+                            ]
+                        }
 
                     },
                     resources: {
@@ -168,7 +168,7 @@
 //                    events: 'https://fullcalendar.io/demo-events.json?single-day&for-resource-timeline'
             });
             calendar.render();
-            $("#book, #member, #rentaldate, checked").on("input", function () {
+            $("#book, #member, #rentaldate, #selection1,#selection2,#selection3").on("input", function () {
             refetch();
             });
             function refetch() {
@@ -200,12 +200,12 @@
                         </tr>
 
                     <td>State:
-                        <input type="radio" name="MyRadio" value="1" checked>All
-                        <input type="radio" name="MyRadio" value="2">Open
-                        <input type="radio" name="MyRadio" value="3">Return
+                        <input id="selection1" type="radio" name="MyRadio" value="1" checked>All
+                        <input id="selection2" type="radio" name="MyRadio" value="2">Open
+                        <input id="selection3" type="radio" name="MyRadio" value="3">Return
                     </td>
                 </table>
-
+ </form>
 
                 <th><input type="submit" name="search"></th>
                 <table id="tab">

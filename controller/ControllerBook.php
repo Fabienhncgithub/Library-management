@@ -215,30 +215,34 @@ class ControllerBook extends Controller {
 
     public function find_book() {
         $user = Controller::get_user_or_redirect();
-//        if (isset($_GET["param1"]) && isset($_GET["param2"])) {
-//            $filter = Utils::url_safe_decode($_GET["param1"], ($_GET["param2"]));
-//            if (!$filter)
-//                Tools::abort("Bad url parameter");
-//        }
-//        if (isset($filter['param1']) && !$filter['param1'] == "" && isset($filter['param2'])) {
-//
-//            if ($filter['param1'] !== " ") {
-//                $result = Book::get_book_by_filter($filter['param1'], $filter['param2']);
-//                echo json_encode($result);
-//            } else {
-//                $result = Book::get_book_by_all($filter['param2']);
-//                echo json_encode($result);
-//            }
-//        }
-        if (isset($_GET['param1']) && !$_GET['param1'] == "" && isset($_GET['param2'])) {
+        
+        
+        $filter = [];
+        if (isset($_POST['search']) && isset($_POST['memberz'])) {
+            $filter["search"] = $_POST['search'];
+            $filter["memberz"] = $_POST['memberz'];
 
-            if ($_GET['param1'] !== " ") {
-                $result = Book::get_book_by_filter($_GET['param1'], $_GET['param2']);
-                echo json_encode($result);
-            } else {
-                $result = Book::get_book_by_all($_GET['param2']);
-                echo json_encode($result);
+            $this->redirect("book/find_book", Utils::url_safe_encode($filter));
+        }
+
+        if (isset($_GET['param1'])) {
+            $filter = Utils::url_safe_decode($_GET['param1']);
+            if (!$filter)
+                Tools::abort("wrong url");
+        }
+
+       
+
+
+        if ($filter["search"] != "") {
+            if($filter["search"]=="%"){
+                $filter["search"]="\%";
             }
+            $result = Book::get_book_by_filter($filter['search'], $filter['memberz']);
+                echo json_encode($result);
+        } else {
+            $result = Book::get_book_by_user_not_rented($filter['memberz']);
+            echo json_encode($result);
         }
     }
 

@@ -11,9 +11,14 @@
         <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
         <script src="lib/jquery-validation-1.19.0/jquery.validate.min.js" type="text/javascript"></script> 
         <script>
+
             $().ready(function () {
+                test();
                 $("#editbookJS").show();
                 $("#btnEdit").hide();
+
+
+
                 $("#editbookForm").validate({
                     rules: {
                         isbn: {
@@ -50,7 +55,7 @@
                             required: "ISBN required",
                             number: "Only numbers",
                             minlength: "ISBN is composed by 13 numbers",
-                            maxlength:"ISBN is composed by 13 numbers",
+                            maxlength: "ISBN is composed by 13 numbers",
                         },
                         password: {
                             required: 'required',
@@ -67,10 +72,11 @@
                     }
                 });
                 $("input:text:first").focus();
-                 $('#isbn13').show();
+                $('#isbn13').show();
                 $('#isbn').keyup(function () {
                     $.get("book/JSIsbn/" + $('#isbn').val(), function (data) {
                         $('#isbn13').val(JSON.parse(data));
+                        $('#isbn13').show();
                     });
                 });
                 $('#isbn').focusout(function () {
@@ -79,21 +85,41 @@
                         $('#isbn13').hide();
                     });
                 });
+                
+                 $('#isbn').focusin(function () {
+                $('#isbn13').show();
+                var val = $('#isbn').val();
+                var val2 = $('#isbn13');
+                val2.html(val.substr(-1));
+
             });
+
+            });
+
+           
+            function test() {
+                var val = $('#isbn').val();
+                var val2 = $('#isbn13');
+
+                val2.html(val.substr(-1));
+
+
+
+            }
         </script>
         <div class="title">Edit Book</div>
         <div class="main">
             Please enter the book details :
             <br><br>
             <form id="editbookForm" action='book/edit_book' method="post">
-                
+
                 <input id ="idbook" type="hidden" name="id" value=<?= $books->id ?>>
 
                 <table> 
                     <tr>
                         <td>isbn:</td>
                         <td><input id="isbn" name="isbn" type="text" value="<?php echo $books->isbn; ?>">
-                           <input id="isbn13" name="isbn13" type="text" size="1" value="<?php  $isbn13; ?>" hidden></td>
+                            <input id="isbn13" name="isbn13" type="text" size="1" value="<?php $isbn13; ?>" hidden></td>
                         <td class="errors" id="errPseudo"></td>
                     </tr>
                     <tr>

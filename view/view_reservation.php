@@ -35,7 +35,7 @@
                 role = $('#userrole').val();
                 $('#search').keyup(function () {
                     console.log($('#memberz').val());
-                    $.get("book/find_book/"+$('#search').val()+"/"+$('#memberz').val(),function(data) {
+                    $.post("book/find_book/",{search:$('#search').val(),memberz:$('#memberz').val()},function(data) {
                         var DN = JSON.parse(data);
                         displayTable(DN);
                         console.log(actual);
@@ -177,9 +177,6 @@
                     </tr>
                 <?php endforeach; ?>
             </table>
-
-
-
 
 
             <?php if ($user->isAdmin($user->username)): ?>
