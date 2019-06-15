@@ -321,7 +321,7 @@ class User extends Model {
         $data = $query->fetchAll();
         $results = [];
         foreach ($data as $row) {
-            $results[] = new User($data["username"], $data["fullname"], $data["email"], $data["birthdate"], $data["role"]);
+            $results[] = new User($data["id"],$data["username"], $data["fullname"], $data["email"], $data["birthdate"], $data["role"]);
         }
         return $results;
     }
@@ -355,5 +355,8 @@ class User extends Model {
         }
         return $errors;
     }
+    
+    
+
 
 }

@@ -68,7 +68,12 @@
             var calendar = new FullCalendar.Calendar(calendarEl, {
             plugins: ['interaction', 'resourceTimeline'],
                     timeZone: 'UTC',
-                    defaultView: "resourceTimelineWeek",
+                    defaultView: 'resourceTimelineWeek',
+                    aspectRatio: 1.5,
+                    allDaySlot: false,
+                    eventLimit: true,
+                    height: "",
+                    firstday: 1,
                     schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
                     header: {
                     left: 'today prev,next',
@@ -88,22 +93,22 @@
                             field: 'book'
                     }
                     ],
-                 views: {
-                        year: {
-                            slotDuration: {month: 1}
-                        },
-                        month: {
+                    views: {
+                    year: {
+                    slotDuration: {month: 1}
+                    },
+                            month: {
                             slotDuration: {day: 1},
-                            slotLabelFormat: [
-                                {day: 'numeric'}
-                            ]
-                        },
-                        week: {
+                                    slotLabelFormat: [
+                                    {day: 'numeric'}
+                                    ]
+                            },
+                            week: {
                             slotDuration: {day: 1},
-                            slotLabelFormat: [
-                                {day: 'numeric'}
-                            ]
-                        }
+                                    slotLabelFormat: [
+                                    {day: 'numeric'}
+                                    ]
+                            }
 
                     },
                     resources: {
@@ -205,58 +210,58 @@
                         <input id="selection3" type="radio" name="MyRadio" value="3">Return
                     </td>
                 </table>
- </form>
+            </form>
 
-                <th><input type="submit" name="search"></th>
-                <table id="tab">
-                    <tr>
-                        <th>Rental Date/Time</th>
-                        <th>User</th>
-                        <th>Book</th>
-                        <th>To be returned on</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($returns as $return): ?>
-                            <tr>
-                                <td><?= $return->rentaldate ?></td>
-                                <td><?= $return->user ?></td>
-                                <td><?= $return->book ?></td>
-                                <td><?= $return->returndate ?></td>
+            <th><input type="submit" name="search"></th>
+            <table id="tab">
+                <tr>
+                    <th>Rental Date/Time</th>
+                    <th>User</th>
+                    <th>Book</th>
+                    <th>To be returned on</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($returns as $return): ?>
+                        <tr>
+                            <td><?= $return->rentaldate ?></td>
+                            <td><?= $return->user ?></td>
+                            <td><?= $return->book ?></td>
+                            <td><?= $return->returndate ?></td>
 
-                                <td>
-                                    <?php if (($user->isAdmin($user->username))): ?>
-                                        <form  action='rental/delete_rental_return' method='post'>
-                                            <input type='hidden' name='deleterental' value='<?= $return->id ?>'>
-                                            <input type='submit' value='delete rental'>
-                                        </form>
-                                    <?php endif; ?>
-                                </td>
-                                <td>
-                                    <?php if (($user->isAdmin($user->username)) || ($user->isManager($user->username))): ?>
-                                        <form  action='rental/returndate' method='post'>
-                                            <input type='hidden' name='return' value='<?= $return->id ?>'>
-                                            <input type='submit' value='return'>
-                                        </form>
-                                    <?php endif; ?>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                            <td>
+                                <?php if (($user->isAdmin($user->username))): ?>
+                                    <form  action='rental/delete_rental_return' method='post'>
+                                        <input type='hidden' name='deleterental' value='<?= $return->id ?>'>
+                                        <input type='submit' value='delete rental'>
+                                    </form>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <?php if (($user->isAdmin($user->username)) || ($user->isManager($user->username))): ?>
+                                    <form  action='rental/returndate' method='post'>
+                                        <input type='hidden' name='return' value='<?= $return->id ?>'>
+                                        <input type='submit' value='return'>
+                                    </form>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
 
-                <div id="calendar">
+            <div id="calendar">
 
-                    <div id="confirmDialog" hidden>
-                        <p hidden>id: <strong id="id"></strong></p>
-                        <p>Membre: <strong id="user"></strong></p>
-                        <p>Titre: <strong id="title"></strong></p>
-                        <p>Date de location: <strong id="start"></strong></p>
-                        <p>Date de Retour:<strong id="end"></strong></p>
-                    </div>
-
+                <div id="confirmDialog" hidden>
+                    <p hidden>id: <strong id="id"></strong></p>
+                    <p>Membre: <strong id="user"></strong></p>
+                    <p>Titre: <strong id="title"></strong></p>
+                    <p>Date de location: <strong id="start"></strong></p>
+                    <p>Date de Retour:<strong id="end"></strong></p>
                 </div>
+
+            </div>
         </div>
     </body>
 </html>

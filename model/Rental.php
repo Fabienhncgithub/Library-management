@@ -102,9 +102,7 @@ class Rental extends Model {
        public static function get_book_by_user_without_rental($user) {
         $result = [];
         try {
-            $query = self::execute("SELECT * "
-                                    . "FROM book join rental on book.id=rental.book join user on rental.user=user.id  "
-                                     ."WHERE user.id =:user and rental.rentaldate is NULL", array("user" => $user));
+            $query = self::execute("SELECT DISTINCT * FROM book join rental on book.id=rental.book join user on rental.user=user.id WHERE user.id =:user and rental.rentaldate is NULL GROUP BY title", array("user" => $user));
 
             $datas = $query->fetchAll();
             foreach ($datas as $data) {
@@ -278,7 +276,7 @@ class Rental extends Model {
     }
 
     public function clear() {
-        self::execute("DELETE FROM rental where user=:user and  rentaldate is null", array('user' => $this->user));
+        self::execute("DELETE FROM rental WHERE user=:user ", array('user' => $this->user));
     }
 
 

@@ -10,11 +10,11 @@
         <title>filter</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-             <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
+        <script src="lib/jquery-3.3.1.min.js" type="text/javascript"></script>
         <script src="lib/jquery-validation-1.19.0/jquery.validate.min.js" type="text/javascript"></script>
 
-         
-       <style>
+
+        <style>
             #list,td{
                 border: 1px solid black;
                 border-collapse: collapse;
@@ -24,10 +24,14 @@
     </head>
     <body id="body">
         <script>
-            
+
             var list;
             var actual;
             $(function () {
+
+                function backG() {
+                    $('#body').css("background-color", "blue");
+                }
                 $('#btnsearch').hide();
                 $('#search').focus();
                 list = $('.list').val();
@@ -35,14 +39,23 @@
                 role = $('#userrole').val();
                 $('#search').keyup(function () {
                     console.log($('#memberz').val());
-                    $.post("book/find_book/",{search:$('#search').val(),memberz:$('#memberz').val()},function(data) {
-                        var DN = JSON.parse(data);
-                        displayTable(DN);
-                        console.log(actual);
-                    });
+                    $.post("book/find_book/", {search: $('#search').val(), memberz: $('#userconnect').val()}, function (data) {
+                        console.log($('#search').val());
+                        try {
+                            var DN = JSON.parse(data);
+                            displayTable(DN);
+                            console.log(actual);
+                        } catch (e) {
+                            console.error(e);
+                            console.error('JSON recived :', data);
+
+                        }
+
+                    }
+                    );
                 });
             });
-            
+
             function displayTable(datas) {
                 var html = "<tr>\n\
                         <th id='isbn' >ISBN</th>" +
@@ -63,7 +76,7 @@
                     if (role != 'admin') {
                         html += "<td> <form action='book/details' method='post'><input name='details' value='" + datas[m].id + "' hidden><input  type='submit' value='" + "details" + "'></form></td>";
                     }
-                    html += "<td> <form action='rental/selection' method='post'><input name='selection' value='" + datas[m].id + "' hidden><input name='selections' value='" + actual + "' hidden><input class='submit' type='submit' value='" + "selection" + "'></form> </td>";
+                    html += "<td> <form action='rental/selection' method='post'><input name='selection' value='" + datas[m].id + "' hidden><input name='selections' value='" + $('#testmember').val() + "' hidden><input class='submit' type='submit' value='" + "selection" + "'></form> </td>";
                     html += "</tr>";
                 }
                 $('#list').html(html);
@@ -95,13 +108,16 @@
                             $(this).dialog("close");
                         },
                         delete: function () {
-                            $.post("book/deletebookJS", {delete: $('#ibook').val()}, function(data) {
+                            $.post("book/deletebookJS", {delete: $('#ibook').val()}, function (data) {
                                 location.relaod();
                             });
                             $(this).dialog("close");
                         }
                     }
                 });
+
+
+
             }
         </script>
         <div class="title">Welcome <?= $user->username ?></div>
@@ -118,7 +134,7 @@
                     <thead>
                         <tr>
                             <td>Filters</td>
-                            <td><input  name="critere" type="text" id="search"  placeholder="text"></td>
+                            <td><input  name="critere" type="text" id="search"  placeholder="text" value="<?= $searcht ?>"></td>
                     <input type='hidden' id ="userconnect" name='member' value='<?= $smember->username ?>' >
                     <input type='hidden' id ="userrole" name='userrole' value='<?= $user->role ?>' >
                     <td ><input type="submit" name="search" id="btnsearch"></td>
@@ -145,17 +161,17 @@
                         <td><?= $book->author ?></td>
                         <td><?= $book->editor ?></td>
 
-                 <!--<td><img src="upload/<?= $book->picture ?>" style="width:30%; " /></td>-->
+                             <!--<td><img src="upload/<?= $book->picture ?>" style="width:30%; " /></td>-->
 
-                      			<td>
+                        <td>
                             <?php if ($user->isAdmin($user->username)): ?>
                                 <form  action='book/edit' method='post' style="float:left;">
                                     <input type='hidden' name='edit' value='<?= $book->id ?>'>
                                     <input type='submit' value='edit'>
                                 </form>
                             <?php endif; ?>
-                      
-                      
+
+
                             <?php if ($user->isAdmin($user->username)): ?>
                                 <form  action='book/delete' method='post' style="display: inline-block;">
                                     <input type='hidden' name='id_book' value='<?= $book->id ?>'>
@@ -171,6 +187,7 @@
                             <form   action='rental/selection' method='post' style="display: inline-block;">
                                 <input type='hidden' name='selection' value='<?= $book->id ?>' >
                                 <input type='hidden' name='selections' value='<?= $smember->id ?>' >
+                                <input type='hidden' name='searcht' value='<?= $searcht ?>' >
                                 <input type='submit' value='selection'>
                             </form>
                         </td>
@@ -185,8 +202,9 @@
                 </form>
             <?php endif; ?>
             <div class="title">Basket of  <?= $smember->username ?></div>
-            Basket of books to rent
-            <br>
+            <input type="hidden" value ="<?= $smember->id ?>" id ="testmember"
+                   Basket of books to rent
+                   <br>
             <table >
                 <thead>
                     <tr>
@@ -218,11 +236,11 @@
                 </tbody>
             </table>
             <?php if (($user->isManager($user->username)) || ($user->isAdmin($user->username))): ?>
-                <form class="button" action="rental/user_choice" method="POST">
+                <form class="button" action="rental/user_choice" method="post">
                     <td>The basket is for:</td>
                     <td>                      
                         <select id="member" name="rental_select" value="rental_select" > 
-                            <option value= '<?= $smember->id ?: '' ?>'id="memberz"><?= $smember->username ?></option>
+                            <option value= '<?= $smember->username ?: '' ?>'><?= $smember->username ?></option>
                             <?php foreach ($members as $member): ?>
                                 <option value=  '<?= $member->username ?: '' ?>'  ><?= $member->username ?></option>
                             <?php endforeach; ?>   
@@ -238,6 +256,8 @@
                 <input type="submit" value="Effacer rental"   name="new">
             </form>
 
+            <input type="submit" value="changeFond" onclick="backG()">
+
 <!--            <input id="idToDelete" type='hidden' name='memberclearbasket' value='<?= $smember->id ?>' >
             <input type="submit" value="Effacer JS"   name="new" onclick="functionjs()">
 
@@ -245,7 +265,7 @@
             <input id="idToSave" type='hidden' name='memberconfirmbasket' value='<?= $smember->id ?>' >
             <input type="submit" name="create sv" value="create JS" onclick="createjs()" >
 
--->
+            -->
             <form class="button" action="rental/confirm_basket2" method="POST">
                 <input type='hidden' name='memberconfirmbasket' value='<?= $smember->username ?>' >
                 <input type="submit" name="Save rental" value="Save rental" >

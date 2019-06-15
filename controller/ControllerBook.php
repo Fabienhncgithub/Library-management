@@ -12,6 +12,7 @@ class ControllerBook extends Controller {
     //sinon, produit la vue d'accueil.
     public function index() {
         $user = Controller::get_user_or_redirect();
+        $searcht = " ";
         $username = $user->username;
         $user = User::get_member_by_pseudo($username);
         $users = $user->id;
@@ -20,7 +21,7 @@ class ControllerBook extends Controller {
         $id = $users;
         $members = User::selection_member_by_all_not_selected($id);
         $smember = $user;
-        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember));
+        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember, "searcht" => $searcht));
     }
 
     public function search_rental() {
@@ -35,6 +36,7 @@ class ControllerBook extends Controller {
     public function details() {
         $books = "";
         $user = Controller::get_user_or_redirect();
+        $searcht = " ";
         if ($user->isAdmin() || $user->isManager()) {
             $role = User::get_member_by_role($user->username);
             if (isset($_POST['details'])) {
@@ -43,7 +45,7 @@ class ControllerBook extends Controller {
             if (isset($_GET['param1'])) {
                 $books = Book::get_book_by_id($_GET['param1']);
             }
-            (new View("details"))->show(array("books" => $books, "user" => $user, "role" => $role));
+            (new View("details"))->show(array("books" => $books, "user" => $user, "role" => $role, "searcht" => $searcht));
         } else {
             $this->redirect("book", "index");
         }
@@ -52,6 +54,7 @@ class ControllerBook extends Controller {
     public function delete() {
         $books = new Book();
         $user = $this->get_user_or_redirect();
+        $searcht = " ";
         if ($user->isAdmin()) {
             $role = User::get_member_by_role($user->username);
             if (isset($_POST['id_book'])) {
@@ -62,7 +65,7 @@ class ControllerBook extends Controller {
                 $errors = user::validate_admin($user->username);
                 $books = Book::get_member_by_object_id($books);
             }
-            (new View("confirm"))->show(array("user" => $user, "books" => $books, "role" => $role));
+            (new View("confirm"))->show(array("user" => $user, "books" => $books, "role" => $role, "searcht" => $searcht));
         } else {
             $this->redirect("book", "index");
         }
@@ -177,7 +180,6 @@ class ControllerBook extends Controller {
             $editor = '';
             $picture = '';
             $errors = [];
-
             if (isset($_POST['cancel'])) {
                 $this->redirect("book", "index");
             }
@@ -190,7 +192,6 @@ class ControllerBook extends Controller {
                 $newbook = new Book('', $this->get_isbn_format($isbn), $title, $author, $editor, $picture);
                 $errors = Book::validate_unicity_addbook($this->get_isbn_format($isbn), $title, $author, $editor);
                 if (count($errors) == 0) {
-
                     $newbook->updateBook(); //sauve le livre
                     $this->redirect("book", "index");
                 }
@@ -215,40 +216,29 @@ class ControllerBook extends Controller {
 
     public function find_book() {
         $user = Controller::get_user_or_redirect();
-        
-        
         $filter = [];
         if (isset($_POST['search']) && isset($_POST['memberz'])) {
             $filter["search"] = $_POST['search'];
             $filter["memberz"] = $_POST['memberz'];
+            
+            if ($filter["search"] != "") {
+                if ($filter["search"] == "%") {
+                    $filter["search"] = "\%";
+                }
 
-            $this->redirect("book/find_book", Utils::url_safe_encode($filter));
-        }
-
-        if (isset($_GET['param1'])) {
-            $filter = Utils::url_safe_decode($_GET['param1']);
-            if (!$filter)
-                Tools::abort("wrong url");
-        }
-
-       
-
-
-        if ($filter["search"] != "") {
-            if($filter["search"]=="%"){
-                $filter["search"]="\%";
-            }
-            $result = Book::get_book_by_filter($filter['search'], $filter['memberz']);
+                $result = Book::get_book_by_filter($filter['search'], $filter['memberz']);
                 echo json_encode($result);
-        } else {
-            $result = Book::get_book_by_user_not_rented($filter['memberz']);
-            echo json_encode($result);
+            } else {
+                $result = Book::get_book_by_user_not_rented($filter['memberz']);
+                echo json_encode($result);
+            }
         }
     }
 
     public function search() {
         $user = Controller::get_user_or_redirect();
         $filter = [];
+        $searcht = " ";
         if (isset($_GET["param1"])) {
             $filter = Utils::url_safe_decode($_GET["param1"]);
             if (!$filter)
@@ -259,6 +249,8 @@ class ControllerBook extends Controller {
             $filter["member"] = $_POST["member"];
             $this->redirect("book", "search", Utils::url_safe_encode($filter));
         }
+        $searcht = $filter["critere"];
+        var_dump($searcht);
         $smember = User::get_member_by_pseudo($filter['member']);
         $idsmember = $smember->id;
         $user = User::get_member_by_pseudo($user->username);
@@ -269,7 +261,7 @@ class ControllerBook extends Controller {
         $members = User::selection_member_by_all_not_selected($id);
         $search = ($filter['critere']);
         $books = Book::get_book_by_filter($filter["critere"], $smember->id);
-        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember, "role" => $role));
+        (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember, "role" => $role, "searcht" => $searcht));
     }
 
     public function isbn_available_service() {

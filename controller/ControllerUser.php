@@ -282,4 +282,11 @@ class ControllerUser extends Controller {
         echo $res;
     }
 
+    
+    public function exerciceAjax(){
+                $user = Controller::get_user_or_redirect();
+                $members = User::get_member_by_all();
+                $selection = $user;
+         (new View("exerciceAjax"))->show(array("user" => $user, "members" => $members,"selection" => $selection));       
+    }    
 }
