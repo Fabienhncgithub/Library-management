@@ -276,7 +276,7 @@ class Rental extends Model {
     }
 
     public function clear() {
-        self::execute("DELETE FROM rental WHERE user=:user ", array('user' => $this->user));
+        self::execute("DELETE FROM rental WHERE user=:user", array('user' => $this->user));
     }
 
 

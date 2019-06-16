@@ -25,6 +25,7 @@
                         console.log(JSON.parse(data));
                         $('#table').html('');
                         var datas = JSON.parse(data);
+                        
                         for (var i = 0; i < datas.length; ++i) {
                             html += "<td>" + datas[i].book + "</td>";
                             html += "<td>" + datas[i].id + "</td>";
@@ -37,19 +38,14 @@
                     });
                 });
 
-
-
             });
             function test() {
                 console.log("test");
                 $.get("rental/deleteAllJS/"+$('#member').val(),function(data){
-                    
                     location.reload();
                 });
                 }
             
-
-
 
 
         </script>
@@ -75,18 +71,12 @@
                         <?php endforeach; ?>   
                 </td>
                 </select>
-
                 </form>  
-
             </table>
             <table id="table">
                 Désirez-vous supprimer tout les rental de  <?= $selection->username ?>?
-
-
             </table>
             <input type="submit" id="deletes" value="supprimer tous les rentals" onclick="test()">
-
-
             </body>
             </html>
 

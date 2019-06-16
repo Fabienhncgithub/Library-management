@@ -215,7 +215,6 @@ class ControllerBook extends Controller {
     }
 
     public function find_book() {
-        $user = Controller::get_user_or_redirect();
         $filter = [];
         if (isset($_POST['search']) && isset($_POST['memberz'])) {
             $filter["search"] = $_POST['search'];
@@ -225,8 +224,9 @@ class ControllerBook extends Controller {
                 if ($filter["search"] == "%") {
                     $filter["search"] = "\%";
                 }
-
-                $result = Book::get_book_by_filter($filter['search'], $filter['memberz']);
+          
+                
+                $result = Book::get_book_by_filter($filter['search'],$filter['memberz']);
                 echo json_encode($result);
             } else {
                 $result = Book::get_book_by_user_not_rented($filter['memberz']);

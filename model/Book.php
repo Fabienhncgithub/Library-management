@@ -84,7 +84,7 @@ class Book extends Model {
     public static function get_book_by_filter($search, $user) {
         $result = [];
         try {
-            $query = self::execute("SELECT * FROM book where(isbn LIKE :search OR title LIKE :search OR author LIKE :search OR editor LIKE :search )AND book.id NOT IN (select rental.book from rental where rental.user=:user)", array(":search" => "%" . $search . "%", "user" => $user));
+            $query = self::execute("SELECT * FROM book where(isbn LIKE :search OR title LIKE :search OR author LIKE :search OR editor LIKE :search) AND book.id NOT IN (select rental.book from rental where rental.user=:user)", array("search" => "%" . $search . "%", "user" => $user));
             $datas = $query->fetchAll();
             foreach ($datas as $data) {
                 $result[] = new Book($data["id"], $data["isbn"], $data["title"], $data["author"], $data["editor"], $data["picture"]);

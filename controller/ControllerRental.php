@@ -511,7 +511,14 @@ class ControllerRental extends Controller {
 //           $rent= Rental::get_rental_by_user($_GET["param1"]);
     }
     
-    
+    public function deletebyJS(){
+                  $user = Controller::get_user_or_redirect();
+                  if(isset($_GET['param1'])){
+                    $book = Book::get_book_id(($_GET['param1']));
+                    var_dump($book);
+                    $book->delete_Book();
+                  }
+    }
     
     
 }

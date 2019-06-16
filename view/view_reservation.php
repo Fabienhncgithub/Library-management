@@ -39,18 +39,16 @@
                 role = $('#userrole').val();
                 $('#search').keyup(function () {
                     console.log($('#memberz').val());
-                    $.post("book/find_book/", {search: $('#search').val(), memberz: $('#userconnect').val()}, function (data) {
+                    $.post("book/find_book/",{search:$('#search').val().replace(' ',''),memberz:$('#userconnect').val()}, function (data) {
                         console.log($('#search').val());
                         try {
                             var DN = JSON.parse(data);
                             displayTable(DN);
                             console.log(actual);
-                        } catch (e) {
+                        } catch(e) {
                             console.error(e);
                             console.error('JSON recived :', data);
-
                         }
-
                     }
                     );
                 });
@@ -97,6 +95,16 @@
                     location.reload()
                 });
             }
+            
+            function deleteJS(){
+                console.log($('#delJS').val());
+                $.get("rental/deletebyJS/" + $('#delJS').val(),function (data) {
+                          console.log(data);
+                             location.reload()
+                });
+            }
+            
+            
 
             function popupdelete(id, author, title) {
                 $("#id").text(id);
@@ -161,7 +169,7 @@
                         <td><?= $book->author ?></td>
                         <td><?= $book->editor ?></td>
 
-                             <!--<td><img src="upload/<?= $book->picture ?>" style="width:30%; " /></td>-->
+                                 <!--<td><img src="upload/<?= $book->picture ?>" style="width:30%; " /></td>-->
 
                         <td>
                             <?php if ($user->isAdmin($user->username)): ?>
@@ -177,6 +185,12 @@
                                     <input type='hidden' name='id_book' value='<?= $book->id ?>'>
                                     <input type='submit' value='delete'>
                                 </form>
+
+<!--                                <input id="delJS" type='hidden' name='id_book' value='<?= $book->id ?>'>
+                                <input type='submit' value='delete' onclick="deleteJS()">-->
+
+
+
                             <?php endif; ?>
                             <?php if (($user->isManager($user->username)) || ($user->isMember($user->username))): ?>
                                 <form  action='book/details' method='post' style="display: inline-block;">
@@ -256,7 +270,7 @@
                 <input type="submit" value="Effacer rental"   name="new">
             </form>
 
-            <input type="submit" value="changeFond" onclick="backG()">
+            <!--<input type="submit" value="changeFond" onclick="backG()">-->
 
 <!--            <input id="idToDelete" type='hidden' name='memberclearbasket' value='<?= $smember->id ?>' >
             <input type="submit" value="Effacer JS"   name="new" onclick="functionjs()">
