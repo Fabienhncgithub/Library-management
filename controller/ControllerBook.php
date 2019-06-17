@@ -224,8 +224,6 @@ class ControllerBook extends Controller {
                 if ($filter["search"] == "%") {
                     $filter["search"] = "\%";
                 }
-          
-                
                 $result = Book::get_book_by_filter($filter['search'],$filter['memberz']);
                 echo json_encode($result);
             } else {

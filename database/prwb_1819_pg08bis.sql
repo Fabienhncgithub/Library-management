@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Lun 17 Juin 2019 à 07:47
+-- Généré le :  Dim 26 Mai 2019 à 20:11
 -- Version du serveur :  5.7.11
 -- Version de PHP :  7.0.3
 
@@ -28,7 +28,6 @@ USE `prwb_1819_pg08`;
 -- Structure de la table `book`
 --
 
-DROP TABLE IF EXISTS `book`;
 CREATE TABLE `book` (
   `id` int(11) NOT NULL,
   `isbn` char(13) NOT NULL,
@@ -43,27 +42,18 @@ CREATE TABLE `book` (
 --
 
 INSERT INTO `book` (`id`, `isbn`, `title`, `author`, `editor`, `picture`) VALUES
-(10, '1234567890234', 'La Tresse', 'Laetitia Colombani', 'Le Livre de Poche', NULL),
-(11, '1111111111123', 'LA famille parfaite', 'Lisa Gardne', 'Le livre de poch', NULL),
-(12, '1111111111161', 'La dernière des Stanfield', 'Marc Lévy2 ', 'Pocket', NULL),
+(6, '1111111111113', 'coucou cec', 'salutcdeced', 'heyutjycdecd', NULL),
+(8, '1111111111145', 'La jeune fille et la nuit', 'Guillaume Musso', 'Calmann-Lévy', NULL),
+(10, 'ISBN2485', 'La Tresse', 'Laetitia Colombani', 'Le Livre de Poche', 'php6.jpg'),
+(11, '1111111111142', 'Famille parfaite', 'Lisa Gardner ', 'Le livre de poche', NULL),
+(12, '1111111111143', 'La dernière des Stanfield', 'Marc Lévy2 ', 'Pocket', NULL),
 (15, '1111111111101', 'Symfony 1.2', 'Fabien Potencier', 'Les cahiers du Programmeur', NULL),
 (16, '1111111111102', 'Réussir son site e-commerce', 'Sandrine Burriel', 'Avec osCommerce', NULL),
-(17, '1111111111109', 'PHP/MySQL et JavaScript', 'Jean-René Rouet', 'Les cahiers du Programmeur', NULL),
+(17, '1111111111105', 'PHP/MySQL et JavaScript', 'Jean-René Rouet', 'Les cahiers du Programmeur', NULL),
 (18, '1111111111104', 'PHP5', 'Stéphane Mariel', 'Les Cahiers du programmeur', NULL),
 (19, '1111111111108', 'TYPO3', 'Maik Caro', 'Publication de contenus', NULL),
-(20, '1111111111185', 'PHP à 200%', 'Jack-D Herrington', 'Le guide complet', NULL),
-(21, '1111111111132', 'PHP et SQL', 'Guillaume Ponçon', 'Mémento', NULL),
-(26, '9782746053533', 'Joomla! 1.5 - Coffret de 2 livres', 'Jean-Noël Anderruthy', 'Didier Mazier', NULL),
-(38, '9782841772315', 'PHP en action', 'David Sklar ', '1111111111148', NULL),
-(59, '9782744015069', 'PHP 4.X', 'Michel Dreyfus', 'Le tout en poche', NULL),
-(87, '9782746404038', 'Vos premiers pas avec PHP 4', 'Jean Engels', 'Droit au but', NULL),
-(88, '9782746040571', 'PHP 5 - MySQL 5 - AJAX', 'Arnaud GUÉRIN', 'Entraînez-vous', NULL),
-(89, '9782212133394', 'Sécurité PHP 5 et MySQL', 'Damien Seguy', '3ème édition', NULL),
-(90, '9782212128000', 'Performances PHP', 'Guillaume Plessis', 'LAMP', NULL),
-(91, '9782742984473', 'Site web marchand', 'Marc Herellier', 'de A à Z', NULL),
-(92, '7822121348037', 'PHP 5 Industrialisation', 'François Lépine', 'Outils', NULL),
-(93, '9781904811404', 'Smarty', 'Lucian Gheorghe', 'Applications', NULL),
-(94, '9781904811824', 'AJAX and PHP', 'Mihai Bucica', 'Building Responsive', NULL);
+(20, '1111111111167', 'PHP à 200%', 'Jack-D Herrington', 'Le guide complet', NULL),
+(21, '1111111111132', 'PHP et SQL', 'Guillaume Ponçon', 'Mémento', NULL);
 
 -- --------------------------------------------------------
 
@@ -71,7 +61,6 @@ INSERT INTO `book` (`id`, `isbn`, `title`, `author`, `editor`, `picture`) VALUES
 -- Structure de la table `rental`
 --
 
-DROP TABLE IF EXISTS `rental`;
 CREATE TABLE `rental` (
   `id` int(11) NOT NULL,
   `user` int(11) NOT NULL,
@@ -85,28 +74,34 @@ CREATE TABLE `rental` (
 --
 
 INSERT INTO `rental` (`id`, `user`, `book`, `rentaldate`, `returndate`) VALUES
-(445, 82, 11, '2019-05-16 17:17:46', '2019-06-13 06:50:46'),
+(445, 82, 11, '2019-05-16 17:17:46', '2019-04-18 00:00:00'),
+(789, 81, 12, '2019-05-25 16:34:24', '2019-05-23 00:00:00'),
+(819, 38, 8, '2019-02-07 10:34:17', '2019-05-26 05:20:00'),
+(825, 81, 12, NULL, NULL),
+(826, 81, 10, NULL, NULL),
+(833, 38, 10, '2019-01-17 10:34:17', '2019-01-31 00:00:00'),
+(835, 96, 10, '2019-05-26 13:44:08', '2019-05-26 01:44:47'),
+(842, 96, 11, '2019-05-26 13:44:08', NULL),
+(845, 1, 8, NULL, NULL),
+(847, 38, 6, '2018-10-10 10:34:17', '2019-04-08 00:00:00'),
+(855, 82, 6, '2019-02-11 17:17:46', NULL),
+(857, 14, 8, NULL, NULL),
+(859, 99, 11, '2019-03-20 21:29:45', NULL),
+(860, 99, 6, '2019-05-26 21:29:45', NULL),
 (861, 99, 10, '2019-05-15 21:29:45', '2019-05-25 00:00:00'),
-(869, 97, 12, '2019-05-26 21:31:47', '2019-06-13 16:40:24'),
-(870, 97, 10, '2019-05-26 21:31:47', '2019-06-17 09:45:06'),
-(872, 82, 12, '2019-05-16 17:17:46', '2019-06-13 17:43:55'),
-(874, 97, 17, '2019-03-11 21:31:47', '2019-06-13 06:51:05'),
-(910, 83, 21, '2019-04-24 00:00:00', '2019-05-29 00:00:00'),
-(911, 83, 19, '2019-05-14 00:00:00', '2019-06-18 00:00:00'),
-(931, 95, 18, '2019-06-03 07:56:13', NULL),
-(950, 97, 20, NULL, NULL),
-(976, 96, 20, NULL, NULL),
-(1020, 97, 21, '2019-05-14 00:00:00', NULL),
-(1021, 38, 87, '2019-05-20 00:00:00', NULL),
-(1022, 99, 12, '2019-05-15 21:29:45', NULL),
-(1023, 99, 26, '2019-05-15 21:29:45', '2019-06-17 09:45:08'),
-(1024, 82, 59, NULL, NULL),
-(1026, 95, 19, '2019-01-01 00:00:00', '2019-01-16 00:00:00'),
-(1027, 99, 89, '2019-05-15 21:29:45', NULL),
-(1028, 99, 87, '2019-05-15 21:29:45', NULL),
-(1029, 99, 19, '2019-03-12 00:00:00', '2019-03-31 00:00:00'),
-(1030, 99, 91, '2019-05-14 00:00:00', '2019-05-30 00:00:00'),
-(1031, 83, 20, '2019-01-23 00:00:00', '2019-04-15 00:00:00');
+(863, 101, 12, NULL, NULL),
+(864, 100, 11, '2019-05-26 21:30:12', NULL),
+(865, 100, 6, '2019-05-26 21:30:12', NULL),
+(866, 95, 11, NULL, NULL),
+(867, 101, 10, NULL, NULL),
+(868, 97, 6, '2019-03-11 21:31:47', '2019-04-09 00:00:00'),
+(869, 97, 12, '2019-05-26 21:31:47', NULL),
+(870, 97, 10, '2019-05-26 21:31:47', NULL),
+(871, 99, 8, '2019-01-01 21:29:45', '2019-03-11 00:00:00'),
+(872, 82, 12, '2019-05-16 17:17:46', NULL),
+(873, 38, 15, '2019-02-07 10:34:17', NULL),
+(874, 97, 17, '2019-03-11 21:31:47', NULL),
+(875, 97, 11, '2019-03-11 21:31:47', NULL);
 
 -- --------------------------------------------------------
 
@@ -114,7 +109,6 @@ INSERT INTO `rental` (`id`, `user`, `book`, `rentaldate`, `returndate`) VALUES
 -- Structure de la table `user`
 --
 
-DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `username` varchar(32) NOT NULL,
@@ -130,22 +124,19 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `username`, `password`, `fullname`, `email`, `birthdate`, `role`) VALUES
-(14, 'Fabien4', 'f0cb425d8629e0167c97b45c802e2672', 'Fabien Hance', 'piperley@hotmail.com', '2019-01-10', 'member'),
+(1, 'Administrateur1', 'c6aa01bd261e501b1fea93c41fe46dc7', 'Administrateur1', 'Administrateur1@1.com', '2019-05-24', 'admin'),
+(14, 'Fabien3', 'f0cb425d8629e0167c97b45c802e2672', 'Fabien H3', 'piperley@hotmail.com', '2019-01-10', 'member'),
 (38, 'Fabien1', 'cfc22bce25c416e6bddb277393aa7e12', 'Fabien1', 'Fabien1@1.com', NULL, 'admin'),
 (81, 'Fabien7', '10243c8ead6c5dd9318eaab6833066b8', 'Fabien6', 'Fabien7@6.com', '2019-04-17', 'member'),
-(82, 'Fabien35', '74ed877d96ce494ebad26b835bbbe089', 'Fabien23', 'Fabien2@2.com', '2019-04-18', 'admin'),
-(83, 'Fabien44', 'f10a4fe70d807b3b0177ee85c3696c22', 'Fabien4', 'Fabien4@2.com', '2019-04-17', 'member'),
-(95, 'Fabien232', 'd27c65e0d68943a5ed4142163e58908e', 'Fabien23', 'Fabien23@23.com', '2019-04-11', 'member'),
-(96, 'Fabien23', '9ff23d02b78d98fab3dd22333ed5f322', 'Fabien2', 'Manager1@13.com', '2019-05-15', 'admin'),
+(82, 'Fabien2', '74ed877d96ce494ebad26b835bbbe089', 'Fabien23', 'Fabien2@2.com', '2019-04-18', 'manager'),
+(83, 'Fabien44', 'f10a4fe70d807b3b0177ee85c3696c22', 'Fabien4', 'Fabien4@4.com', '2019-04-17', 'member'),
+(95, 'Fabien2325', 'd27c65e0d68943a5ed4142163e58908e', 'Fabien23', 'Fabien23@23.com', '2019-04-11', 'member'),
+(96, 'Fabien23', '9ff23d02b78d98fab3dd22333ed5f322', 'Fabien23', 'Fabien23@2323.com', '2019-05-15', 'admin'),
 (97, 'Manager1', 'b9b69b246c5f6c31d5e5be15c3f42c77', 'Manager1', 'Manager1@1.com', NULL, 'manager'),
 (98, 'Member1', 'eaf2c4d16994650fe74b93e9057cff50', 'Member1', 'Member1@1.com', NULL, 'member'),
 (99, 'Administrateur2', '7cfb848098b5eaf68af1a715af61515d', 'Administrateur2', 'Administrateur2@2.com', '2019-05-17', 'admin'),
 (100, 'Manager2', 'f8803a360962a7eadbbd1a13521e3270', 'Manager2', 'Manager2@2.com', '2019-05-18', 'manager'),
-(101, 'Member2', '6db68f8d0760b3ccd0b6d916e978c031', 'Member2', 'Member2@2.com', NULL, 'member'),
-(109, 'Fabien16', 'cfc22bce25c416e6bddb277393aa7e12', 'Fabien1', 'Fabien1@12.com', NULL, 'admin'),
-(114, 'Fabien111', '7390ba562708c22faa32260aa91f69f7', 'Fabien111', 'fabien.hance@sky-hero.com', NULL, 'admin'),
-(115, 'test', '71172e6db44b3949d5ff72c3729eb00d', 'testeur', 'test@gmail.com', NULL, 'member'),
-(116, 'Administrateur1', '5501a287fd4ae1b4c2e98182aa37e570', 'Administrateur1', 'Administrateur1@1.com', NULL, 'admin');
+(101, 'Member2', '6db68f8d0760b3ccd0b6d916e978c031', 'Member2', 'Member2@2.com', NULL, 'member');
 
 --
 -- Index pour les tables exportées
@@ -182,17 +173,17 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT pour la table `book`
 --
 ALTER TABLE `book`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 --
 -- AUTO_INCREMENT pour la table `rental`
 --
 ALTER TABLE `rental`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1032;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=876;
 --
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=117;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
 --
 -- Contraintes pour les tables exportées
 --

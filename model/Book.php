@@ -258,7 +258,6 @@ class Book extends Model {
             $errors[] = "Mettre editeur";
         if (($author) == "")
             $errors[] = "Mettre auteur";
-        var_dump($isbn);
         if (!self::validate_unicity_edit_isbn($isbn)) {
             $errors[] = "ISBN existe déjà pour un autre livre";
         }
@@ -343,15 +342,6 @@ class Book extends Model {
         }
     }
 
-//    public static function get_book_by_only_id($id) {
-//        $query = self::execute("SELECT * FROM book where id = :id", array("id" => $id));
-//        $data = $query->fetch(); // un seul résultat au maximum
-//        if ($query->rowCount() == 0) {
-//            return false;
-//        } else {
-//            return new Book($data["id"]);
-//        }
-//    }
 
     public static function get_book_by_user_book($user, $book) {
         $query = self::execute("SELECT * FROM book join rental on book.id=rental.book join user on rental.user=user.id  WHERE rental.user =:user and rental.book =:book", array("user" => $user, "book" => $book));
