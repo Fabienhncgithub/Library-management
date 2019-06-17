@@ -51,8 +51,8 @@
                             remote: 'this ISBN is already taken',
                             required: "ISBN required",
                             number: "Only numbers",
-                            minlength: "ISBN is composed by 13 numbers",
-                            maxlength: "ISBN is composed by 13 numbers",
+                            minlength: "encode 12 chiffres",
+                            maxlength: "encode 12 chiffres",
                         },
                         password: {
                             required: 'required',
