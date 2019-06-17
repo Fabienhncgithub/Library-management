@@ -57,7 +57,7 @@
                             <td><?= $usr->birthdate ?></td>
                             <td><?= $usr->role ?></td>
                             <td>
-                                <?php if ($user->isAdmin() || $user->isManager()): ?>
+                                <?php if ($user->isAdmin() || $user->isManager() ): ?>
                                     <form  class="button" action="user/edit_user_prg" method="POST">
                                         <input type="hidden" name="id" value="<?= $usr->id ?>">
                                         <input type="submit" value="Edit">

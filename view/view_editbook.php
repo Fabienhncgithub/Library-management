@@ -16,16 +16,13 @@
                 test();
                 $("#editbookJS").show();
                 $("#btnEdit").hide();
-
-
-
                 $("#editbookForm").validate({
                     rules: {
                         isbn: {
                             required: true,
                             number: true,
                             minlength: 12,
-                            maxlength: 14,
+                            maxlength: 12,
                             remote: {
                                 url: 'book/isbn_available_service_edit',
                                 type: 'post',
@@ -91,20 +88,12 @@
                 var val = $('#isbn').val();
                 var val2 = $('#isbn13');
                 val2.html(val.substr(-1));
-
             });
-
             });
-
-           
             function test() {
                 var val = $('#isbn').val();
                 var val2 = $('#isbn13');
-
                 val2.html(val.substr(-1));
-
-
-
             }
         </script>
         <div class="title">Edit Book</div>
@@ -148,7 +137,6 @@
                     <td><input type='file' name='picture' accept="picture/x-png, picture/gif, picture/jpeg"><br></td>
                     </tr>
                 </table>
-                <!--<input id="idbook" type="hidden" name = "id" value="< ?= $books->id ?>" >-->
                 <input id="" type='submit' value='edit'>
             </form>
             <form action='book/edit_book' method="POST">

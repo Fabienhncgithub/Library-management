@@ -124,13 +124,11 @@
                     }
                 });
 
-
-
             }
         </script>
         <div class="title">Welcome <?= $user->username ?></div>
         <?php
-        if ($user->isAdmin($user->username)) {
+        if(($user->isManager($user->username)) || ($user->isAdmin($user->username))){
             include('menuAdmin.html');
         } else {
             include('menu.html');
@@ -179,7 +177,6 @@
                                 </form>
                             <?php endif; ?>
 
-
                             <?php if ($user->isAdmin($user->username)): ?>
                                 <form  action='book/delete' method='post' style="display: inline-block;">
                                     <input type='hidden' name='id_book' value='<?= $book->id ?>'>
@@ -188,8 +185,6 @@
 
 <!--                                <input id="delJS" type='hidden' name='id_book' value='<?= $book->id ?>'>
                                 <input type='submit' value='delete' onclick="deleteJS()">-->
-
-
 
                             <?php endif; ?>
                             <?php if (($user->isManager($user->username)) || ($user->isMember($user->username))): ?>

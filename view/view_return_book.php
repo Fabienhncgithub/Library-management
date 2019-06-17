@@ -184,8 +184,8 @@
         </script>
         <div class="title"><?php echo $user->username; ?>!</div>
 
-        <?php
-        if ($user->isAdmin($user->username)) {
+         <?php
+        if(($user->isManager($user->username)) || ($user->isAdmin($user->username))){
             include('menuAdmin.html');
         } else {
             include('menu.html');

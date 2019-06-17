@@ -238,7 +238,7 @@ class ControllerBook extends Controller {
     public function search() {
         $user = Controller::get_user_or_redirect();
         $filter = [];
-        $searcht = " ";
+        $searcht = "";
         if (isset($_GET["param1"])) {
             $filter = Utils::url_safe_decode($_GET["param1"]);
             if (!$filter)
@@ -249,8 +249,7 @@ class ControllerBook extends Controller {
             $filter["member"] = $_POST["member"];
             $this->redirect("book", "search", Utils::url_safe_encode($filter));
         }
-        $searcht = $filter["critere"];
-        var_dump($searcht);
+        $searcht = trim($filter["critere"]);
         $smember = User::get_member_by_pseudo($filter['member']);
         $idsmember = $smember->id;
         $user = User::get_member_by_pseudo($user->username);
@@ -260,7 +259,7 @@ class ControllerBook extends Controller {
         $id = $users;
         $members = User::selection_member_by_all_not_selected($id);
         $search = ($filter['critere']);
-        $books = Book::get_book_by_filter($filter["critere"], $smember->id);
+        $books = Book::get_book_by_filter(trim($filter["critere"]), $smember->id);
         (new View("reservation"))->show(array("books" => $books, "selections" => $selections, "user" => $user, "members" => $members, "smember" => $smember, "role" => $role, "searcht" => $searcht));
     }
 
